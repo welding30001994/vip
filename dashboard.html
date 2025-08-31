@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OXOMAX-TRADING | Plataforma de Trading Futurista</title>
+    <title>VIPFOREX | Plataforma de Trading Elite</title>
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
@@ -11,19 +11,24 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@400;500;600;700&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet">
     <!-- Estilos -->
     <style>
         :root {
-            --neon-blue: #00f7ff;
-            --neon-purple: #7b2dff;
-            --neon-pink: #ff2d7b;
-            --dark-space: #0a0a1a;
+            --neon-gold: #ffd700;
+            --neon-platinum: #e5e4e2;
+            --neon-diamond: #b9f2ff;
+            --neon-vip: #ff00ff;
+            --neon-cyan: #00ffff;
+            --dark-cosmic: #0a0a1a;
             --darker-space: #050510;
-            --star-light: rgba(255, 255, 255, 0.8);
+            --deep-space: #03030f;
+            --star-light: rgba(255, 255, 255, 0.9);
             --glass: rgba(255, 255, 255, 0.05);
             --glass-border: rgba(255, 255, 255, 0.1);
-            --neon-glow: 0 0 10px var(--neon-blue), 0 0 20px rgba(0, 247, 255, 0.5);
+            --gold-glow: 0 0 10px var(--neon-gold), 0 0 20px rgba(255, 215, 0, 0.5);
+            --vip-glow: 0 0 15px var(--neon-vip), 0 0 30px rgba(255, 0, 255, 0.4);
+            --cyan-glow: 0 0 15px var(--neon-cyan), 0 0 30px rgba(0, 255, 255, 0.4);
             --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
         }
         
@@ -34,12 +39,13 @@
         }
         
         body {
-            font-family: 'Rajdhani', sans-serif;
-            background-color: var(--dark-space);
+            font-family: 'Exo 2', 'Rajdhani', sans-serif;
+            background-color: var(--deep-space);
             color: var(--star-light);
             background-image: 
-                radial-gradient(circle at 25% 25%, rgba(123, 45, 255, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 75% 75%, rgba(0, 247, 255, 0.1) 0%, transparent 50%);
+                radial-gradient(circle at 15% 15%, rgba(255, 215, 0, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 85% 85%, rgba(255, 0, 255, 0.05) 0%, transparent 40%),
+                linear-gradient(to bottom, var(--deep-space), var(--dark-cosmic));
             line-height: 1.7;
             overflow-x: hidden;
             min-height: 100vh;
@@ -58,8 +64,8 @@
             padding: 0 20px;
         }
         
-        /* Efectos futuristas */
-        .cyber-glitch {
+        /* Efectos futuristas VIP */
+        .vip-grid {
             position: fixed;
             top: 0;
             left: 0;
@@ -69,21 +75,18 @@
             z-index: -1;
             opacity: 0.03;
             background: 
-                linear-gradient(0deg, transparent 48%, var(--neon-blue) 49%, var(--neon-blue) 51%, transparent 52%),
-                linear-gradient(90deg, transparent 48%, var(--neon-pink) 49%, var(--neon-pink) 51%, transparent 52%);
-            background-size: 10px 10px;
-            animation: glitch 0.1s infinite;
+                linear-gradient(0deg, transparent 48%, var(--neon-gold) 49%, var(--neon-gold) 51%, transparent 52%),
+                linear-gradient(90deg, transparent 48%, var(--neon-vip) 49%, var(--neon-vip) 51%, transparent 52%);
+            background-size: 15px 15px;
+            animation: grid-move 20s infinite linear;
         }
         
-        @keyframes glitch {
-            0%, 100% { transform: translate(0); }
-            20% { transform: translate(-2px, 2px); }
-            40% { transform: translate(-2px, -2px); }
-            60% { transform: translate(2px, 2px); }
-            80% { transform: translate(2px, -2px); }
+        @keyframes grid-move {
+            0% { background-position: 0 0; }
+            100% { background-position: 15px 15px; }
         }
         
-        .floating-shapes {
+        .floating-diamonds {
             position: fixed;
             top: 0;
             left: 0;
@@ -93,39 +96,25 @@
             z-index: -1;
         }
         
-        .shape {
+        .diamond {
             position: absolute;
             opacity: 0.1;
-            border-radius: 50%;
-            filter: blur(30px);
+            background: var(--neon-diamond);
+            width: 10px;
+            height: 10px;
+            transform: rotate(45deg);
+            filter: blur(2px);
+            animation: float-diamond 20s infinite linear;
         }
         
-        .shape-1 {
-            width: 300px;
-            height: 300px;
-            background: var(--neon-blue);
-            top: -100px;
-            left: -100px;
-            animation: float 15s infinite ease-in-out;
+        @keyframes float-diamond {
+            0%, 100% { transform: translate(0, 0) rotate(45deg); opacity: 0.1; }
+            25% { transform: translate(100px, 50px) rotate(90deg); opacity: 0.15; }
+            50% { transform: translate(50px, 100px) rotate(135deg); opacity: 0.2; }
+            75% { transform: translate(-50px, 50px) rotate(180deg); opacity: 0.15; }
         }
         
-        .shape-2 {
-            width: 400px;
-            height: 400px;
-            background: var(--neon-purple);
-            bottom: -150px;
-            right: -100px;
-            animation: float 20s infinite ease-in-out reverse;
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translate(0, 0) rotate(0deg); }
-            25% { transform: translate(50px, 50px) rotate(5deg); }
-            50% { transform: translate(0, 100px) rotate(0deg); }
-            75% { transform: translate(-50px, 50px) rotate(-5deg); }
-        }
-        
-        /* Header */
+        /* Header VIP */
         header {
             position: fixed;
             top: 0;
@@ -133,10 +122,10 @@
             width: 100%;
             z-index: 1000;
             padding: 15px 0;
-            background: rgba(10, 10, 26, 0.8);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--glass-border);
-            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);
+            background: rgba(10, 10, 26, 0.85);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--neon-gold);
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.5);
         }
         
         nav {
@@ -148,23 +137,27 @@
         .logo {
             display: flex;
             align-items: center;
-            font-size: 1.8rem;
-            background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple));
+            font-size: 2rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--neon-gold) 0%, var(--neon-vip) 100%);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
             text-decoration: none;
-            text-shadow: var(--neon-glow);
+            text-shadow: var(--vip-glow);
+            letter-spacing: 2px;
         }
         
         .logo i {
             margin-right: 12px;
-            font-size: 2rem;
+            font-size: 2.2rem;
+            color: var(--neon-gold);
+            filter: drop-shadow(0 0 5px var(--neon-gold));
         }
         
         .nav-links {
             display: flex;
-            gap: 30px;
+            gap: 35px;
         }
         
         .nav-links a {
@@ -175,11 +168,13 @@
             position: relative;
             transition: var(--transition);
             letter-spacing: 1px;
+            font-family: 'Exo 2', sans-serif;
+            text-transform: uppercase;
         }
         
         .nav-links a:hover {
-            color: var(--neon-blue);
-            text-shadow: var(--neon-glow);
+            color: var(--neon-gold);
+            text-shadow: var(--gold-glow);
         }
         
         .nav-links a::after {
@@ -189,12 +184,13 @@
             left: 0;
             width: 0;
             height: 2px;
-            background: var(--neon-blue);
+            background: linear-gradient(90deg, var(--neon-gold), var(--neon-vip));
             transition: width 0.4s ease;
         }
         
         .nav-links a:hover::after {
             width: 100%;
+            box-shadow: var(--gold-glow);
         }
         
         .user-menu {
@@ -204,70 +200,87 @@
         }
         
         .logout-btn {
-            padding: 10px 25px;
+            padding: 12px 28px;
             background: transparent;
-            color: var(--neon-blue);
-            border: 1px solid var(--neon-blue);
+            color: var(--neon-gold);
+            border: 1px solid var(--neon-gold);
             border-radius: 30px;
-            font-weight: 600;
+            font-weight: 700;
             font-size: 1rem;
             cursor: pointer;
             transition: var(--transition);
             letter-spacing: 1px;
+            font-family: 'Exo 2', sans-serif;
+            text-transform: uppercase;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .logout-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.2), transparent);
+            transition: 0.5s;
+            z-index: -1;
         }
         
         .logout-btn:hover {
-            background: var(--neon-blue);
-            color: var(--dark-space);
-            box-shadow: var(--neon-glow);
-            transform: translateY(-2px);
+            background: rgba(255, 215, 0, 0.1);
+            box-shadow: var(--gold-glow);
+            transform: translateY(-3px);
+        }
+        
+        .logout-btn:hover::before {
+            left: 100%;
         }
         
         .user-avatar {
-            width: 45px;
-            height: 45px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
-            background: rgba(0, 247, 255, 0.1);
+            background: linear-gradient(135deg, var(--neon-gold), var(--neon-vip));
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--neon-blue);
+            color: var(--dark-cosmic);
             font-weight: bold;
-            font-size: 1.2rem;
-            border: 1px solid var(--glass-border);
+            font-size: 1.3rem;
+            border: 2px solid var(--neon-gold);
             cursor: pointer;
             transition: var(--transition);
+            box-shadow: var(--gold-glow);
         }
         
         .user-avatar:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 15px rgba(0, 247, 255, 0.5);
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
         }
         
-        /* Dashboard */
+        /* Dashboard VIP */
         .dashboard {
-            padding-top: 100px;
-            padding-bottom: 50px;
+            padding-top: 120px;
+            padding-bottom: 60px;
         }
         
         .welcome-banner {
-            background: var(--glass);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--glass-border);
-            border-radius: 15px;
-            padding: 40px;
-            margin-bottom: 30px;
+            background: linear-gradient(135deg, rgba(10, 10, 30, 0.7), rgba(20, 10, 40, 0.7));
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--neon-gold);
+            border-radius: 20px;
+            padding: 45px;
+            margin-bottom: 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             position: relative;
             overflow: hidden;
             transition: var(--transition);
-        }
-        
-        .welcome-banner:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
         }
         
         .welcome-banner::before {
@@ -277,10 +290,18 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, rgba(0, 247, 255, 0.1), rgba(123, 45, 255, 0.1));
+            background: linear-gradient(45deg, 
+                rgba(255, 215, 0, 0.1) 0%, 
+                rgba(255, 0, 255, 0.1) 50%, 
+                rgba(255, 215, 0, 0.1) 100%);
             z-index: -1;
             opacity: 0;
-            transition: opacity 0.5s ease;
+            transition: opacity 0.6s ease;
+        }
+        
+        .welcome-banner:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
         }
         
         .welcome-banner:hover::before {
@@ -288,50 +309,54 @@
         }
         
         .welcome-text h2 {
-            font-size: 2rem;
+            font-size: 2.5rem;
             margin-bottom: 15px;
-            background: linear-gradient(to right, var(--neon-blue), var(--neon-purple));
+            background: linear-gradient(to right, var(--neon-gold), var(--neon-vip));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: var(--neon-glow);
+            text-shadow: var(--vip-glow);
+            letter-spacing: 2px;
         }
         
         .welcome-text p {
-            font-size: 1.1rem;
-            opacity: 0.8;
-            max-width: 600px;
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 700px;
+            font-family: 'Exo 2', sans-serif;
         }
         
         .progress-container {
-            background: var(--glass);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--glass-border);
-            border-radius: 10px;
-            padding: 25px;
-            min-width: 280px;
+            background: rgba(15, 15, 35, 0.7);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--neon-gold);
+            border-radius: 15px;
+            padding: 30px;
+            min-width: 300px;
             transition: var(--transition);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
         
         .progress-container:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
         }
         
         .progress-bar {
             width: 100%;
-            height: 10px;
+            height: 12px;
             background-color: rgba(0, 0, 0, 0.3);
-            border-radius: 5px;
-            margin: 15px 0;
+            border-radius: 10px;
+            margin: 20px 0;
             overflow: hidden;
             position: relative;
+            border: 1px solid rgba(255, 215, 0, 0.3);
         }
         
         .progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, var(--neon-purple), var(--neon-blue));
+            background: linear-gradient(90deg, var(--neon-vip), var(--neon-gold));
             width: 0%;
-            transition: width 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            transition: width 1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
             position: relative;
             overflow: hidden;
         }
@@ -345,7 +370,7 @@
             bottom: 0;
             background: linear-gradient(90deg, 
                 transparent, 
-                rgba(255, 255, 255, 0.3), 
+                rgba(255, 255, 255, 0.4), 
                 transparent);
             animation: progressShine 2s infinite;
         }
@@ -355,320 +380,10 @@
             100% { transform: translateX(100%); }
         }
         
-        /* Content Container */
-        .content-container {
-            display: flex;
-            gap: 30px;
-            margin-top: 40px;
-        }
-        
-        /* Sidebar */
-        .sidebar {
-            width: 320px;
-            flex-shrink: 0;
-        }
-        
-        .sidebar-menu {
-            background: var(--glass);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--glass-border);
-            border-radius: 15px;
-            padding: 30px;
-            position: relative;
-            overflow: hidden;
-            transition: var(--transition);
-        }
-        
-        .sidebar-menu:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
-        }
-        
-        .sidebar-menu h3 {
-            font-size: 1.4rem;
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid var(--glass-border);
-            color: var(--neon-blue);
-            text-shadow: 0 0 10px rgba(0, 247, 255, 0.3);
-        }
-        
-        .menu-item {
-            padding: 15px 0;
-            border-bottom: 1px solid var(--glass-border);
-            transition: var(--transition);
-        }
-        
-        .menu-item:hover {
-            transform: translateX(5px);
-        }
-        
-        .menu-item:last-child {
-            border-bottom: none;
-        }
-        
-        .menu-item a {
-            color: var(--star-light);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            transition: var(--transition);
-            opacity: 0.9;
-            font-size: 1.1rem;
-        }
-        
-        .menu-item a:hover {
-            color: var(--neon-blue);
-            opacity: 1;
-            text-shadow: 0 0 10px rgba(0, 247, 255, 0.3);
-        }
-        
-        .menu-item.active a {
-            color: var(--neon-blue);
-            font-weight: 600;
-            opacity: 1;
-            text-shadow: 0 0 10px rgba(0, 247, 255, 0.3);
-        }
-        
-        .menu-item i {
-            font-size: 1.2rem;
-            width: 25px;
-            text-align: center;
-        }
-        
-        /* Main Content */
-        .main-content {
-            flex-grow: 1;
-            background: var(--glass);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--glass-border);
-            border-radius: 15px;
-            padding: 40px;
-            position: relative;
-            overflow: hidden;
-            transition: var(--transition);
-        }
-        
-        .main-content:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
-        }
-        
-        .content-header {
-            margin-bottom: 30px;
-        }
-        
-        .content-header h2 {
-            font-size: 2rem;
-            margin-bottom: 15px;
-            color: var(--neon-blue);
-            text-shadow: 0 0 10px rgba(0, 247, 255, 0.3);
-        }
-        
-        .breadcrumbs {
-            display: flex;
-            gap: 10px;
-            font-size: 1rem;
-            color: var(--star-light);
-            opacity: 0.8;
-        }
-        
-        .breadcrumbs a {
-            color: var(--star-light);
-            text-decoration: none;
-            transition: var(--transition);
-        }
-        
-        .breadcrumbs a:hover {
-            color: var(--neon-blue);
-            text-shadow: 0 0 10px rgba(0, 247, 255, 0.3);
-        }
-        
-        .breadcrumbs span {
-            color: var(--neon-blue);
-        }
-        
-        /* Lesson Content */
-        .lesson-content {
-            line-height: 1.8;
-            font-size: 1.1rem;
-        }
-        
-        .lesson-content h3 {
-            font-size: 1.6rem;
-            margin: 30px 0 20px;
-            color: var(--neon-blue);
-            text-shadow: 0 0 10px rgba(0, 247, 255, 0.3);
-            position: relative;
-            padding-bottom: 10px;
-        }
-        
-        .lesson-content h3::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100px;
-            height: 3px;
-            background: linear-gradient(90deg, var(--neon-blue), transparent);
-            border-radius: 3px;
-        }
-        
-        .lesson-content p {
-            margin-bottom: 20px;
-            opacity: 0.9;
-        }
-        
-        .lesson-content ul, .lesson-content ol {
-            margin-bottom: 25px;
-            padding-left: 25px;
-            opacity: 0.9;
-        }
-        
-        .lesson-content li {
-            margin-bottom: 12px;
-            position: relative;
-        }
-        
-        .lesson-content li::before {
-            content: '';
-            position: absolute;
-            left: -20px;
-            top: 10px;
-            width: 8px;
-            height: 8px;
-            background: var(--neon-blue);
-            border-radius: 50%;
-            box-shadow: 0 0 5px var(--neon-blue);
-        }
-        
-        .lesson-content strong {
-            color: var(--neon-blue);
-            font-weight: 600;
-        }
-        
-        .lesson-content img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 10px;
-            margin: 25px 0;
-            border: 1px solid var(--glass-border);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            transition: var(--transition);
-        }
-        
-        .lesson-content img:hover {
-            transform: scale(1.02);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
-        }
-        
-        /* Lesson Navigation */
-        .lesson-nav {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 40px;
-            padding-top: 25px;
-            border-top: 1px solid var(--glass-border);
-        }
-        
-        .nav-button {
-            padding: 15px 30px;
-            background: var(--neon-blue);
-            color: var(--dark-space);
-            border: none;
-            border-radius: 30px;
-            font-weight: 700;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            position: relative;
-            overflow: hidden;
-            z-index: 1;
-            letter-spacing: 1px;
-        }
-        
-        .nav-button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(to right, var(--neon-purple), var(--neon-pink));
-            z-index: -1;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        
-        .nav-button:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--neon-glow);
-        }
-        
-        .nav-button:hover::before {
-            opacity: 1;
-        }
-        
-        .nav-button.outline {
-            background: transparent;
-            color: var(--neon-blue);
-            border: 1px solid var(--neon-blue);
-        }
-        
-        .nav-button.outline:hover {
-            background: rgba(0, 247, 255, 0.1);
-        }
-        
-        .nav-button i {
-            font-size: 1.1rem;
-        }
-        
-        /* Completion Checkbox */
-        .completion-checkbox {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-top: 30px;
-            padding: 20px;
-            background: var(--glass);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--glass-border);
-            border-radius: 10px;
-            transition: var(--transition);
-        }
-        
-        .completion-checkbox:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        }
-        
-        .completion-checkbox input {
-            width: 20px;
-            height: 20px;
-            accent-color: var(--neon-blue);
-            cursor: pointer;
-        }
-        
-        .completion-checkbox label {
-            cursor: pointer;
-            opacity: 0.9;
-            transition: var(--transition);
-            font-size: 1.1rem;
-        }
-        
-        .completion-checkbox:hover label {
-            color: var(--neon-blue);
-            opacity: 1;
-        }
-        
-        /* Portal de Accesos */
+        /* Portal de Accesos VIP */
         .portal-section {
-            margin-top: 50px;
-            padding: 40px 0;
+            margin-top: 60px;
+            padding: 50px 0;
             position: relative;
         }
         
@@ -680,64 +395,73 @@
             width: 100%;
             height: 100%;
             background: linear-gradient(45deg, 
-                rgba(0, 247, 255, 0.05) 0%, 
-                rgba(123, 45, 255, 0.05) 100%);
+                rgba(255, 215, 0, 0.05) 0%, 
+                rgba(255, 0, 255, 0.05) 50%,
+                rgba(0, 255, 255, 0.05) 100%);
             z-index: -1;
-            border-radius: 15px;
+            border-radius: 20px;
         }
         
         .section-title {
-            font-size: 2.5rem;
+            font-size: 2.8rem;
             text-align: center;
-            margin-bottom: 40px;
-            background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple));
+            margin-bottom: 50px;
+            background: linear-gradient(135deg, var(--neon-gold), var(--neon-vip), var(--neon-cyan));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             position: relative;
             display: inline-block;
             left: 50%;
             transform: translateX(-50%);
+            text-shadow: var(--vip-glow);
+            letter-spacing: 3px;
+            font-weight: 900;
         }
         
         .section-title::after {
             content: '';
             position: absolute;
-            bottom: -10px;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: linear-gradient(90deg, transparent, var(--neon-blue), transparent);
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, var(--neon-gold), var(--neon-vip), transparent);
+            border-radius: 2px;
         }
         
         .portal-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 25px;
-            max-width: 1200px;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 30px;
+            max-width: 1300px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 30px;
         }
         
         .portal-btn {
             position: relative;
-            min-height: 180px;
-            border-radius: 15px;
+            min-height: 200px;
+            border-radius: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             text-decoration: none;
             color: white;
-            font-weight: 600;
-            font-size: 1.2rem;
+            font-weight: 700;
+            font-size: 1.3rem;
             transition: var(--transition);
             overflow: hidden;
             z-index: 1;
-            box-shadow: 0 0 20px rgba(0, 240, 252, 0.1);
-            border: 1px solid rgba(0, 240, 252, 0.2);
-            background-color: rgba(10, 10, 32, 0.7);
-            padding: 20px;
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.15);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            background: linear-gradient(135deg, rgba(15, 15, 35, 0.7), rgba(25, 15, 45, 0.7));
+            padding: 25px;
             text-align: center;
+            font-family: 'Exo 2', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
         
         .portal-btn::before {
@@ -750,21 +474,21 @@
             background: linear-gradient(
                 to bottom right,
                 transparent, transparent, transparent,
-                rgba(0, 240, 252, 0.1), transparent, transparent, transparent
+                rgba(255, 215, 0, 0.2), transparent, transparent, transparent
             );
             transform: rotate(45deg);
-            transition: all 0.5s ease;
+            transition: all 0.8s ease;
             z-index: -1;
         }
         
         .portal-btn:hover {
-            transform: translateY(-10px) scale(1.05);
-            box-shadow: 0 0 30px rgba(0, 240, 252, 0.5);
-            border-color: var(--neon-blue);
+            transform: translateY(-12px) scale(1.05);
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.6);
+            border-color: var(--neon-gold);
         }
         
         .portal-btn:hover::before {
-            animation: shine 1.5s ease infinite;
+            animation: shine 1.8s ease infinite;
         }
         
         @keyframes shine {
@@ -773,117 +497,159 @@
         }
         
         .portal-btn i {
-            font-size: 2.5rem;
-            margin-bottom: 15px;
+            font-size: 3rem;
+            margin-bottom: 20px;
             transition: var(--transition);
         }
         
         .portal-btn:hover i {
-            transform: scale(1.2);
-            text-shadow: 0 0 15px currentColor;
+            transform: scale(1.3) rotate(5deg);
+            text-shadow: 0 0 20px currentColor;
         }
         
         /* Colores individuales para cada botón */
-        .btn-google { color: var(--neon-blue); }
-        .btn-youtube { color: #ff0000; }
-        .btn-github { color: var(--neon-pink); }
-        .btn-twitter { color: #1da1f2; }
-        .btn-linkedin { color: #0a66c2; }
-        .btn-instagram { 
-            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
-            background-clip: text;
-            -webkit-background-clip: text;
-            color: transparent;
-        }
+        .btn-gold { color: var(--neon-gold); }
+        .btn-vip { color: var(--neon-vip); }
+        .btn-cyan { color: var(--neon-cyan); }
+        .btn-platinum { color: var(--neon-platinum); }
+        .btn-diamond { color: var(--neon-diamond); }
         
-        /* Programas de Trading */
+        /* Programas VIP */
         .programs-section {
-            margin-top: 60px;
-            padding: 40px 0;
+            margin-top: 80px;
+            padding: 50px 0;
         }
         
         .programs-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 30px;
-            margin-top: 30px;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 40px;
+            margin-top: 40px;
         }
         
         .program-card {
-            background: rgba(10, 10, 26, 0.7);
-            border-radius: 15px;
-            padding: 30px;
-            border: 1px solid rgba(0, 247, 255, 0.2);
+            background: linear-gradient(135deg, rgba(15, 15, 35, 0.8), rgba(25, 15, 45, 0.8));
+            border-radius: 20px;
+            padding: 35px;
+            border: 1px solid var(--neon-gold);
             transition: var(--transition);
             position: relative;
             overflow: hidden;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        }
+        
+        .program-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, 
+                rgba(255, 215, 0, 0.1) 0%, 
+                rgba(255, 0, 255, 0.1) 50%, 
+                rgba(0, 255, 255, 0.1) 100%);
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.6s ease;
         }
         
         .program-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(0, 247, 255, 0.2);
-            border-color: var(--neon-blue);
+            transform: translateY(-12px);
+            box-shadow: 0 20px 50px rgba(255, 215, 0, 0.25);
+        }
+        
+        .program-card:hover::before {
+            opacity: 1;
         }
         
         .program-card h3 {
-            font-size: 1.8rem;
-            margin-bottom: 15px;
-            color: var(--neon-blue);
-            text-shadow: 0 0 10px rgba(0, 247, 255, 0.3);
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: var(--neon-gold);
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+            letter-spacing: 1.5px;
+            text-align: center;
         }
         
         .program-card .price {
-            font-size: 2.2rem;
-            font-weight: 700;
-            margin-bottom: 20px;
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 25px;
             color: var(--star-light);
             font-family: 'Orbitron', sans-serif;
+            text-align: center;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
         }
         
         .program-card .price::before {
             content: '$';
-            color: var(--neon-pink);
+            color: var(--neon-vip);
         }
         
         .program-card .info-item {
-            margin-bottom: 12px;
+            margin-bottom: 15px;
             display: flex;
             align-items: center;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
+            font-family: 'Exo 2', sans-serif;
         }
         
         .program-card .info-item::before {
-            content: '▹';
-            color: var(--neon-blue);
-            margin-right: 10px;
-            font-size: 1rem;
+            content: '✦';
+            color: var(--neon-gold);
+            margin-right: 12px;
+            font-size: 1.2rem;
+            text-shadow: 0 0 5px var(--neon-gold);
         }
         
         .program-card .buy-button {
             display: inline-block;
-            padding: 12px 25px;
+            padding: 15px 30px;
             background: transparent;
-            color: var(--neon-blue);
+            color: var(--neon-gold);
             font-family: 'Orbitron', sans-serif;
             font-weight: 700;
             text-decoration: none;
-            border-radius: 5px;
-            border: 2px solid var(--neon-blue);
+            border-radius: 8px;
+            border: 2px solid var(--neon-gold);
             cursor: pointer;
-            margin-top: 20px;
+            margin-top: 25px;
             transition: var(--transition);
             text-align: center;
             width: 100%;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .program-card .buy-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.2), transparent);
+            transition: 0.5s;
+            z-index: -1;
         }
         
         .program-card .buy-button:hover {
-            background: var(--neon-blue);
-            color: var(--dark-space);
-            box-shadow: var(--neon-glow);
+            background: var(--neon-gold);
+            color: var(--dark-cosmic);
+            box-shadow: var(--gold-glow);
+            transform: translateY(-3px);
         }
         
-        /* Modal de Pago */
+        .program-card .buy-button:hover::before {
+            left: 100%;
+        }
+        
+        /* Modal de Pago VIP */
         .payment-modal {
             display: none;
             position: fixed;
@@ -891,111 +657,140 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(5, 5, 16, 0.95);
+            background: rgba(5, 5, 16, 0.98);
             z-index: 2000;
             justify-content: center;
             align-items: center;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(15px);
         }
         
         .payment-content {
-            background: var(--darker-space);
-            border: 1px solid var(--neon-blue);
-            border-radius: 15px;
-            padding: 40px;
-            max-width: 600px;
+            background: linear-gradient(135deg, rgba(15, 15, 35, 0.95), rgba(25, 15, 45, 0.95));
+            border: 2px solid var(--neon-gold);
+            border-radius: 20px;
+            padding: 50px;
+            max-width: 700px;
             width: 90%;
             position: relative;
-            box-shadow: 0 0 50px rgba(0, 247, 255, 0.3);
-            animation: modalFadeIn 0.5s ease;
+            box-shadow: 0 0 60px rgba(255, 215, 0, 0.4);
+            animation: modalFadeIn 0.6s ease;
+            backdrop-filter: blur(20px);
         }
         
         @keyframes modalFadeIn {
-            from { opacity: 0; transform: translateY(50px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; transform: translateY(60px) scale(0.9); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
         
         .payment-content h2 {
             font-family: 'Orbitron', sans-serif;
-            color: var(--neon-blue);
-            margin-bottom: 20px;
+            color: var(--neon-gold);
+            margin-bottom: 30px;
             text-align: center;
-            font-size: 2rem;
-            text-shadow: 0 0 10px rgba(0, 247, 255, 0.3);
+            font-size: 2.5rem;
+            text-shadow: var(--gold-glow);
+            letter-spacing: 2px;
         }
         
         .payment-content .close {
             position: absolute;
-            top: 20px;
-            right: 20px;
+            top: 25px;
+            right: 25px;
             color: var(--star-light);
-            font-size: 2rem;
+            font-size: 2.5rem;
             cursor: pointer;
             transition: var(--transition);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(255, 215, 0, 0.1);
         }
         
         .payment-content .close:hover {
-            color: var(--neon-pink);
-            transform: rotate(90deg);
+            color: var(--neon-vip);
+            transform: rotate(90deg) scale(1.1);
+            background: rgba(255, 0, 255, 0.1);
+            text-shadow: 0 0 10px var(--neon-vip);
         }
         
         .bank-info {
-            margin-bottom: 30px;
+            margin-bottom: 40px;
         }
         
         .bank-info p {
-            margin-bottom: 15px;
+            margin-bottom: 18px;
             display: flex;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
+            font-family: 'Exo 2', sans-serif;
+            padding: 10px 0;
+            border-bottom: 1px dashed rgba(255, 215, 0, 0.3);
         }
         
         .bank-info p strong {
-            min-width: 180px;
-            color: var(--neon-blue);
+            min-width: 200px;
+            color: var(--neon-gold);
+            text-shadow: 0 0 5px rgba(255, 215, 0, 0.3);
         }
         
         .qr-container {
             text-align: center;
-            margin: 30px 0;
-            padding: 20px;
-            background: rgba(0, 247, 255, 0.05);
-            border-radius: 10px;
-            border: 1px dashed var(--neon-blue);
+            margin: 40px 0;
+            padding: 30px;
+            background: rgba(255, 215, 0, 0.08);
+            border-radius: 15px;
+            border: 2px dashed var(--neon-gold);
+        }
+        
+        .qr-container p {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: var(--neon-gold);
+            font-weight: 600;
         }
         
         .qr-container img {
-            max-width: 250px;
+            max-width: 280px;
             margin: 0 auto;
             display: block;
             filter: hue-rotate(0deg);
             animation: qrGlow 3s infinite alternate;
+            border-radius: 10px;
+            border: 1px solid var(--neon-gold);
+            padding: 10px;
+            background: white;
         }
         
         @keyframes qrGlow {
-            0% { filter: hue-rotate(0deg) drop-shadow(0 0 5px rgba(0, 247, 255, 0.5)); }
-            100% { filter: hue-rotate(20deg) drop-shadow(0 0 15px rgba(0, 247, 255, 0.8)); }
+            0% { filter: hue-rotate(0deg) drop-shadow(0 0 10px rgba(255, 215, 0, 0.6)); }
+            100% { filter: hue-rotate(20deg) drop-shadow(0 0 20px rgba(255, 215, 0, 0.9)); }
         }
         
         .instructions {
-            font-size: 1rem;
-            color: rgba(224, 224, 255, 0.8);
+            font-size: 1.1rem;
+            color: rgba(224, 224, 255, 0.9);
             text-align: center;
-            margin-top: 25px;
-            line-height: 1.7;
+            margin-top: 30px;
+            line-height: 1.8;
+            font-family: 'Exo 2', sans-serif;
         }
         
-        /* Footer */
+        /* Footer VIP */
         footer {
             text-align: center;
-            padding: 40px 0;
-            margin-top: 60px;
-            border-top: 1px solid rgba(0, 247, 255, 0.3);
-            font-size: 1rem;
-            color: rgba(224, 224, 255, 0.7);
+            padding: 50px 0;
+            margin-top: 80px;
+            border-top: 1px solid rgba(255, 215, 0, 0.4);
+            font-size: 1.1rem;
+            color: rgba(224, 224, 255, 0.8);
+            font-family: 'Exo 2', sans-serif;
+            background: linear-gradient(to bottom, transparent, rgba(10, 10, 30, 0.5));
         }
         
-        /* Efectos de partículas */
-        .particles {
+        /* Efectos de partículas VIP */
+        .vip-particles {
             position: fixed;
             width: 100%;
             height: 100%;
@@ -1006,21 +801,24 @@
             overflow: hidden;
         }
         
-        .particle {
+        .vip-particle {
             position: absolute;
-            background: var(--neon-blue);
+            background: var(--neon-gold);
             border-radius: 50%;
-            opacity: 0.3;
-            animation: float linear infinite;
+            opacity: 0.4;
+            animation: float-vip linear infinite;
         }
         
-        @keyframes float {
+        @keyframes float-vip {
             0% {
                 transform: translateY(0) translateX(0);
                 opacity: 0;
             }
-            50% {
-                opacity: 0.3;
+            10% {
+                opacity: 0.4;
+            }
+            90% {
+                opacity: 0.4;
             }
             100% {
                 transform: translateY(-100vh) translateX(100px);
@@ -1030,16 +828,12 @@
         
         /* Responsive para móviles */
         @media (max-width: 1024px) {
-            .content-container {
-                flex-direction: column;
-            }
-            
-            .sidebar {
-                width: 100%;
-            }
-            
             .portal-container {
-                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+            
+            .programs-grid {
+                grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
             }
         }
         
@@ -1053,7 +847,7 @@
             }
             
             .logo {
-                font-size: 1.5rem;
+                font-size: 1.6rem;
             }
             
             .logo i {
@@ -1065,47 +859,61 @@
             }
             
             .dashboard {
-                padding-top: 80px;
+                padding-top: 90px;
             }
             
             .welcome-banner {
                 flex-direction: column;
-                padding: 25px;
-                gap: 20px;
+                padding: 30px;
+                gap: 25px;
+            }
+            
+            .welcome-text h2 {
+                font-size: 2rem;
             }
             
             .progress-container {
                 width: 100%;
             }
             
-            .main-content {
-                padding: 25px;
-            }
-            
-            .content-header h2 {
-                font-size: 1.8rem;
-            }
-            
-            .lesson-content h3 {
-                font-size: 1.4rem;
-            }
-            
-            .lesson-nav {
-                flex-direction: column;
-                gap: 15px;
-            }
-            
-            .nav-button {
-                width: 100%;
-                justify-content: center;
-            }
-            
             .section-title {
-                font-size: 2rem;
+                font-size: 2.2rem;
+            }
+            
+            .portal-container {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+                gap: 20px;
+                padding: 20px;
+            }
+            
+            .portal-btn {
+                min-height: 170px;
+                font-size: 1.1rem;
+            }
+            
+            .portal-btn i {
+                font-size: 2.5rem;
             }
             
             .programs-grid {
                 grid-template-columns: 1fr;
+            }
+            
+            .program-card {
+                padding: 25px;
+            }
+            
+            .payment-content {
+                padding: 30px;
+            }
+            
+            .bank-info p {
+                flex-direction: column;
+            }
+            
+            .bank-info p strong {
+                min-width: auto;
+                margin-bottom: 5px;
             }
         }
         
@@ -1118,41 +926,54 @@
                 min-height: 150px;
             }
             
+            .welcome-text h2 {
+                font-size: 1.8rem;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .program-card h3 {
+                font-size: 1.6rem;
+            }
+            
+            .program-card .price {
+                font-size: 2rem;
+            }
+            
             .payment-content {
-                padding: 25px;
+                padding: 20px;
             }
             
-            .bank-info p {
-                flex-direction: column;
-            }
-            
-            .bank-info p strong {
-                min-width: auto;
-                margin-bottom: 5px;
+            .qr-container img {
+                max-width: 220px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Efectos futuristas -->
-    <div class="cyber-glitch"></div>
-    <div class="floating-shapes">
-        <div class="shape shape-1"></div>
-        <div class="shape shape-2"></div>
+    <!-- Efectos futuristas VIP -->
+    <div class="vip-grid"></div>
+    <div class="floating-diamonds">
+        <div class="diamond" style="top: 10%; left: 20%; animation-delay: 0s;"></div>
+        <div class="diamond" style="top: 30%; left: 80%; animation-delay: 5s;"></div>
+        <div class="diamond" style="top: 70%; left: 40%; animation-delay: 10s;"></div>
+        <div class="diamond" style="top: 50%; left: 60%; animation-delay: 15s;"></div>
     </div>
-    <div class="particles" id="particles"></div>
+    <div class="vip-particles" id="vipParticles"></div>
     
     <header>
         <div class="container">
             <nav>
                 <div class="logo">
-                    <i class="fas fa-chart-line"></i>
-                    <span>FEDDADDY COMPAÑY</span>
+                    <i class="fas fa-crown"></i>
+                    <span>VIPFOREX</span>
                 </div>
                 <div class="nav-links">
-                    <a href="#" class="active">Curso</a>
-                    <a href="#">Recursos</a>
-                    <a href="#">Comunidad</a>
+                    <a href="#" class="active">Curso VIP</a>
+                    <a href="#">Recursos Premium</a>
+                    <a href="#">Comunidad Elite</a>
                 </div>
                 <div class="user-menu">
                     <button class="logout-btn" id="logoutBtn">Cerrar Sesión</button>
@@ -1166,88 +987,88 @@
         <div class="container">
             <div class="welcome-banner">
                 <div class="welcome-text">
-                    <h2 id="welcomeMessage">Bienvenido de nuevo, Juan</h2>
-                    <p>Continúa tu aprendizaje en el Curso Básico de Trading</p>
+                    <h2 id="welcomeMessage">Bienvenido, Trader Elite</h2>
+                    <p>Accede a las estrategias más exclusivas del mercado forex con VIPFOREX</p>
                 </div>
                 <div class="progress-container">
-                    <div>Tu progreso</div>
+                    <div>Tu Nivel VIP</div>
                     <div class="progress-bar">
                         <div class="progress-fill" id="progressFill"></div>
                     </div>
-                    <span id="progressText">0% completado</span>
+                    <span id="progressText">Nivel 1 - Aspirante</span>
                 </div>
             </div>
 
-            <!-- Portal de Accesos -->
+            <!-- Portal de Accesos VIP -->
             <section class="portal-section">
-                <h2 class="section-title">PORTAL DE ACCESOS</h2>
+                <h2 class="section-title">PORTAL VIP</h2>
                 <div class="portal-container">
-                    <a href="ordenblock.html" target="_blank" class="portal-btn btn-google">
-                        <i class="fas fa-chart-bar"></i>
-                        MODULO-BASICO
+                    <a href="ordenblock.html" target="_blank" class="portal-btn btn-gold">
+                        <i class="fas fa-chart-line"></i>
+                        MÓDULO AVANZADO
                     </a>
                     
-                    <a href="calculadora.HTML" target="_blank" class="portal-btn btn-linkedin">
+                    <a href="calculadora.HTML" target="_blank" class="portal-btn btn-vip">
                         <i class="fas fa-calculator"></i>
-                        CALCULADORA
+                        CALCULADORA VIP
                     </a>
 
-                      <a href="oxo.html" target="_blank" class="portal-btn btn-linkedin">
+                    <a href="oxo.html" target="_blank" class="portal-btn btn-cyan">
                         <i class="fas fa-signal"></i>
-                        WEB-FEDDADDY 
+                        SALA DE SEÑALES
                     </a>
 
                     
-                    <a href="lotajes.html" target="_blank" class="portal-btn btn-google">
+                    <a href="lotajes.html" target="_blank" class="portal-btn btn-gold">
                         <i class="fas fa-coins"></i>
-                        LOTEJES
+                        GESTOR DE RIESGO
                     </a>
                     
-                    <a href="https://exchanges.devebug.com/" target="_blank" class="portal-btn btn-instagram">
+                    <a href="https://exchanges.devebug.com/" target="_blank" class="portal-btn btn-vip">
                         <i class="fas fa-exchange-alt"></i>
-                        DEVEBUG
+                        ANALISIS TÉCNICO
                     </a>
                     
-                    <a href="comparte .html" target="_blank" class="portal-btn btn-instagram">
-                        <i class="fas fa-signal"></i>
-                        SEÑALES
+                    <a href="comparte .html" target="_blank" class="portal-btn btn-cyan">
+                        <i class="fas fa-broadcast-tower"></i>
+                        SEÑALES EN VIVO
                     </a>
                     
-                    <a href="https://pelisya.my.canva.site/pagosonline" target="_blank" class="portal-btn btn-instagram">
+                    <a href="https://pelisya.my.canva.site/pagosonline" target="_blank" class="portal-btn btn-gold">
                         <i class="fas fa-credit-card"></i>
-                        PAGOS
+                        PLATAFORMA DE PAGOS
                     </a>
 
-                    <a href="imagenes.html" target="_blank" class="portal-btn btn-instagram">
+                    <a href="imagenes.html" target="_blank" class="portal-btn btn-vip">
                         <i class="fas fa-wallet"></i>
-                        FINANZAS
+                        CONTROL DE CAPITAL
                     </a>
 
-                    <a href="libros.html" target="_blank" class="portal-btn btn-instagram">
+                    <a href="libros.html" target="_blank" class="portal-btn btn-cyan">
                         <i class="fas fa-book"></i>
-                        LIBROS
+                        BIBLIOTECA VIP
                     </a>
                     
-                    <a href="videos.html" target="_blank" class="portal-btn btn-linkedin">
+                    <a href="videos.html" target="_blank" class="portal-btn btn-gold">
                         <i class="fas fa-video"></i>
-                        VIDEOS 
+                        ACADEMIA PREMIUM
                     </a>
 
-                    <a href="calendario.html" target="_blank" class="portal-btn btn-instagram">
+                    <a href="calendario.html" target="_blank" class="portal-btn btn-vip">
                         <i class="fas fa-calendar-alt"></i>
-                        CALENDARIO
+                        CALENDARIO ECONÓMICO
                     </a>
                 </div>
             </section>
             
-            <!-- Programas de Trading -->
+            <!-- Programas de Trading VIP -->
             <section class="programs-section">
-                <h2 class="section-title">NUESTROS PROGRAMAS</h2>
+                <h2 class="section-title">PROGRAMAS ÉLITE</h2>
                 
                 <div class="programs-grid">
-                    <!-- Curso Básico -->
+                    <!-- Programa Básico -->
                     <div class="program-card">
-                        <h3>BASIC QUANTUM</h3>
+                        <h3>VIP BRONCE</h3>
                         <div class="price">50</div>
                         <div class="info-item">Inscripción: $50</div>
                         <div class="info-item">Duración: 12 semanas</div>
@@ -1256,12 +1077,12 @@
                         <div class="info-item">Operaciones: 0.01 - 0.05</div>
                         <div class="info-item">Ganancias: $5-$20 diarios</div>
                         <div class="info-item">Ganancias mensuales: $150-$600</div>
-                        <button class="buy-button" onclick="openPaymentModal('BASIC QUANTUM', 30)">ACCEDER AL PROGRAMA</button>
+                        <button class="buy-button" onclick="openPaymentModal('VIP BRONCE', 50)">ACCEDER AL PROGRAMA</button>
                     </div>
                     
-                    <!-- Curso Medio -->
+                    <!-- Programa Intermedio -->
                     <div class="program-card">
-                        <h3>INTERMEDIATE NEO</h3>
+                        <h3>VIP PLATA</h3>
                         <div class="price">100</div>
                         <div class="info-item">Inscripción: $100</div>
                         <div class="info-item">Duración: 16 semanas</div>
@@ -1270,78 +1091,78 @@
                         <div class="info-item">Operaciones: 0.05 - 0.15</div>
                         <div class="info-item">Ganancias: $30-$50 diarias</div>
                         <div class="info-item">Ganancias mensuales: $900-$1500</div>
-                        <button class="buy-button" onclick="openPaymentModal('INTERMEDIATE NEO', 80)">ACCEDER AL PROGRAMA</button>
+                        <button class="buy-button" onclick="openPaymentModal('VIP PLATA', 100)">ACCEDER AL PROGRAMA</button>
                     </div>
                     
-                    <!-- Curso Avanzado -->
+                    <!-- Programa Avanzado -->
                     <div class="program-card">
-                        <h3>ADVANCED ALPHA</h3>
+                        <h3>VIP ORO</h3>
                         <div class="price">150</div>
                         <div class="info-item">Inscripción: $150</div>
                         <div class="info-item">Duración: 16 semanas</div>
-                      <div class="info-item">4 meses: pago mensual</div>
+                        <div class="info-item">4 meses: pago mensual</div>
                         <div class="info-item">Capital: $1000 - $3000</div>
                         <div class="info-item">Operaciones: 0.15 - 0.30</div>
                         <div class="info-item">Ganancias: $50-$100 diarias</div>
                         <div class="info-item">Ganancias mensuales: $1500-$3000</div>
-                        <button class="buy-button" onclick="openPaymentModal('ADVANCED ALPHA', 150)">ACCEDER AL PROGRAMA</button>
+                        <button class="buy-button" onclick="openPaymentModal('VIP ORO', 150)">ACCEDER AL PROGRAMA</button>
                     </div>
                     
-                    <!-- Curso Zafiro -->
+                    <!-- Programa Profesional -->
                     <div class="program-card">
-                        <h3>SAPPHIRE PRO</h3>
+                        <h3>VIP PLATINO</h3>
                         <div class="price">200</div>
                         <div class="info-item">Inscripción: $200</div>
                         <div class="info-item">Duración: 12 semanas</div>
-                      <div class="info-item">3 meses: pago mensual</div>
+                        <div class="info-item">3 meses: pago mensual</div>
                         <div class="info-item">Capital: $3000 - $7000</div>
                         <div class="info-item">Operaciones: 0.30 - 0.45</div>
                         <div class="info-item">Ganancias: $100-$300 diarias</div>
                         <div class="info-item">Ganancias mensuales: $3000-$9000</div>
-                        <button class="buy-button" onclick="openPaymentModal('SAPPHIRE PRO', 250)">ACCEDER AL PROGRAMA</button>
+                        <button class="buy-button" onclick="openPaymentModal('VIP PLATINO', 200)">ACCEDER AL PROGRAMA</button>
                     </div>
                     
-                    <!-- Curso Platinum -->
+                    <!-- Programa Élite -->
                     <div class="program-card">
-                        <h3>PLATINUM ELITE</h3>
+                        <h3>VIP DIAMANTE</h3>
                         <div class="price">250</div>
                         <div class="info-item">Inscripción: $250</div>
                         <div class="info-item">Duración: 16 semanas</div>
-                      <div class="info-item">4 meses: pago mensual</div>
+                        <div class="info-item">4 meses: pago mensual</div>
                         <div class="info-item">Capital: $3000 - $7000</div>
                         <div class="info-item">Operaciones: 0.30 - 0.45</div>
                         <div class="info-item">Ganancias: $300-$500 diarias</div>
                         <div class="info-item">Ganancias mensuales: $9000-$15000</div>
-                        <button class="buy-button" onclick="openPaymentModal('PLATINUM ELITE', 400)">ACCEDER AL PROGRAMA</button>
+                        <button class="buy-button" onclick="openPaymentModal('VIP DIAMANTE', 250)">ACCEDER AL PROGRAMA</button>
                     </div>
                     
-                    <!-- Curso Oro -->
+                    <!-- Programa Master -->
                     <div class="program-card">
-                        <h3>GOLD MASTER</h3>
+                        <h3>VIP MASTER</h3>
                         <div class="price">300</div>
                         <div class="info-item">Inscripción: $300</div>
                         <div class="info-item">Duración: 16 semanas</div>
-                      <div class="info-item">4 meses: pago mensual</div>
+                        <div class="info-item">4 meses: pago mensual</div>
                         <div class="info-item">Capital: $7000 - $13000</div>
                         <div class="info-item">Operaciones: 0.45 - 0.70</div>
                         <div class="info-item">Ganancias: $500-$700 diarias</div>
                         <div class="info-item">Ganancias mensuales: $15000-$21000</div>
-                        <button class="buy-button" onclick="openPaymentModal('GOLD MASTER', 700)">ACCEDER AL PROGRAMA</button>
+                        <button class="buy-button" onclick="openPaymentModal('VIP MASTER', 300)">ACCEDER AL PROGRAMA</button>
                     </div>
                 </div>
             </section>
-            
-        
+        </div>
+    </main>
+    
     <footer>
-        © 1994 FEDDADDY COMPAÑY  | Todos los derechos reservados
+        © 2024 VIPFOREX | Sistema de Trading Elite | Todos los derechos reservados
     </footer>
 
-    <!-- Modal de Pago -->
+    <!-- Modal de Pago VIP -->
     <div class="payment-modal" id="paymentModal">
         <div class="payment-content">
             <span class="close" onclick="closePaymentModal()">&times;</span>
-            <h2 id="modalCourseTitle">PROGRAMA</h2>
-            <div class="cyber-line"></div>
+            <h2 id="modalCourseTitle">PROGRAMA VIP</h2>
             
             <div class="bank-info">
                 <p><strong>Banco:</strong> Pichincha</p>
@@ -1388,19 +1209,18 @@
         const welcomeMessage = document.getElementById('welcomeMessage');
         const progressFill = document.getElementById('progressFill');
         const progressText = document.getElementById('progressText');
-        const completeLesson = document.getElementById('completeLesson');
-        const particlesContainer = document.getElementById('particles');
+        const vipParticlesContainer = document.getElementById('vipParticles');
         
-        // Crear efecto de partículas
-        function createParticles() {
-            const particleCount = 50;
+        // Crear efecto de partículas VIP
+        function createVipParticles() {
+            const particleCount = 60;
             
             for (let i = 0; i < particleCount; i++) {
                 const particle = document.createElement('div');
-                particle.classList.add('particle');
+                particle.classList.add('vip-particle');
                 
-                // Tamaño aleatorio entre 1px y 3px
-                const size = Math.random() * 2 + 1;
+                // Tamaño aleatorio entre 1px y 4px
+                const size = Math.random() * 3 + 1;
                 particle.style.width = `${size}px`;
                 particle.style.height = `${size}px`;
                 
@@ -1409,30 +1229,32 @@
                 particle.style.bottom = `-${size}px`;
                 
                 // Duración de la animación aleatoria
-                const duration = Math.random() * 20 + 10;
+                const duration = Math.random() * 25 + 15;
                 particle.style.animationDuration = `${duration}s`;
                 
                 // Retraso aleatorio
-                particle.style.animationDelay = `${Math.random() * 10}s`;
+                particle.style.animationDelay = `${Math.random() * 15}s`;
                 
-                // Color aleatorio (azul, morado o rosa)
-                const colors = ['#00f7ff', '#7b2dff', '#ff2d7b'];
+                // Color aleatorio (dorado, violeta o cian)
+                const colors = ['#ffd700', '#ff00ff', '#00ffff'];
                 const randomColor = colors[Math.floor(Math.random() * colors.length)];
                 particle.style.background = randomColor;
                 
-                particlesContainer.appendChild(particle);
+                vipParticlesContainer.appendChild(particle);
             }
         }
         
-        // Modal de pago
+        // Modal de pago VIP
         function openPaymentModal(courseName, price) {
             document.getElementById('modalCourseTitle').textContent = courseName;
             document.getElementById('modalCoursePrice').textContent = '$' + price;
             document.getElementById('paymentModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
         }
         
         function closePaymentModal() {
             document.getElementById('paymentModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
         }
         
         // Cerrar modal al hacer click fuera
@@ -1451,7 +1273,7 @@
             } else {
                 // Mostrar información del usuario
                 const userName = user.displayName || user.email.split('@')[0];
-                welcomeMessage.textContent = `Bienvenido de nuevo, ${userName}`;
+                welcomeMessage.textContent = `Bienvenido, ${userName}`;
                 userAvatar.textContent = userName.charAt(0).toUpperCase();
                 
                 // Obtener progreso del usuario desde la base de datos
@@ -1462,7 +1284,15 @@
                     
                     // Actualizar barra de progreso
                     progressFill.style.width = `${progress}%`;
-                    progressText.textContent = `${progress}% completado`;
+                    
+                    // Determinar nivel según progreso
+                    let levelText = "Nivel 1 - Aspirante";
+                    if (progress >= 25) levelText = "Nivel 2 - Iniciado";
+                    if (progress >= 50) levelText = "Nivel 3 - Avanzado";
+                    if (progress >= 75) levelText = "Nivel 4 - Experto";
+                    if (progress >= 95) levelText = "Nivel 5 - Máster";
+                    
+                    progressText.textContent = levelText;
                 });
             }
         });
@@ -1474,40 +1304,34 @@
             });
         });
         
-        // Marcar lección como completada
-        completeLesson.addEventListener('change', (e) => {
-            const user = auth.currentUser;
-            if (user) {
-                const userRef = database.ref('users/' + user.uid);
-                
-                if (e.target.checked) {
-                    // Actualizar progreso a 15% (primera lección completada)
-                    userRef.update({
-                        progress: 15,
-                        lastCompleted: firebase.database.ServerValue.TIMESTAMP
-                    });
-                } else {
-                    // Revertir progreso a 0%
-                    userRef.update({
-                        progress: 0,
-                        lastCompleted: null
-                    });
-                }
-            }
-        });
-        
-        // Crear partículas al cargar la página
+        // Crear partículas VIP al cargar la página
         window.addEventListener('load', () => {
-            createParticles();
+            createVipParticles();
             
             // Animación inicial de la barra de progreso
             setTimeout(() => {
                 progressFill.style.width = '15%';
-                progressText.textContent = '15% completado';
             }, 500);
         });
+        
+        // Efecto de escritura para el título de bienvenida
+        const welcomeText = "Bienvenido, Trader Elite";
+        let welcomeIndex = 0;
+        const welcomeElement = document.getElementById('welcomeMessage');
+        
+        function typeWelcomeText() {
+            if (welcomeIndex < welcomeText.length) {
+                welcomeElement.textContent += welcomeText.charAt(welcomeIndex);
+                welcomeIndex++;
+                setTimeout(typeWelcomeText, 100);
+            }
+        }
+        
+        // Iniciar efecto de escritura
+        setTimeout(() => {
+            welcomeElement.textContent = "";
+            typeWelcomeText();
+        }, 1000);
     </script>
 </body>
 </html>
-
-
