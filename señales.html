@@ -3,15 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OXOMAX-TRADING</title>
+    <title>VIPFOREX - Plataforma de Trading Social</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@400;500;600;700&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --neon-blue: #0ff0fc;
-            --neon-purple: #9600ff;
-            --neon-pink: #ff2a6d;
-            --dark-bg: #0a0a1a;
-            --card-bg: rgba(15, 15, 35, 0.9);
-            --glow-intensity: 8px;
+            --neon-gold: #ffd700;
+            --neon-platinum: #e5e4e2;
+            --neon-diamond: #b9f2ff;
+            --neon-vip: #ff00ff;
+            --neon-cyan: #00ffff;
+            --dark-cosmic: #0a0a1a;
+            --darker-space: #050510;
+            --deep-space: #03030f;
+            --star-light: rgba(255, 255, 255, 0.9);
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --gold-glow: 0 0 10px var(--neon-gold), 0 0 20px rgba(255, 215, 0, 0.5);
+            --vip-glow: 0 0 15px var(--neon-vip), 0 0 30px rgba(255, 0, 255, 0.4);
+            --cyan-glow: 0 0 15px var(--neon-cyan), 0 0 30px rgba(0, 255, 255, 0.4);
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
         }
         
         * {
@@ -21,131 +32,197 @@
         }
         
         body {
-            font-family: 'Arial', sans-serif;
-            background: var(--dark-bg);
-            color: white;
-            margin: 0;
-            padding: 0;
+            font-family: 'Exo 2', sans-serif;
+            background-color: var(--deep-space);
+            color: var(--star-light);
             min-height: 100vh;
             overflow-x: hidden;
-            background-image: 
-                radial-gradient(circle at 10% 20%, rgba(150, 0, 255, 0.15) 0%, transparent 25%),
-                radial-gradient(circle at 90% 80%, rgba(0, 255, 252, 0.15) 0%, transparent 25%),
-                linear-gradient(to bottom, rgba(10, 10, 26, 0.95), rgba(10, 10, 30, 0.98));
+            position: relative;
         }
-
-        /* Mejora de partículas */
-        .particles {
+        
+        body::before {
+            content: '';
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -1;
+            background-image: 
+                url('https://raw.githubusercontent.com/welding30001994/vip/refs/heads/main/leon_con_fuego_con_el_nombre_vipforex%20(1).jpeg'),
+                radial-gradient(circle at 15% 15%, rgba(255, 215, 0, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 85% 85%, rgba(255, 0, 255, 0.1) 0%, transparent 40%);
+            background-size: cover, 100% 100%, 100% 100%;
+            background-position: center;
+            background-blend-mode: overlay;
+            opacity: 0.2;
+            z-index: -2;
+        }
+        
+        /* Efectos futuristas VIP */
+        .vip-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             pointer-events: none;
+            z-index: -1;
+            opacity: 0.05;
+            background: 
+                linear-gradient(0deg, transparent 48%, var(--neon-gold) 49%, var(--neon-gold) 51%, transparent 52%),
+                linear-gradient(90deg, transparent 48%, var(--neon-vip) 49%, var(--neon-vip) 51%, transparent 52%);
+            background-size: 20px 20px;
+            animation: grid-move 20s infinite linear;
+        }
+        
+        @keyframes grid-move {
+            0% { background-position: 0 0; }
+            100% { background-position: 20px 20px; }
+        }
+        
+        .floating-diamonds {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .diamond {
+            position: absolute;
+            opacity: 0.1;
+            background: var(--neon-diamond);
+            width: 10px;
+            height: 10px;
+            transform: rotate(45deg);
+            filter: blur(2px);
+            animation: float-diamond 20s infinite linear;
+        }
+        
+        @keyframes float-diamond {
+            0%, 100% { transform: translate(0, 0) rotate(45deg); opacity: 0.1; }
+            25% { transform: translate(100px, 50px) rotate(90deg); opacity: 0.15; }
+            50% { transform: translate(50px, 100px) rotate(135deg); opacity: 0.2; }
+            75% { transform: translate(-50px, 50px) rotate(180deg); opacity: 0.15; }
+        }
+        
+        .vip-particles {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: -1;
             overflow: hidden;
         }
         
-        .particle {
+        .vip-particle {
             position: absolute;
-            width: 3px;
-            height: 3px;
-            background: var(--neon-blue);
+            background: var(--neon-gold);
             border-radius: 50%;
-            opacity: 0.7;
-            animation: float 20s infinite linear;
-            box-shadow: 0 0 10px 2px var(--neon-blue);
+            opacity: 0.4;
+            animation: float-vip linear infinite;
         }
         
-        .particle:nth-child(3n) {
-            background: var(--neon-purple);
-            box-shadow: 0 0 10px 2px var(--neon-purple);
-            animation-duration: 25s;
-        }
-        
-        .particle:nth-child(2n) {
-            background: var(--neon-pink);
-            box-shadow: 0 0 10px 2px var(--neon-pink);
-            animation-duration: 15s;
-        }
-        
-        @keyframes float {
+        @keyframes float-vip {
             0% {
-                transform: translateY(100vh) translateX(0) rotate(0deg);
+                transform: translateY(0) translateX(0);
                 opacity: 0;
             }
             10% {
-                opacity: 0.8;
+                opacity: 0.4;
             }
             90% {
-                opacity: 0.6;
+                opacity: 0.4;
             }
             100% {
-                transform: translateY(-100px) translateX(100px) rotate(360deg);
+                transform: translateY(-100vh) translateX(100px);
                 opacity: 0;
             }
         }
-
+        
         .container {
             max-width: 100%;
             padding: 15px;
             box-sizing: border-box;
+            z-index: 1;
         }
         
-        /* Header mejorado para móviles */
+        /* Header mejorado */
         .header {
             text-align: center;
-            margin-bottom: 20px;
-            padding: 15px 10px;
+            margin-bottom: 25px;
+            padding: 20px 10px;
             position: relative;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(255, 215, 0, 0.3);
         }
         
-        .header h1 {
-            font-size: 2rem;
-            margin: 0;
-            background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple));
+        .header-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--neon-gold) 0%, var(--neon-vip) 50%, var(--neon-cyan) 100%);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            text-shadow: 0 0 15px rgba(0, 255, 252, 0.5);
-            letter-spacing: 1px;
-            font-weight: 800;
+            text-shadow: var(--vip-glow);
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+        
+        .logo i {
+            margin-right: 15px;
+            font-size: 2.5rem;
+            color: var(--neon-gold);
+            filter: drop-shadow(0 0 8px var(--neon-gold));
         }
         
         .header p {
-            color: #ccc;
+            color: var(--star-light);
             margin-top: 8px;
-            font-size: 0.95rem;
+            font-size: 1.1rem;
             text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+            opacity: 0.9;
         }
         
-        /* Menú móvil hamburguesa */
+        /* Menú móvil hamburguesa VIP */
         .mobile-menu-btn {
             display: none;
             position: fixed;
-            top: 15px;
-            left: 15px;
+            top: 20px;
+            left: 20px;
             z-index: 1000;
-            width: 45px;
-            height: 45px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
-            background: var(--card-bg);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(25, 25, 45, 0.8);
+            border: 1px solid var(--neon-gold);
             flex-direction: column;
             justify-content: center;
             align-items: center;
             cursor: pointer;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+            backdrop-filter: blur(10px);
         }
         
         .mobile-menu-btn span {
             display: block;
             width: 24px;
             height: 2px;
-            background: var(--neon-blue);
+            background: var(--neon-gold);
             margin: 3px 0;
-            transition: all 0.3s ease;
+            transition: var(--transition);
             border-radius: 2px;
         }
         
@@ -155,13 +232,13 @@
             left: -100%;
             width: 80%;
             height: 100vh;
-            background: var(--card-bg);
+            background: linear-gradient(135deg, rgba(15, 15, 35, 0.95), rgba(25, 15, 45, 0.95));
             z-index: 999;
-            padding: 70px 20px 20px;
+            padding: 80px 25px 25px;
             transition: left 0.4s ease;
-            box-shadow: 5px 0 25px rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(10px);
-            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 5px 0 30px rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(15px);
+            border-right: 1px solid var(--neon-gold);
         }
         
         .mobile-menu.active {
@@ -173,20 +250,28 @@
         }
         
         .mobile-menu ul li {
-            padding: 15px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 18px 0;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.2);
         }
         
         .mobile-menu ul li a {
-            color: white;
+            color: var(--star-light);
             text-decoration: none;
-            font-size: 1.1rem;
-            display: block;
-            transition: color 0.3s;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: var(--transition);
         }
         
         .mobile-menu ul li a:hover {
-            color: var(--neon-blue);
+            color: var(--neon-gold);
+            text-shadow: var(--gold-glow);
+        }
+        
+        .mobile-menu ul li a i {
+            font-size: 1.3rem;
+            width: 25px;
         }
         
         .menu-overlay {
@@ -195,11 +280,12 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.8);
             z-index: 998;
             opacity: 0;
             visibility: hidden;
             transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
         }
         
         .menu-overlay.active {
@@ -207,16 +293,16 @@
             visibility: visible;
         }
         
-        /* Mejora de cajas de comentarios */
+        /* Mejora de cajas de comentarios VIP */
         .comment-box, .comment {
-            background: var(--card-bg);
-            padding: 20px;
-            border-radius: 16px;
+            background: linear-gradient(135deg, rgba(15, 15, 35, 0.8), rgba(25, 15, 45, 0.8));
+            padding: 25px;
+            border-radius: 20px;
             width: 100%;
-            margin: 15px 0;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(12px);
+            margin: 20px 0;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+            border: 2px solid var(--neon-gold);
+            backdrop-filter: blur(15px);
             position: relative;
             overflow: hidden;
         }
@@ -228,15 +314,23 @@
             left: -2px;
             right: -2px;
             bottom: -2px;
+            background: linear-gradient(45deg, var(--neon-gold), var(--neon-vip), var(--neon-cyan), var(--neon-gold));
+            background-size: 400%;
             z-index: -1;
-            background: linear-gradient(45deg, var(--neon-blue), transparent, var(--neon-purple));
-            border-radius: 18px;
-            opacity: 0.3;
-            transition: opacity 0.3s;
+            animation: border-glowing 4s linear infinite;
+            border-radius: 22px;
+            opacity: 0.7;
         }
         
-        .comment-box:hover::before, .comment:hover::before {
-            opacity: 0.6;
+        @keyframes border-glowing {
+            0% { background-position: 0 0; }
+            50% { background-position: 300% 0; }
+            100% { background-position: 0 0; }
+        }
+        
+        .comment-box:hover, .comment:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 50px rgba(255, 215, 0, 0.3);
         }
         
         .input-container {
@@ -247,127 +341,132 @@
 
         .comment-box input {
             flex: 1;
-            padding: 14px 18px;
+            padding: 16px 20px;
             border: none;
             border-radius: 30px;
             outline: none;
-            background: rgba(255, 255, 255, 0.08);
-            color: white;
-            font-size: 16px;
-            min-height: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--star-light);
+            font-size: 1.1rem;
+            min-height: 55px;
+            font-family: 'Exo 2', sans-serif;
         }
         
         .comment-box input::placeholder {
-            color: #aaa;
+            color: rgba(255, 255, 255, 0.6);
         }
         
         .comment-box button, .reply-button {
-            background: linear-gradient(45deg, var(--neon-blue), var(--neon-purple));
-            color: white;
-            padding: 14px 20px;
+            background: linear-gradient(135deg, var(--neon-gold), var(--neon-vip));
+            color: var(--dark-cosmic);
+            padding: 16px 25px;
             border: none;
             border-radius: 30px;
             cursor: pointer;
-            font-weight: bold;
-            margin-left: 10px;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 15px rgba(0, 255, 252, 0.4);
-            font-size: 16px;
-            min-width: 50px;
-            height: 50px;
+            font-weight: 700;
+            margin-left: 12px;
+            transition: var(--transition);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+            font-size: 1.1rem;
+            min-width: 55px;
+            height: 55px;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-family: 'Orbitron', sans-serif;
         }
         
         .comment-box button:hover, .reply-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 0 25px rgba(0, 255, 252, 0.7);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.7);
         }
         
         .comment-box button:active, .reply-button:active {
-            transform: translateY(1px);
+            transform: translateY(1px) scale(1);
         }
         
         .post-image-btn {
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 50px;
-            height: 50px;
+            width: 55px;
+            height: 55px;
             border-radius: 50%;
-            background: linear-gradient(45deg, var(--neon-blue), var(--neon-purple));
-            color: white;
-            margin-left: 10px;
+            background: linear-gradient(135deg, var(--neon-gold), var(--neon-vip));
+            color: var(--dark-cosmic);
+            margin-left: 12px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: var(--transition);
             flex-shrink: 0;
-            box-shadow: 0 0 15px rgba(0, 255, 252, 0.4);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+            font-size: 1.3rem;
         }
 
         .post-image-btn:hover {
             transform: scale(1.1);
-            box-shadow: 0 0 20px rgba(0, 255, 252, 0.6);
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.7);
         }
         
         .comment p {
-            font-weight: bold;
-            margin: 0 0 10px 0;
-            color: white;
-            font-size: 16px;
+            font-weight: 700;
+            margin: 0 0 12px 0;
+            color: var(--star-light);
+            font-size: 1.2rem;
         }
         
         .comment .content {
-            margin-bottom: 15px;
+            margin-bottom: 18px;
         }
         
         .actions {
             display: flex;
             justify-content: space-between;
-            margin-top: 15px;
-            font-size: 14px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            padding-top: 12px;
+            margin-top: 20px;
+            font-size: 1rem;
+            border-top: 1px solid rgba(255, 215, 0, 0.3);
+            padding-top: 15px;
             flex-wrap: wrap;
         }
         
         .actions span {
             cursor: pointer;
-            margin-right: 15px;
+            margin-right: 18px;
             display: flex;
             align-items: center;
-            transition: color 0.2s;
-            margin-bottom: 8px;
-            padding: 5px 10px;
-            border-radius: 20px;
-            background: rgba(255, 255, 255, 0.05);
+            transition: var(--transition);
+            margin-bottom: 10px;
+            padding: 8px 15px;
+            border-radius: 25px;
+            background: rgba(255, 255, 255, 0.08);
         }
         
         .actions span:hover {
-            color: var(--neon-blue);
-            background: rgba(0, 255, 252, 0.1);
+            color: var(--neon-gold);
+            background: rgba(255, 215, 0, 0.15);
+            text-shadow: var(--gold-glow);
         }
         
         .actions span i {
-            margin-right: 8px;
-            font-size: 14px;
+            margin-right: 10px;
+            font-size: 1.1rem;
         }
         
         .replies {
             display: none;
-            margin-left: 15px;
-            padding-left: 15px;
-            border-left: 2px solid var(--neon-purple);
-            width: calc(100% - 15px);
+            margin-left: 20px;
+            padding-left: 20px;
+            border-left: 3px solid var(--neon-vip);
+            width: calc(100% - 20px);
         }
         
         .replies .comment {
             width: 100%;
-            background: rgba(25, 25, 45, 0.9);
-            padding: 15px;
-            border-radius: 12px;
-            margin: 10px 0;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            background: rgba(30, 30, 50, 0.9);
+            padding: 20px;
+            border-radius: 18px;
+            margin: 15px 0;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--neon-vip);
         }
         
         #commentsSection {
@@ -379,74 +478,76 @@
         
         .comment img {
             max-width: 100%;
-            margin-top: 12px;
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            margin-top: 15px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
         }
         
         .signal-tag {
             display: inline-block;
-            background: rgba(0, 255, 252, 0.2);
-            color: var(--neon-blue);
-            padding: 5px 10px;
-            border-radius: 15px;
-            font-size: 12px;
-            margin-right: 8px;
-            margin-bottom: 8px;
-            border: 1px solid var(--neon-blue);
-            box-shadow: 0 0 8px rgba(0, 255, 252, 0.3);
+            background: rgba(255, 215, 0, 0.2);
+            color: var(--neon-gold);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            border: 1px solid var(--neon-gold);
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+            font-weight: 600;
         }
         
         .signal-buy {
             background: rgba(0, 255, 0, 0.2);
             color: #00ff00;
             border-color: #00ff00;
-            box-shadow: 0 0 8px rgba(0, 255, 0, 0.3);
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
         }
         
         .signal-sell {
             background: rgba(255, 0, 0, 0.2);
             color: #ff0000;
             border-color: #ff0000;
-            box-shadow: 0 0 8px rgba(255, 0, 0, 0.3);
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
         }
         
         .signal-info {
             display: flex;
             flex-wrap: wrap;
-            margin-top: 12px;
-            gap: 8px;
+            margin-top: 15px;
+            gap: 10px;
         }
         
         .signal-input {
-            margin-top: 15px;
+            margin-top: 20px;
             display: none;
             flex-wrap: wrap;
-            gap: 8px;
+            gap: 10px;
         }
         
         .signal-input select, .signal-input input {
-            padding: 10px;
-            border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
             background: rgba(0, 0, 0, 0.3);
-            color: white;
-            font-size: 14px;
+            color: var(--star-light);
+            font-size: 1rem;
             flex: 1;
-            min-width: 120px;
+            min-width: 140px;
+            font-family: 'Exo 2', sans-serif;
         }
         
         .timestamp {
-            font-size: 12px;
-            color: #aaa;
-            margin-bottom: 8px;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 10px;
         }
         
         @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(0, 255, 252, 0.7); }
-            70% { box-shadow: 0 0 0 12px rgba(0, 255, 252, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(0, 255, 252, 0); }
+            0% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(255, 215, 0, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0); }
         }
         
         .live-signal {
@@ -459,131 +560,140 @@
             position: absolute;
             top: -8px;
             right: -8px;
-            background: red;
+            background: #ff0000;
             color: white;
-            font-size: 10px;
-            padding: 3px 8px;
-            border-radius: 12px;
+            font-size: 0.8rem;
+            padding: 4px 10px;
+            border-radius: 15px;
             animation: pulse 1.5s infinite;
             font-weight: bold;
-            box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+            font-family: 'Orbitron', sans-serif;
         }
         
         .toggle-signal {
             background: none;
             border: none;
-            color: var(--neon-blue);
+            color: var(--neon-gold);
             cursor: pointer;
-            font-size: 14px;
-            margin-top: 12px;
+            font-size: 1rem;
+            margin-top: 15px;
             display: flex;
             align-items: center;
-            padding: 8px 12px;
-            border-radius: 20px;
-            background: rgba(0, 255, 252, 0.1);
-            transition: all 0.3s;
+            padding: 10px 15px;
+            border-radius: 25px;
+            background: rgba(255, 215, 0, 0.1);
+            transition: var(--transition);
+            font-weight: 600;
         }
         
         .toggle-signal:hover {
-            background: rgba(0, 255, 252, 0.2);
+            background: rgba(255, 215, 0, 0.2);
+            transform: translateY(-2px);
         }
         
         .toggle-signal i {
-            margin-right: 8px;
+            margin-right: 10px;
         }
         
-        /* Login styles mejorado */
+        /* Login styles mejorado VIP */
         .login-container {
             display: none;
-            background: var(--card-bg);
-            padding: 25px;
-            border-radius: 16px;
+            background: linear-gradient(135deg, rgba(15, 15, 35, 0.9), rgba(25, 15, 45, 0.9));
+            padding: 30px;
+            border-radius: 20px;
             width: 100%;
-            max-width: 400px;
-            margin: 30px auto;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            max-width: 450px;
+            margin: 40px auto;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
             text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(12px);
+            border: 2px solid var(--neon-gold);
+            backdrop-filter: blur(15px);
         }
         
         .login-container h2 {
             margin-top: 0;
-            color: var(--neon-blue);
-            font-size: 1.8rem;
-            margin-bottom: 20px;
-            text-shadow: 0 0 10px rgba(0, 255, 252, 0.3);
+            background: linear-gradient(135deg, var(--neon-gold), var(--neon-vip));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 2.2rem;
+            margin-bottom: 25px;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+            font-family: 'Orbitron', sans-serif;
         }
         
         .login-container input {
             width: 100%;
-            padding: 14px;
-            margin: 10px 0;
+            padding: 16px;
+            margin: 12px 0;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             background: rgba(255, 255, 255, 0.1);
-            color: white;
-            font-size: 16px;
+            color: var(--star-light);
+            font-size: 1.1rem;
+            font-family: 'Exo 2', sans-serif;
         }
         
         .login-container button {
             width: 100%;
-            padding: 14px;
-            margin: 15px 0;
-            background: linear-gradient(45deg, var(--neon-blue), var(--neon-purple));
-            color: white;
+            padding: 16px;
+            margin: 20px 0;
+            background: linear-gradient(135deg, var(--neon-gold), var(--neon-vip));
+            color: var(--dark-cosmic);
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             cursor: pointer;
-            font-weight: bold;
-            font-size: 16px;
-            transition: all 0.3s;
-            box-shadow: 0 0 15px rgba(0, 255, 252, 0.4);
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: var(--transition);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+            font-family: 'Orbitron', sans-serif;
         }
         
         .login-container button:hover {
             transform: translateY(-3px);
-            box-shadow: 0 0 25px rgba(0, 255, 252, 0.7);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.7);
         }
         
         .login-message {
-            margin-top: 15px;
+            margin-top: 18px;
             color: #ff5555;
-            font-size: 14px;
+            font-size: 1rem;
         }
         
-        /* User info mejorado */
+        /* User info mejorado VIP */
         .user-info {
             position: fixed;
-            top: 15px;
-            right: 15px;
+            top: 20px;
+            right: 20px;
             display: flex;
             align-items: center;
-            background: var(--card-bg);
-            padding: 8px 15px;
+            background: linear-gradient(135deg, rgba(15, 15, 35, 0.8), rgba(25, 15, 45, 0.8));
+            padding: 10px 18px;
             border-radius: 30px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
             z-index: 100;
-            max-width: calc(100% - 30px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
+            max-width: calc(100% - 40px);
+            border: 1px solid var(--neon-gold);
+            backdrop-filter: blur(15px);
         }
         
         .user-info img {
-            width: 35px;
-            height: 35px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
-            margin-right: 10px;
-            border: 1px solid var(--neon-blue);
-            box-shadow: 0 0 10px rgba(0, 255, 252, 0.3);
+            margin-right: 12px;
+            border: 1px solid var(--neon-gold);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
         }
         
         .user-info span {
-            font-size: 14px;
+            font-size: 1rem;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            max-width: 150px;
+            max-width: 180px;
+            font-weight: 600;
         }
         
         .user-info button {
@@ -591,31 +701,33 @@
             color: white;
             border: none;
             border-radius: 20px;
-            padding: 6px 12px;
-            font-size: 12px;
-            margin-left: 10px;
+            padding: 8px 15px;
+            font-size: 0.9rem;
+            margin-left: 12px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: var(--transition);
+            font-weight: 600;
         }
 
         .user-info button:hover {
             background: rgba(255, 0, 0, 0.5);
+            transform: translateY(-2px);
         }
 
         .preview-container {
             display: flex;
             align-items: center;
-            margin-top: 12px;
+            margin-top: 15px;
         }
         
         .preview-container img {
-            max-width: 60px;
-            max-height: 60px;
-            border-radius: 8px;
-            margin-left: 10px;
+            max-width: 70px;
+            max-height: 70px;
+            border-radius: 10px;
+            margin-left: 12px;
             display: none;
-            border: 1px solid var(--neon-blue);
-            box-shadow: 0 0 10px rgba(0, 255, 252, 0.3);
+            border: 1px solid var(--neon-gold);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
         }
 
         .delete-btn {
@@ -623,66 +735,72 @@
             color: white !important;
             border: none;
             border-radius: 20px;
-            padding: 5px 10px;
-            font-size: 12px;
-            margin-left: 10px;
+            padding: 8px 15px;
+            font-size: 0.9rem;
+            margin-left: 12px;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
-            transition: all 0.3s;
+            transition: var(--transition);
+            font-weight: 600;
         }
 
         .delete-btn:hover {
             background: rgba(255, 0, 0, 0.5) !important;
+            transform: translateY(-2px);
         }
 
         .delete-btn i {
-            margin-right: 5px;
+            margin-right: 8px;
         }
 
-        /* Botón flotante para móviles */
+        /* Botón flotante para móviles VIP */
         .floating-action-btn {
             position: fixed;
-            bottom: 25px;
-            right: 25px;
-            width: 60px;
-            height: 60px;
+            bottom: 30px;
+            right: 30px;
+            width: 65px;
+            height: 65px;
             border-radius: 50%;
-            background: linear-gradient(45deg, var(--neon-blue), var(--neon-purple));
-            color: white;
+            background: linear-gradient(135deg, var(--neon-gold), var(--neon-vip));
+            color: var(--dark-cosmic);
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
             z-index: 99;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: var(--transition);
             border: none;
-            font-size: 24px;
+            font-size: 1.8rem;
         }
         
         .floating-action-btn:hover {
             transform: translateY(-5px) scale(1.1);
-            box-shadow: 0 10px 25px rgba(0, 255, 252, 0.5);
+            box-shadow: 0 12px 30px rgba(255, 215, 0, 0.6);
         }
 
         /* Responsive adjustments mejorados */
         @media (max-width: 768px) {
             .container {
-                padding: 10px;
+                padding: 12px;
             }
             
             .header {
-                padding: 15px 5px;
-                margin-bottom: 15px;
+                padding: 18px 8px;
+                margin-bottom: 20px;
             }
             
-            .header h1 {
-                font-size: 1.8rem;
+            .logo {
+                font-size: 2rem;
+            }
+            
+            .logo i {
+                font-size: 2rem;
             }
             
             .header p {
-                font-size: 0.9rem;
+                font-size: 1rem;
             }
             
             .mobile-menu-btn {
@@ -690,37 +808,38 @@
             }
             
             .comment-box, .comment {
-                padding: 15px;
-                border-radius: 14px;
+                padding: 20px;
+                border-radius: 18px;
             }
             
             .comment-box input {
-                padding: 12px 15px;
-                font-size: 16px;
-                min-height: 45px;
+                padding: 14px 18px;
+                font-size: 1rem;
+                min-height: 50px;
             }
             
             .comment-box button, .reply-button {
-                padding: 12px 16px;
-                font-size: 14px;
-                min-width: 45px;
-                height: 45px;
+                padding: 14px 20px;
+                font-size: 1rem;
+                min-width: 50px;
+                height: 50px;
             }
             
             .post-image-btn {
-                width: 45px;
-                height: 45px;
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
             }
             
             .user-info {
-                top: 80px;
-                right: 10px;
-                padding: 6px 12px;
+                top: 85px;
+                right: 15px;
+                padding: 8px 15px;
             }
             
             .user-info span {
-                max-width: 120px;
-                font-size: 13px;
+                max-width: 140px;
+                font-size: 0.9rem;
             }
             
             .signal-input {
@@ -733,25 +852,30 @@
             }
             
             .floating-action-btn {
-                bottom: 20px;
-                right: 20px;
-                width: 55px;
-                height: 55px;
-                font-size: 22px;
+                bottom: 25px;
+                right: 25px;
+                width: 60px;
+                height: 60px;
+                font-size: 1.6rem;
             }
         }
 
         @media (max-width: 480px) {
-            .header h1 {
-                font-size: 1.6rem;
+            .logo {
+                font-size: 1.8rem;
+            }
+            
+            .logo i {
+                font-size: 1.8rem;
+                margin-right: 10px;
             }
             
             .header p {
-                font-size: 0.85rem;
+                font-size: 0.95rem;
             }
             
             .comment-box, .comment {
-                padding: 12px;
+                padding: 18px;
             }
             
             .input-container {
@@ -760,11 +884,11 @@
             
             .comment-box input {
                 width: 100%;
-                margin-bottom: 10px;
+                margin-bottom: 12px;
             }
             
             .comment-box .input-container > * {
-                margin: 5px 0;
+                margin: 6px 0;
             }
             
             .post-image-btn {
@@ -784,63 +908,63 @@
             }
             
             .actions span {
-                margin-bottom: 10px;
+                margin-bottom: 12px;
             }
             
             .user-info {
-                top: 75px;
-                padding: 5px 10px;
+                top: 80px;
+                padding: 7px 12px;
             }
             
             .user-info span {
-                max-width: 100px;
-                font-size: 12px;
+                max-width: 120px;
+                font-size: 0.85rem;
             }
             
             .user-info img {
-                width: 30px;
-                height: 30px;
+                width: 35px;
+                height: 35px;
             }
             
             .floating-action-btn {
-                bottom: 15px;
-                right: 15px;
-                width: 50px;
-                height: 50px;
-                font-size: 20px;
+                bottom: 20px;
+                right: 20px;
+                width: 55px;
+                height: 55px;
+                font-size: 1.5rem;
             }
             
             .login-container {
-                padding: 20px 15px;
+                padding: 25px 20px;
             }
             
             .login-container h2 {
-                font-size: 1.6rem;
+                font-size: 1.8rem;
             }
             
             .login-container input, .login-container button {
-                padding: 12px;
+                padding: 14px;
             }
         }
 
         @media (max-width: 350px) {
-            .header h1 {
-                font-size: 1.4rem;
+            .logo {
+                font-size: 1.6rem;
             }
             
             .user-info span {
-                max-width: 80px;
+                max-width: 100px;
             }
             
             .signal-tag {
-                font-size: 11px;
-                padding: 4px 8px;
+                font-size: 0.85rem;
+                padding: 6px 12px;
             }
         }
 
         /* Efectos de scroll personalizados */
         ::-webkit-scrollbar {
-            width: 6px;
+            width: 8px;
         }
         
         ::-webkit-scrollbar-track {
@@ -849,19 +973,25 @@
         }
         
         ::-webkit-scrollbar-thumb {
-            background: linear-gradient(var(--neon-blue), var(--neon-purple));
+            background: linear-gradient(var(--neon-gold), var(--neon-vip));
             border-radius: 10px;
         }
         
         ::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(var(--neon-purple), var(--neon-blue));
+            background: linear-gradient(var(--neon-vip), var(--neon-gold));
         }
     </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <!-- Floating particles -->
-    <div class="particles" id="particles"></div>
+    <!-- Efectos futuristas VIP -->
+    <div class="vip-grid"></div>
+    <div class="floating-diamonds">
+        <div class="diamond" style="top: 10%; left: 20%; animation-delay: 0s;"></div>
+        <div class="diamond" style="top: 30%; left: 80%; animation-delay: 5s;"></div>
+        <div class="diamond" style="top: 70%; left: 40%; animation-delay: 10s;"></div>
+        <div class="diamond" style="top: 50%; left: 60%; animation-delay: 15s;"></div>
+    </div>
+    <div class="vip-particles" id="vipParticles"></div>
     
     <!-- Menú móvil -->
     <div class="mobile-menu-btn" id="mobileMenuBtn">
@@ -889,28 +1019,33 @@
     
     <div class="container">
         <div class="login-container" id="loginContainer">
-            <h2>Iniciar sesión</h2>
+            <h2>INICIAR SESIÓN</h2>
             <input type="email" id="loginEmail" placeholder="Correo electrónico">
             <input type="password" id="loginPassword" placeholder="Contraseña">
-            <button onclick="login()">Iniciar sesión</button>
+            <button onclick="login()">ACCEDER VIP</button>
             <div class="login-message" id="loginMessage"></div>
         </div>
 
         <div id="appContent" style="display: none;">
             <div class="user-info" id="userInfo">
                 <img id="userPhoto" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png">
-                <span id="userName">Usuario</span>
+                <span id="userName">Usuario VIP</span>
                 <button onclick="logout()">Salir</button>
             </div>
             
             <div class="header">
-                <h1>OXOMAX-TRADING</h1>
-                <p>Señales de trading con la comunidad</p>
+                <div class="header-content">
+                    <div class="logo">
+                        <i class="fas fa-crown"></i>
+                        <span>VIPFOREX</span>
+                    </div>
+                    <p>Plataforma de trading social para traders de élite</p>
+                </div>
             </div>
             
             <div class="comment-box" id="mainCommentBox">
                 <div class="input-container">
-                    <input type="text" id="commentInput" placeholder="Escribe tu comentario...">
+                    <input type="text" id="commentInput" placeholder="Comparte tu análisis o señal...">
                     <div class="post-image-btn" onclick="document.getElementById('imageInput').click()">
                         <i class="fas fa-image"></i>
                     </div>
@@ -924,18 +1059,18 @@
                 
                 <div class="signal-input" id="signalInput">
                     <select id="signalType">
-                        <option value="buy">Compra</option>
-                        <option value="sell">Venta</option>
-                        <option value="analysis">Análisis</option>
+                        <option value="buy">COMPRA</option>
+                        <option value="sell">VENTA</option>
+                        <option value="analysis">ANÁLISIS</option>
                     </select>
-                    <input type="text" id="assetInput" placeholder="Activo">
-                    <input type="text" id="priceInput" placeholder="Precio">
+                    <input type="text" id="assetInput" placeholder="Activo (EUR/USD)">
+                    <input type="text" id="priceInput" placeholder="Precio entrada">
                     <input type="text" id="targetInput" placeholder="Objetivo">
                     <input type="text" id="stopInput" placeholder="Stop Loss">
                 </div>
                 
                 <button class="toggle-signal" onclick="toggleSignalInput()">
-                    <i class="fas fa-chart-line"></i> Añadir señal
+                    <i class="fas fa-chart-line"></i> AÑADIR SEÑAL VIP
                 </button>
             </div>
 
@@ -972,25 +1107,41 @@
         let showSignalInput = false;
         let currentUser = null;
 
-        // Crear partículas flotantes
-        function createParticles() {
-            const particlesContainer = document.getElementById('particles');
-            for (let i = 0; i < 40; i++) {
+        // Crear partículas VIP
+        function createVipParticles() {
+            const particlesContainer = document.getElementById('vipParticles');
+            for (let i = 0; i < 60; i++) {
                 const particle = document.createElement('div');
-                particle.classList.add('particle');
+                particle.classList.add('vip-particle');
+                
+                // Tamaño aleatorio entre 1px y 4px
+                const size = Math.random() * 3 + 1;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Posición inicial aleatoria
                 particle.style.left = `${Math.random() * 100}%`;
-                particle.style.top = `${Math.random() * 100}%`;
-                particle.style.width = `${Math.random() * 3 + 1}px`;
-                particle.style.height = particle.style.width;
-                particle.style.animationDelay = `${Math.random() * 20}s`;
-                particle.style.animationDuration = `${Math.random() * 15 + 10}s`;
+                particle.style.bottom = `-${size}px`;
+                
+                // Duración de la animación aleatoria
+                const duration = Math.random() * 25 + 15;
+                particle.style.animationDuration = `${duration}s`;
+                
+                // Retraso aleatorio
+                particle.style.animationDelay = `${Math.random() * 15}s`;
+                
+                // Color aleatorio (dorado, violeta o cian)
+                const colors = ['#ffd700', '#ff00ff', '#00ffff'];
+                const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.background = randomColor;
+                
                 particlesContainer.appendChild(particle);
             }
         }
 
         // Cargar cuando el DOM esté listo
         document.addEventListener('DOMContentLoaded', function() {
-            createParticles();
+            createVipParticles();
             
             // Configurar menú móvil
             const mobileMenuBtn = document.getElementById('mobileMenuBtn');
@@ -1055,7 +1206,7 @@
         // Actualizar información del usuario
         function updateUserInfo() {
             if (currentUser) {
-                document.getElementById('userName').textContent = currentUser.displayName || currentUser.email.split('@')[0];
+                document.getElementById('userName').textContent = currentUser.displayName || currentUser.email.split('@')[0] + " VIP";
                 if (currentUser.photoURL) {
                     document.getElementById('userPhoto').src = currentUser.photoURL;
                 }
@@ -1127,7 +1278,7 @@
                 const comment = {
                     userId: currentUser.uid,
                     userEmail: currentUser.email,
-                    userName: currentUser.displayName || currentUser.email.split('@')[0],
+                    userName: currentUser.displayName || currentUser.email.split('@')[0] + " VIP",
                     userPhoto: currentUser.photoURL || 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
                     text: commentText,
                     hasImage: selectedImage ? true : false,
@@ -1249,11 +1400,11 @@
             
             commentContainer.innerHTML = `
                 <div class="content">
-                    <div style="display: flex; align-items: center; margin-bottom: 8px;">
-                        <img src="${comment.userPhoto}" style="width: 35px; height: 35px; border-radius: 50%; margin-right: 10px; border: 1px solid var(--neon-blue); box-shadow: 0 0 8px rgba(0, 255, 252, 0.3);">
-                        <span style="font-weight: bold; font-size: 15px;">${comment.userName}</span>
+                    <div style="display: flex; align-items: center; margin-bottom: 12px;">
+                        <img src="${comment.userPhoto}" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 12px; border: 1px solid var(--neon-gold); box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);">
+                        <span style="font-weight: bold; font-size: 1.1rem;">${comment.userName}</span>
                     </div>
-                    <p style="font-size: 15px;">${comment.text || (comment.signal ? 'Señal de trading' : 'Publicación')}</p>
+                    <p style="font-size: 1.1rem;">${comment.text || (comment.signal ? 'Señal de trading VIP' : 'Publicación')}</p>
                     ${signalHTML}
                     <div class="timestamp">${timestamp}</div>
                     ${imageHTML}
@@ -1286,12 +1437,12 @@
                 repliesHTML += `
                     <div class="comment reply" id="reply-${commentId}-${replyId}">
                         <div class="content">
-                            <div style="display: flex; align-items: center; margin-bottom: 5px;">
-                                <img src="${reply.userPhoto}" style="width: 30px; height: 30px; border-radius: 50%; margin-right: 8px; border: 1px solid rgba(0, 255, 252, 0.3);">
-                                <span style="font-size: 14px; font-weight: bold;">${reply.userName}</span>
+                            <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                                <img src="${reply.userPhoto}" style="width: 35px; height: 35px; border-radius: 50%; margin-right: 10px; border: 1px solid rgba(255, 215, 0, 0.3);">
+                                <span style="font-size: 1rem; font-weight: bold;">${reply.userName}</span>
                             </div>
-                            <p style="margin: 5px 0; font-size: 14px;">${reply.text}</p>
-                            <div class="timestamp" style="font-size: 12px;">${timestamp}</div>
+                            <p style="margin: 8px 0; font-size: 1rem;">${reply.text}</p>
+                            <div class="timestamp" style="font-size: 0.9rem;">${timestamp}</div>
                             ${deleteButton}
                         </div>
                     </div>
@@ -1300,9 +1451,9 @@
             
             // Añadir caja de respuesta
             repliesHTML += `
-                <div class="reply-box" style="margin-top: 10px; display: flex; align-items: center;">
-                    <input type="text" class="reply-input" placeholder="Escribe una respuesta..." style="flex: 1; padding: 10px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.1); color: white; font-size: 14px;">
-                    <button class="reply-button" onclick="postReply(this, '${commentId}')" style="margin-left: 8px;"><i class="fas fa-reply"></i></button>
+                <div class="reply-box" style="margin-top: 15px; display: flex; align-items: center;">
+                    <input type="text" class="reply-input" placeholder="Escribe una respuesta..." style="flex: 1; padding: 12px; border-radius: 25px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.1); color: white; font-size: 1rem;">
+                    <button class="reply-button" onclick="postReply(this, '${commentId}')" style="margin-left: 10px;"><i class="fas fa-reply"></i></button>
                 </div>
             `;
             
@@ -1340,7 +1491,7 @@
                 const reply = {
                     userId: currentUser.uid,
                     userEmail: currentUser.email,
-                    userName: currentUser.displayName || currentUser.email.split('@')[0],
+                    userName: currentUser.displayName || currentUser.email.split('@')[0] + " VIP",
                     userPhoto: currentUser.photoURL || 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
                     text: replyText,
                     timestamp: firebase.database.ServerValue.TIMESTAMP
