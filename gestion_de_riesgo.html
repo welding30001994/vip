@@ -1,0 +1,1321 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curso Básico de Trading | Oxomax-Trading</title>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-database-compat.js"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <!-- Estilos -->
+    <style>
+        :root {
+            --primary: #00f7ff;
+            --primary-dark: #00c2c8;
+            --secondary: #7b2dff;
+            --dark: #0a0a1a;
+            --darker: #050510;
+            --light: #f0f0f0;
+            --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            --neon-shadow: 0 0 10px var(--primary), 0 0 20px var(--primary), 0 0 30px var(--primary-dark);
+            --success: #00ffaa;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--dark);
+            color: var(--light);
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(123, 45, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(0, 247, 255, 0.1) 0%, transparent 50%);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+        
+        h1, h2, h3, h4, .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 20px 0;
+            background: rgba(10, 10, 26, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--glass-border);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            color: var(--primary);
+            text-decoration: none;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+            font-size: 1.8rem;
+            color: var(--primary);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav-links a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logout-btn {
+            padding: 10px 20px;
+            background: transparent;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            border-radius: 30px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .logout-btn:hover {
+            background: var(--primary);
+            color: var(--dark);
+            box-shadow: var(--neon-shadow);
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(0, 247, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-weight: bold;
+            border: 1px solid var(--glass-border);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .user-avatar:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(0, 247, 255, 0.5);
+        }
+        
+        /* Dashboard */
+        .dashboard {
+            padding-top: 100px;
+            padding-bottom: 50px;
+        }
+        
+        .welcome-banner {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .welcome-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0, 247, 255, 0.1), rgba(123, 45, 255, 0.1)));
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        
+        .welcome-banner:hover::before {
+            opacity: 1;
+        }
+        
+        .welcome-text h2 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .welcome-text p {
+            opacity: 0.8;
+        }
+        
+        .progress-container {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            padding: 20px;
+            min-width: 250px;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background-color: rgba(0, 0, 0, 0.3);
+            border-radius: 4px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: var(--gradient);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        /* Content Container */
+        .content-container {
+            display: flex;
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 300px;
+            flex-shrink: 0;
+        }
+        
+        .sidebar-menu {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 25px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .sidebar-menu::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0, 247, 255, 0.1), rgba(123, 45, 255, 0.1)));
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        
+        .sidebar-menu:hover::before {
+            opacity: 1;
+        }
+        
+        .sidebar-menu h3 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--glass-border);
+            color: var(--primary);
+        }
+        
+        .menu-item {
+            padding: 12px 0;
+            border-bottom: 1px solid var(--glass-border);
+        }
+        
+        .menu-item:last-child {
+            border-bottom: none;
+        }
+        
+        .menu-item a {
+            color: var(--light);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s ease;
+            opacity: 0.8;
+        }
+        
+        .menu-item a:hover {
+            color: var(--primary);
+            opacity: 1;
+        }
+        
+        .menu-item.active a {
+            color: var(--primary);
+            font-weight: 500;
+            opacity: 1;
+        }
+        
+        .menu-item i {
+            font-size: 1.1rem;
+            width: 20px;
+            text-align: center;
+        }
+        
+        /* Main Content */
+        .main-content {
+            flex-grow: 1;
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .main-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0, 247, 255, 0.1), rgba(123, 45, 255, 0.1)));
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        
+        .main-content:hover::before {
+            opacity: 1;
+        }
+        
+        .content-header {
+            margin-bottom: 25px;
+        }
+        
+        .content-header h2 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+        
+        .breadcrumbs {
+            display: flex;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: var(--light);
+            opacity: 0.7;
+        }
+        
+        .breadcrumbs a {
+            color: var(--light);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .breadcrumbs a:hover {
+            color: var(--primary);
+        }
+        
+        .breadcrumbs span {
+            color: var(--primary);
+        }
+        
+        /* Lesson Content */
+        .lesson-content {
+            line-height: 1.7;
+        }
+        
+        .lesson-content h3 {
+            font-size: 1.4rem;
+            margin: 25px 0 15px;
+            color: var(--primary);
+        }
+        
+        .lesson-content p {
+            margin-bottom: 15px;
+            opacity: 0.9;
+        }
+        
+        .lesson-content ul, .lesson-content ol {
+            margin-bottom: 20px;
+            padding-left: 20px;
+            opacity: 0.9;
+        }
+        
+        .lesson-content li {
+            margin-bottom: 8px;
+        }
+        
+        .lesson-content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--shadow);
+        }
+        
+        /* Lesson Navigation */
+        .lesson-nav {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--glass-border);
+        }
+        
+        .nav-button {
+            padding: 12px 25px;
+            background: var(--primary);
+            color: var(--dark);
+            border: none;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .nav-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, var(--primary-dark), var(--secondary));
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .nav-button:hover {
+            box-shadow: var(--neon-shadow);
+        }
+        
+        .nav-button:hover::before {
+            opacity: 1;
+        }
+        
+        .nav-button.outline {
+            background: transparent;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+        
+        .nav-button.outline:hover {
+            background: rgba(0, 247, 255, 0.1);
+        }
+        
+        .nav-button i {
+            font-size: 1rem;
+        }
+        
+        /* Completion Checkbox */
+        .completion-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 25px;
+            padding: 15px;
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+        }
+        
+        .completion-checkbox input {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary);
+        }
+        
+        .completion-checkbox label {
+            cursor: pointer;
+            opacity: 0.9;
+            transition: all 0.3s ease;
+        }
+        
+        .completion-checkbox:hover label {
+            color: var(--primary);
+            opacity: 1;
+        }
+        
+        /* Efectos de partículas */
+        .particles {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .particle {
+            position: absolute;
+            background: var(--primary);
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: float linear infinite;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+            50% {
+                opacity: 0.3;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(100px);
+                opacity: 0;
+            }
+        }
+        
+        /* Responsive para móviles */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 15px;
+            }
+            
+            header {
+                padding: 15px 0;
+            }
+            
+            .logo {
+                font-size: 1.2rem;
+            }
+            
+            .logo i {
+                font-size: 1.5rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .dashboard {
+                padding-top: 80px;
+            }
+            
+            .welcome-banner {
+                flex-direction: column;
+                padding: 25px;
+                gap: 20px;
+            }
+            
+            .progress-container {
+                width: 100%;
+            }
+            
+            .content-container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+            }
+            
+            .main-content {
+                padding: 20px;
+            }
+            
+            .content-header h2 {
+                font-size: 1.5rem;
+            }
+            
+            .lesson-content h3 {
+                font-size: 1.2rem;
+            }
+            
+            .lesson-nav {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .nav-button {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Efecto de partículas -->
+    <div class="particles" id="particles"></div>
+    
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <i class="fas fa-chart-line"></i>
+                    <span>OXOMAX-TRADING</span>
+                </div>
+                <div class="nav-links">
+                    <a href="#" class="active">Curso</a>
+                    <a href="#">Recursos</a>
+                    <a href="#">Comunidad</a>
+                </div>
+                <div class="user-menu">
+                    <button class="logout-btn" id="logoutBtn">Cerrar Sesión</button>
+                    <div class="user-avatar" id="userAvatar">JD</div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="dashboard">
+        <div class="container">
+            <div class="welcome-banner">
+                <div class="welcome-text">
+                    <h2 id="welcomeMessage">Bienvenido de nuevo, Juan</h2>
+                    <p>Continúa tu aprendizaje en el Curso Básico de Trading</p>
+                </div>
+                <div class="progress-container">
+                    <div>Tu progreso</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <span id="progressText">0% completado</span>
+                </div>
+            </div>
+
+
+
+
+
+
+
+ <!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conexión Futurista</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@500;700&display=swap');
+        
+        :root {
+            --neon-blue: #0ff0fc;
+            --neon-purple: #9600ff;
+            --neon-pink: #ff00ff;
+            --dark-space: #0a0a20;
+            --star-light: rgba(255, 255, 255, 0.8);
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--dark-space);
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(150, 0, 255, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 80% 70%, rgba(0, 240, 252, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 50% 50%, var(--star-light) 0%, transparent 1%);
+            background-size: 200% 200%, 200% 200%, 100% 100%;
+            animation: spaceMove 30s ease infinite;
+      
+            font-family: 'Rajdhani', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        @keyframes spaceMove {
+            0% { background-position: 0% 0%, 0% 0%, 0 0; }
+            50% { background-position: 100% 100%, 50% 50%, 0 0; }
+            100% { background-position: 0% 0%, 0% 0%, 0 0; }
+        }
+        
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+            letter-spacing: 2px;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+        
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--neon-blue), var(--neon-pink), transparent);
+            border-radius: 50%;
+            filter: blur(1px);
+        }
+        
+        .portal-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            max-width: 900px;
+            padding: 2rem;
+        }
+        
+        .portal-btn {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            overflow: hidden;
+            z-index: 1;
+            box-shadow: 0 0 20px rgba(0, 240, 252, 0.2);
+            border: 1px solid rgba(0, 240, 252, 0.3);
+            background-color: rgba(10, 10, 32, 0.7);
+        }
+        
+        .portal-btn::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                transparent, transparent, transparent,
+                rgba(0, 240, 252, 0.1), transparent, transparent, transparent
+            );
+            transform: rotate(45deg);
+            transition: all 0.5s ease;
+            z-index: -1;
+        }
+        
+        .portal-btn:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 0 30px rgba(0, 240, 252, 0.5);
+        }
+        
+        .portal-btn:hover::before {
+            animation: shine 1.5s ease infinite;
+        }
+        
+        @keyframes shine {
+            0% { left: -50%; top: -50%; }
+            100% { left: 150%; top: 150%; }
+        }
+        
+        .portal-btn i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .portal-btn:hover i {
+            transform: scale(1.2);
+            text-shadow: 0 0 15px currentColor;
+        }
+        
+        /* Colores individuales para cada botón */
+        .btn-google { color: var(--neon-blue); }
+        .btn-youtube { color: #ff0000; }
+        .btn-github { color: var(--neon-pink); }
+        .btn-twitter { color: #1da1f2; }
+        .btn-linkedin { color: #0a66c2; }
+        .btn-instagram { 
+            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        
+        /* Efecto de partículas */
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .particle {
+            position: absolute;
+            background-color: var(--star-light);
+            border-radius: 50%;
+            animation: float linear infinite;
+        }
+        
+        @keyframes float {
+            to { transform: translateY(-100vh); }
+        }
+        
+        footer {
+            margin-top: 3rem;
+            font-family: 'Orbitron', sans-serif;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.8rem;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+        
+        /* Efecto de conexión entre botones */
+        .connection-line {
+            position: absolute;
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink));
+            height: 2px;
+            transform-origin: left center;
+            z-index: -1;
+            opacity: 0.3;
+            filter: blur(0.5px);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 { font-size: 2rem; }
+            .portal-container { gap: 1rem; }
+            .portal-btn { width: 120px; height: 120px; font-size: 0.9rem; }
+            .portal-btn i { font-size: 2rem; }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <h1>OXOMAX-TRADING</h1>
+    
+    <div class="portal-container">
+        <!-- Botón de Google -->
+        <a href="ordenblock.html " target="_blank" class="portal-btn btn-google">
+            <i class="fab fa-google"></i>
+           MODULO-BASICO
+        </a>
+        
+        
+        <!-- Botón de LinkedIn -->
+        <a href="calculadora.HTML " target="_blank" class="portal-btn btn-linkedin">
+              <i class="fab fa-youtube"></i>
+          CALCULADORA
+        </a>
+        
+        <!-- Botón de Instagram -->
+        <a href="https://exchanges.devebug.com/ " target="_blank" class="portal-btn btn-instagram">
+            <i class="fab fa-instagram"></i>
+            DEVEBUG
+        </a>
+      <!-- Botón de Instagram -->
+        <a href="señales.html " target="_blank" class="portal-btn btn-instagram">
+             <i class="fab fa-github"></i>
+            SEÑALES
+        </a>
+              <!-- Botón de Instagram -->
+        <a href="https://pelisya.my.canva.site/pagosonline " target="_blank" class="portal-btn btn-instagram">
+           <i class="fab fa-twitter"></i>
+            PAGOS
+        </a>
+
+              <!-- Botón de Instagram -->
+        <a href="imagenes.html " target="_blank" class="portal-btn btn-instagram">
+              <i class="fab fa-google"></i>
+           FINANZAS
+        </a>
+
+
+
+
+
+
+
+        
+    </div>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+    
+    <footer>
+       © 2010 Oxomax-Trading. Todos los derechos reservados.
+    </footer>
+    
+    <div class="particles" id="particles"></div>
+    
+    <script>
+        // Crear partículas flotantes
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 50;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Tamaño aleatorio entre 1px y 3px
+                const size = Math.random() * 2 + 1;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Posición aleatoria en la pantalla
+                particle.style.left = `${Math.random() * 100}vw`;
+                particle.style.top = `${Math.random() * 100}vh`;
+                
+                // Duración de animación aleatoria entre 10s y 30s
+                const duration = Math.random() * 20 + 10;
+                particle.style.animationDuration = `${duration}s`;
+                
+                // Retraso aleatorio para que no todas empiecen juntas
+                particle.style.animationDelay = `${Math.random() * 10}s`;
+                
+                // Opacidad aleatoria
+                particle.style.opacity = Math.random() * 0.5 + 0.1;
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+        
+        // Dibujar líneas de conexión entre botones
+        function drawConnectionLines() {
+            const buttons = document.querySelectorAll('.portal-btn');
+            const container = document.querySelector('.portal-container');
+            
+            buttons.forEach((btn1, i) => {
+                buttons.forEach((btn2, j) => {
+                    if (i < j) { // Para evitar duplicados
+                        const rect1 = btn1.getBoundingClientRect();
+                        const rect2 = btn2.getBoundingClientRect();
+                        
+                        const x1 = rect1.left + rect1.width / 2;
+                        const y1 = rect1.top + rect1.height / 2;
+                        const x2 = rect2.left + rect2.width / 2;
+                        const y2 = rect2.top + rect2.height / 2;
+                        
+                        // Calcular distancia entre botones
+                        const distance = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+                        
+                        // Solo conectar botones que estén relativamente cerca
+                        if (distance < 300) {
+                            const line = document.createElement('div');
+                            line.classList.add('connection-line');
+                            
+                            // Posicionar la línea
+                            line.style.left = `${x1}px`;
+                            line.style.top = `${y1}px`;
+                            line.style.width = `${distance}px`;
+                            
+                            // Rotar la línea para conectar los puntos
+                            const angle = Math.atan2(y2 - y1, x2 - x1);
+                            line.style.transform = `rotate(${angle}rad)`;
+                            
+                            container.appendChild(line);
+                        }
+                    }
+                });
+            });
+        }
+        
+        // Inicializar efectos cuando la página cargue
+        window.addEventListener('load', () => {
+            createParticles();
+            drawConnectionLines();
+        });
+    </script>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          
+          <div class="content-container">
+    <aside class="sidebar">
+        <div class="sidebar-menu">
+            <h3>Curso Básico de Trading</h3>
+            <div class="menu-item">
+                <a href="Introduccion_al_Trading.html"><i class="fas fa-play"></i> Introducción al Trading</a>
+            </div>
+            <div class="menu-item">
+                <a href="analisis_tecnico.html"><i class="fas fa-chart-line"></i> Análisis Técnico</a>
+            </div>
+            <div class="menu-item active">
+                <a href="gestion_de_riesgo.html"><i class="fas fa-balance-scale"></i> Gestión de Riesgo</a>
+            </div>
+            <div class="menu-item">
+                <a href="#"><i class="fas fa-brain"></i> Psicología del Trading</a>
+            </div>
+            <div class="menu-item">
+                <a href="#"><i class="fas fa-chart-pie"></i> Estrategias Básicas</a>
+            </div>
+            <div class="menu-item">
+                <a href="#"><i class="fas fa-laptop"></i> Plataformas de Trading</a>
+            </div>
+            <div class="menu-item">
+                <a href="#"><i class="fas fa-trophy"></i> Evaluación Final</a>
+            </div>
+        </div>
+    </aside>
+    
+    <div class="main-content">
+        <div class="content-header">
+            <h2>Gestión de Riesgo</h2>
+            <div class="breadcrumbs">
+                <a href="#">Curso Básico</a> &gt; <span>Gestión de Riesgo</span>
+            </div>
+        </div>
+        
+        <div class="lesson-content">
+            <h3>¿Qué es la Gestión de Riesgo en Trading?</h3>
+            <p>La gestión de riesgo es el conjunto de técnicas y estrategias que permiten controlar las pérdidas potenciales en el trading, protegiendo el capital y maximizando las oportunidades de beneficio a largo plazo.</p>
+            
+            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Gestión de riesgo en trading">
+            
+            <h3>Principios Fundamentales</h3>
+            <p>Los pilares básicos de una buena gestión de riesgo:</p>
+            <ul>
+                <li><strong>Preservar el capital:</strong> Evitar pérdidas significativas que impidan seguir operando</li>
+                <li><strong>Consistencia:</strong> Aplicar las mismas reglas de riesgo en todas las operaciones</li>
+                <li><strong>Control emocional:</strong> No dejar que el miedo o la codicia afecten las decisiones</li>
+                <li><strong>Adaptabilidad:</strong> Ajustar el riesgo según las condiciones del mercado</li>
+            </ul>
+            
+            <h3>Reglas Básicas de Gestión de Riesgo</h3>
+            <p>Normas esenciales que todo trader debe seguir:</p>
+            <ul>
+                <li><strong>Regla del 1-2%:</strong> No arriesgar más del 1-2% del capital por operación</li>
+                <li><strong>Ratio riesgo/beneficio:</strong> Buscar mínimo 1:2 (por cada dólar arriesgado, potencial de ganar 2)</li>
+                <li><strong>Stop Loss obligatorio:</strong> Siempre definir el punto de salida si la operación va mal</li>
+                <li><strong>Diversificación:</strong> No concentrar todo el capital en un solo activo o mercado</li>
+            </ul>
+            
+            <img src="https://www.investopedia.com/thmb/4bZvRwQj_8g8ZgZ8ZgZ8ZgZ8Zg=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/risk-management-5b17c7a346e0fb002c87a6a2.jpg" alt="Reglas de gestión de riesgo">
+            
+            <h3>Herramientas de Gestión de Riesgo</h3>
+            <p>Instrumentos clave para controlar el riesgo:</p>
+            
+            <div class="tool-group">
+                <h4>Stop Loss</h4>
+                <ul>
+                    <li><strong>Stop fijo:</strong> Nivel predeterminado donde se cierra la operación con pérdida</li>
+                    <li><strong>Stop dinámico:</strong> Se ajusta según avanza la operación a favor</li>
+                    <li><strong>Stop mental:</strong> Nivel mental sin orden en el mercado (menos recomendado)</li>
+                </ul>
+            </div>
+            
+            <div class="tool-group">
+                <h4>Tamaño de Posición</h4>
+                <ul>
+                    <li><strong>Fórmula básica:</strong> (Capital × % riesgo) / (Precio entrada - Stop Loss)</li>
+                    <li><strong>Lotes fraccionales:</strong> Permiten ajustar perfectamente el tamaño de la operación</li>
+                    <li><strong>Calculadoras de posición:</strong> Herramientas que automatizan el cálculo</li>
+                </ul>
+            </div>
+            
+            <h3>Errores Comunes en Gestión de Riesgo</h3>
+            <p>Fallas que deben evitarse:</p>
+            <ul>
+                <li><strong>Mover el Stop Loss:</strong> Aumentar el riesgo para "dar aire" a una operación perdedora</li>
+                <li><strong>Apostar el doble:</strong> Incrementar el tamaño para recuperar pérdidas rápidamente</li>
+                <li><strong>Operar sin Stop:</strong> Dejar operaciones "a ver si vuelven" sin protección</li>
+                <li><strong>Sobreapalancamiento:</strong> Usar demasiado apalancamiento para el tamaño de cuenta</li>
+            </ul>
+            
+            <img src="https://www.tradingview.com/x/uLgZ8ZgZ/" alt="Errores comunes en trading">
+            
+            <h3>Psicología y Riesgo</h3>
+            <p>Aspectos psicológicos que afectan la gestión de riesgo:</p>
+            
+            <div class="psychology-group">
+                <h4>Sesgos Cognitivos</h4>
+                <ul>
+                    <li><strong>Sesgo de confirmación:</strong> Buscar información que confirme nuestras ideas y ignorar señales contrarias</li>
+                    <li><strong>Efecto disposición:</strong> Tendencia a cerrar ganadoras rápido y mantener perdedoras</li>
+                    <li><strong>Exceso de confianza:</strong> Después de una racha ganadora, asumir más riesgo del adecuado</li>
+                </ul>
+            </div>
+            
+            <div class="psychology-group">
+                <h4>Control Emocional</h4>
+                <ul>
+                    <li><strong>Miedo:</strong> Lleva a cerrar operaciones prematuras o no tomar señales válidas</li>
+                    <li><strong>Codicia:</strong> Provoca aumentar el riesgo buscando mayores ganancias</li>
+                    <li><strong>Frustración:</strong> Después de pérdidas, puede llevar a operar de forma impulsiva</li>
+                </ul>
+            </div>
+            
+            <div class="case-study">
+                <h3>Caso Práctico: Cálculo de Posición</h3>
+                <p><strong>Escenario:</strong> Cuenta de $10,000 - Riesgo por operación 1% - Operación en EUR/USD</p>
+                <p><strong>Entrada:</strong> 1.1050 - <strong>Stop Loss:</strong> 1.1020 (30 pips de riesgo)</p>
+                <p><strong>Cálculo:</strong> ($10,000 × 1%) / (1.1050 - 1.1020) = $100 / 0.0030 = 33,333 unidades (0.33 lotes estándar)</p>
+            </div>
+            
+            <div class="completion-checkbox">
+                <input type="checkbox" id="completeLesson">
+                <label for="completeLesson">Marcar esta lección como completada</label>
+            </div>
+            
+            <div class="lesson-nav">
+                <button class="nav-button">
+                    <i class="fas fa-arrow-left"></i> Anterior
+                </button>
+                <button class="nav-button">
+                    Siguiente <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+          
+          
+    <script>
+        // Inicializar Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyD3MI1klgBSHs1h6QT4VPNoScCfCwMV_Ck",
+            authDomain: "usuario-b0384.firebaseapp.com",
+            databaseURL: "https://usuario-b0384-default-rtdb.firebaseio.com",
+            projectId: "usuario-b0384",
+            storageBucket: "usuario-b0384.firebasestorage.app",
+            messagingSenderId: "196266170863",
+            appId: "1:196266170863:web:4ea57f489df94aba94fe1a"
+        };
+        
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const database = firebase.database();
+        
+        // Elementos del DOM
+        const logoutBtn = document.getElementById('logoutBtn');
+        const userAvatar = document.getElementById('userAvatar');
+        const welcomeMessage = document.getElementById('welcomeMessage');
+        const progressFill = document.getElementById('progressFill');
+        const progressText = document.getElementById('progressText');
+        const completeLesson = document.getElementById('completeLesson');
+        const particlesContainer = document.getElementById('particles');
+        
+        // Crear efecto de partículas
+        function createParticles() {
+            const particleCount = 30;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Tamaño aleatorio entre 2px y 6px
+                const size = Math.random() * 4 + 2;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Posición inicial aleatoria
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.bottom = `-${size}px`;
+                
+                // Duración de la animación aleatoria
+                const duration = Math.random() * 20 + 10;
+                particle.style.animationDuration = `${duration}s`;
+                
+                // Retraso aleatorio
+                particle.style.animationDelay = `${Math.random() * 10}s`;
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+        
+        // Verificar autenticación al cargar la página
+        auth.onAuthStateChanged((user) => {
+            if (!user) {
+                // Si no hay usuario logueado, redirigir al inicio
+                window.location.href = 'index.html';
+            } else {
+                // Mostrar información del usuario
+                const userName = user.displayName || user.email.split('@')[0];
+                welcomeMessage.textContent = `Bienvenido de nuevo, ${userName}`;
+                userAvatar.textContent = userName.charAt(0).toUpperCase();
+                
+                // Obtener progreso del usuario desde la base de datos
+                const userRef = database.ref('users/' + user.uid);
+                userRef.on('value', (snapshot) => {
+                    const userData = snapshot.val();
+                    const progress = userData.progress || 0;
+                    
+                    // Actualizar barra de progreso
+                    progressFill.style.width = `${progress}%`;
+                    progressText.textContent = `${progress}% completado`;
+                });
+            }
+        });
+        
+        // Cerrar sesión
+        logoutBtn.addEventListener('click', () => {
+            auth.signOut().then(() => {
+                window.location.href = 'index.html';
+            });
+        });
+        
+        // Marcar lección como completada
+        completeLesson.addEventListener('change', (e) => {
+            const user = auth.currentUser;
+            if (user) {
+                const userRef = database.ref('users/' + user.uid);
+                
+                if (e.target.checked) {
+                    // Actualizar progreso a 15% (primera lección completada)
+                    userRef.update({
+                        progress: 15,
+                        lastCompleted: firebase.database.ServerValue.TIMESTAMP
+                    });
+                } else {
+                    // Revertir progreso a 0%
+                    userRef.update({
+                        progress: 0,
+                        lastCompleted: null
+                    });
+                }
+            }
+        });
+        
+        // Crear partículas al cargar la página
+        window.addEventListener('load', () => {
+            createParticles();
+            
+            // Animación inicial de la barra de progreso
+            setTimeout(() => {
+                progressFill.style.width = '15%';
+                progressText.textContent = '15% completado';
+            }, 500);
+        });
+    </script>
+</body>
+</html>

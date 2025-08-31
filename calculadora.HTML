@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XAUUSD PRO | TradingView + Calculadora OXOMAX</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+    <style>
+        :root {
+            --primary: #00f7ff;
+            --secondary: #ff00e4;
+            --dark: #0a0a20;
+            --light: #e0e0ff;
+            --accent: #7b2dff;
+            --neon-glow: 0 0 10px var(--primary), 0 0 20px var(--secondary);
+            --up: #00ff88;
+            --down: #ff3860;
+            --buy-signal: #00f7ff;
+            --sell-signal: #ff00e4;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--dark);
+            color: var(--light);
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(123, 45, 255, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(0, 247, 255, 0.1) 0%, transparent 20%);
+        }
+        
+        h1, h2, h3, h4 {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .container {
+            width: 95%;
+            max-width: 1800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(0, 247, 255, 0.3);
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: var(--neon-glow);
+            position: relative;
+        }
+        
+        .logo::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            box-shadow: var(--neon-glow);
+        }
+        
+        .auth-buttons button {
+            background: transparent;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-family: 'Orbitron', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-left: 10px;
+            box-shadow: 0 0 5px var(--primary);
+        }
+        
+        .auth-buttons button:hover {
+            background: var(--primary);
+            color: var(--dark);
+            box-shadow: 0 0 15px var(--primary);
+        }
+        
+        .hero {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .hero h1 {
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: var(--neon-glow);
+        }
+        
+        .chart-container {
+            width: 100%;
+            height: 70vh; /* Aumentado para más espacio */
+            min-height: 500px;
+            background: rgba(10, 10, 32, 0.7);
+            border-radius: 15px;
+            border: 1px solid rgba(0, 247, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        
+        #tradingview-chart {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .timeframe-selector {
+            display: none; /* Ocultamos el selector de timeframes */
+        }
+        
+        /* Estilos para la calculadora OXOMAX */
+        .calculator-container {
+            background: rgba(10, 10, 32, 0.7);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid rgba(0, 247, 255, 0.2);
+            margin-bottom: 30px;
+        }
+        
+        .calculator-title {
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+            text-shadow: var(--neon-glow);
+        }
+        
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 15px;
+        }
+        
+        .input-group label {
+            color: var(--light);
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .input-group input {
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(0, 247, 255, 0.3);
+            border-radius: 5px;
+            color: white;
+            font-family: 'Roboto', sans-serif;
+            text-align: center;
+        }
+        
+        .calculate-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(90deg, var(--accent), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-family: 'Orbitron', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+        
+        .calculate-btn:hover {
+            box-shadow: 0 0 15px var(--secondary);
+            transform: translateY(-2px);
+        }
+        
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            background: rgba(0, 0, 0, 0.3);
+        }
+        
+        .results-table th {
+            background: rgba(0, 247, 255, 0.2);
+            padding: 10px;
+            text-align: center;
+            color: var(--light);
+        }
+        
+        .results-table td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid rgba(0, 247, 255, 0.1);
+        }
+        
+        .results-table td:nth-child(2) {
+            background-color: rgba(255, 0, 228, 0.2);
+        }
+        
+        .results-table td:nth-child(3) {
+            background-color: rgba(0, 247, 255, 0.2);
+        }
+        
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+        
+        .modal-content {
+            background: var(--dark);
+            padding: 30px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            border: 1px solid var(--primary);
+            position: relative;
+            animation: modalAppear 0.5s;
+            box-shadow: 0 0 20px var(--primary);
+        }
+        
+        @keyframes modalAppear {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            color: var(--light);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .close-modal:hover {
+            color: var(--secondary);
+            transform: rotate(90deg);
+        }
+        
+        .modal h2 {
+            margin-bottom: 20px;
+            text-align: center;
+            color: var(--primary);
+            text-shadow: 0 0 5px var(--primary);
+        }
+        
+        .modal-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            color: var(--dark);
+            border: none;
+            border-radius: 5px;
+            font-family: 'Orbitron', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+        
+        .modal-btn:hover {
+            box-shadow: 0 0 15px var(--primary);
+            transform: translateY(-2px);
+        }
+        
+        .error-message {
+            color: var(--down);
+            margin-top: 10px;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        
+        /* Floating particles background */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: var(--primary);
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: float 15s infinite linear;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+            50% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(100px);
+                opacity: 0;
+            }
+        }
+        
+        /* Loading spinner */
+        .spinner {
+            display: none;
+            width: 40px;
+            height: 40px;
+            margin: 20px auto;
+            border: 4px solid rgba(0, 247, 255, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid var(--primary);
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Restricted access message */
+        .restricted-access {
+            text-align: center;
+            padding: 50px 20px;
+            background: rgba(255, 0, 0, 0.1);
+            border-radius: 10px;
+            border: 1px solid var(--down);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .restricted-access h3 {
+            color: var(--down);
+            margin-bottom: 20px;
+            text-shadow: 0 0 5px var(--down);
+        }
+        
+        /* Responsive styles */
+        @media (max-width: 1200px) {
+            .container {
+                width: 98%;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            header {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .auth-buttons {
+                display: flex;
+                gap: 10px;
+            }
+            
+            .auth-buttons button {
+                margin-left: 0;
+            }
+            
+            .chart-container {
+                height: 65vh; /* Más alto en móviles */
+                min-height: 400px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 1.5rem;
+            }
+            
+            .modal-content {
+                padding: 20px;
+            }
+            
+            .chart-container {
+                height: 60vh; /* Ajuste para móviles pequeños */
+                min-height: 350px;
+            }
+            
+            .calculator-title {
+                font-size: 1.2rem;
+            }
+            
+            .input-group input {
+                padding: 10px;
+            }
+            
+            .logo {
+                font-size: 1.5rem;
+            }
+            
+            .auth-buttons button {
+                padding: 6px 15px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating particles -->
+    <div class="particles" id="particles"></div>
+    
+    <div class="container">
+        <header>
+            <div class="logo">Oxomax<span class="glow">Trading</span></div>
+            <div class="auth-buttons">
+                <button id="loginBtn">INICIAR SESIÓN</button>
+                <button id="registerBtn">REGISTRARSE</button>
+                <button id="logoutBtn" style="display: none;">CERRAR SESIÓN</button>
+            </div>
+        </header>
+        
+        <div class="hero">
+            <h1>Analisis tecnico Xauusd</h1>
+        </div>
+        
+        <div id="tradingApp">
+            <!-- Contenido se cargará dinámicamente según autenticación -->
+        </div>
+    </div>
+    
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>INICIAR SESIÓN</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail">Correo Electrónico</label>
+                    <input type="email" id="loginEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Contraseña</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <button type="submit" class="modal-btn">ACCEDER</button>
+                <div class="error-message" id="loginError"></div>
+            </form>
+            <div class="spinner" id="loginSpinner"></div>
+        </div>
+    </div>
+    
+    <!-- Register Modal -->
+    <div class="modal" id="registerModal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>REGISTRARSE</h2>
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="registerEmail">Correo Electrónico</label>
+                    <input type="email" id="registerEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">Contraseña (mínimo 6 caracteres)</label>
+                    <input type="password" id="registerPassword" minlength="6" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirmar Contraseña</label>
+                    <input type="password" id="confirmPassword" required>
+                </div>
+                <button type="submit" class="modal-btn">CREAR CUENTA</button>
+                <div class="error-message" id="registerError"></div>
+            </form>
+            <div class="spinner" id="registerSpinner"></div>
+        </div>
+    </div>
+    
+    <script>
+        // Firebase configuration and initialization
+        const firebaseConfig = {
+            apiKey: "AIzaSyD3MI1klgBSHs1h6QT4VPNoScCfCwMV_Ck",
+            authDomain: "usuario-b0384.firebaseapp.com",
+            databaseURL: "https://usuario-b0384-default-rtdb.firebaseio.com",
+            projectId: "usuario-b0384",
+            storageBucket: "usuario-b0384.firebasestorage.app",
+            messagingSenderId: "196266170863",
+            appId: "1:196266170863:web:4ea57f489df94aba94fe1a"
+        };
+        
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        
+        // DOM Elements
+        const loginBtn = document.getElementById('loginBtn');
+        const registerBtn = document.getElementById('registerBtn');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const loginModal = document.getElementById('loginModal');
+        const registerModal = document.getElementById('registerModal');
+        const closeModalButtons = document.querySelectorAll('.close-modal');
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const loginError = document.getElementById('loginError');
+        const registerError = document.getElementById('registerError');
+        const loginSpinner = document.getElementById('loginSpinner');
+        const registerSpinner = document.getElementById('registerSpinner');
+        const tradingApp = document.getElementById('tradingApp');
+        const particlesContainer = document.getElementById('particles');
+        
+        // Variables para el gráfico
+        let tvWidget = null;
+        let currentTimeframe = '1D';
+        
+        // Create floating particles
+        function createParticles() {
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                particle.style.width = `${Math.random() * 3 + 1}px`;
+                particle.style.height = particle.style.width;
+                particle.style.animationDelay = `${Math.random() * 15}s`;
+                particle.style.animationDuration = `${Math.random() * 10 + 10}s`;
+                particlesContainer.appendChild(particle);
+            }
+        }
+        
+        // Modal functionality
+        function openModal(modal) {
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeModal(modal) {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            loginError.textContent = '';
+            registerError.textContent = '';
+        }
+        
+        loginBtn.addEventListener('click', () => openModal(loginModal));
+        registerBtn.addEventListener('click', () => openModal(registerModal));
+        
+        closeModalButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const modal = this.closest('.modal');
+                closeModal(modal);
+            });
+        });
+        
+        window.addEventListener('click', (e) => {
+            if (e.target.classList.contains('modal')) {
+                closeModal(e.target);
+            }
+        });
+        
+        // Authentication
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            loginError.textContent = '';
+            loginSpinner.style.display = 'block';
+            
+            try {
+                await auth.signInWithEmailAndPassword(email, password);
+                closeModal(loginModal);
+            } catch (error) {
+                loginError.textContent = getAuthErrorMessage(error.code);
+            } finally {
+                loginSpinner.style.display = 'none';
+            }
+        });
+        
+        registerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            registerError.textContent = '';
+            
+            if (password !== confirmPassword) {
+                registerError.textContent = 'Las contraseñas no coinciden';
+                return;
+            }
+            
+            registerSpinner.style.display = 'block';
+            
+            try {
+                await auth.createUserWithEmailAndPassword(email, password);
+                closeModal(registerModal);
+            } catch (error) {
+                registerError.textContent = getAuthErrorMessage(error.code);
+            } finally {
+                registerSpinner.style.display = 'none';
+            }
+        });
+        
+        logoutBtn.addEventListener('click', () => {
+            auth.signOut();
+        });
+        
+        function getAuthErrorMessage(code) {
+            switch(code) {
+                case 'auth/invalid-email':
+                    return 'Correo electrónico inválido';
+                case 'auth/user-disabled':
+                    return 'Cuenta deshabilitada';
+                case 'auth/user-not-found':
+                    return 'Usuario no encontrado';
+                case 'auth/wrong-password':
+                    return 'Contraseña incorrecta';
+                case 'auth/email-already-in-use':
+                    return 'El correo ya está en uso';
+                case 'auth/weak-password':
+                    return 'La contraseña es muy débil (mínimo 6 caracteres)';
+                case 'auth/operation-not-allowed':
+                    return 'Operación no permitida';
+                default:
+                    return 'Error al autenticar. Intenta nuevamente.';
+            }
+        }
+        
+        // Initialize TradingView Widget
+        function initTradingView() {
+            tradingApp.innerHTML = `
+                <div class="chart-container">
+                    <div id="tradingview-chart"></div>
+                </div>
+                
+                <div class="calculator-container">
+                    <h3 class="calculator-title">CALCULADORA OXOMAX</h3>
+                    
+                    <div class="input-group">
+                        <label>Máximo:</label>
+                        <input type="number" id="maximo" placeholder="Ingrese el máximo">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Mínimo:</label>
+                        <input type="number" id="minimo" placeholder="Ingrese el mínimo">
+                    </div>
+                    
+                    <button class="calculate-btn" onclick="calcularValores()">CALCULAR</button>
+                    
+                    <table class="results-table">
+                        <thead>
+                            <tr>
+                                <th>Factor</th>
+                                <th>Sell</th>
+                                <th>Buy</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tablaResultados">
+                            <!-- Resultados se insertarán aquí -->
+                        </tbody>
+                    </table>
+                </div>
+            `;
+            
+            // Crear widget de TradingView
+            tvWidget = new TradingView.widget({
+                "autosize": true,
+                "symbol": "OANDA:XAUUSD",
+                "interval": currentTimeframe,
+                "timezone": "Etc/UTC",
+                "theme": "dark",
+                "style": "1",
+                "locale": "es",
+                "toolbar_bg": "#0a0a20",
+                "enable_publishing": false,
+                "hide_top_toolbar": false,
+                "hide_side_toolbar": false,
+                "allow_symbol_change": true,
+                "container_id": "tradingview-chart",
+                "studies": [
+                    "MASimple@tv-basicstudies"
+                ],
+                "overrides": {
+                    "paneProperties.background": "#0a0a20",
+                    "paneProperties.vertGridProperties.color": "rgba(0, 247, 255, 0.1)",
+                    "paneProperties.horzGridProperties.color": "rgba(0, 247, 255, 0.1)",
+                    "mainSeriesProperties.candleStyle.upColor": "#00ff88",
+                    "mainSeriesProperties.candleStyle.downColor": "#ff3860",
+                    "mainSeriesProperties.candleStyle.borderUpColor": "#00ff88",
+                    "mainSeriesProperties.candleStyle.borderDownColor": "#ff3860",
+                    "mainSeriesProperties.candleStyle.wickUpColor": "#00ff88",
+                    "mainSeriesProperties.candleStyle.wickDownColor": "#ff3860",
+                    "scalesProperties.textColor": "rgba(224, 224, 255, 0.7)"
+                }
+            });
+        }
+        
+        // Función para calcular valores OXOMAX
+        function calcularValores() {
+            let maximo = parseFloat(document.getElementById("maximo").value);
+            let minimo = parseFloat(document.getElementById("minimo").value);
+
+            if (isNaN(maximo) || isNaN(minimo)) {
+                alert("Por favor ingrese valores válidos.");
+                return;
+            }
+
+            let factores = [0, 0.50, 1];
+            let pMedio = maximo - minimo;
+            let porcentaje = pMedio / 2;
+            let entrar = maximo - porcentaje;
+
+            let tbody = document.querySelector("#tablaResultados");
+            tbody.innerHTML = ""; // Limpiar tabla antes de agregar nuevos datos
+
+            factores.forEach(factor => {
+                let sell = (factor * porcentaje - entrar).toFixed(2);
+                let buy = (factor * porcentaje + entrar).toFixed(2);
+
+                let fila = `<tr>
+                    <td>${factor}</td>
+                    <td>${sell}</td>
+                    <td>${buy}</td>
+                </tr>`;
+                tbody.innerHTML += fila;
+            });
+        }
+        
+        // Show restricted access message
+        function showRestrictedAccess() {
+            tradingApp.innerHTML = `
+                <div class="restricted-access">
+                    <h3>ACCESO RESTRINGIDO</h3>
+                    <p>Debes iniciar sesión o registrarte para acceder al analizador de trading.</p>
+                </div>
+            `;
+        }
+        
+        // Auth state observer
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                // User is signed in
+                loginBtn.style.display = 'none';
+                registerBtn.style.display = 'none';
+                logoutBtn.style.display = 'block';
+                initTradingView();
+            } else {
+                // User is signed out
+                loginBtn.style.display = 'block';
+                registerBtn.style.display = 'block';
+                logoutBtn.style.display = 'none';
+                showRestrictedAccess();
+                
+                // Limpiar widget si existe
+                if (tvWidget !== null) {
+                    tvWidget.remove();
+                    tvWidget = null;
+                }
+            }
+        });
+        
+        // Initialize
+        createParticles();
+        
+        // Hacer la función calcularValores accesible globalmente
+        window.calcularValores = calcularValores;
+    </script>
+</body>
+</html>

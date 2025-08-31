@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacto Futurista</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #0f0f1a;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-image: radial-gradient(circle at 75% 25%, rgba(25, 25, 60, 0.8) 0%, transparent 50%),
+                              radial-gradient(circle at 25% 75%, rgba(40, 100, 120, 0.6) 0%, transparent 50%);
+        }
+        
+        .container {
+            text-align: center;
+            max-width: 500px;
+            padding: 30px;
+            background-color: rgba(20, 20, 40, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(0, 200, 200, 0.2);
+            border: 1px solid rgba(0, 200, 200, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        h1 {
+            color: #00c8c8;
+            margin-bottom: 30px;
+            font-size: 2.2em;
+            text-shadow: 0 0 10px rgba(0, 200, 200, 0.3);
+        }
+        
+        .whatsapp-btn {
+            display: inline-block;
+            background-color: #25D366;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .whatsapp-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(37, 211, 102, 0.4);
+        }
+        
+        .whatsapp-btn:active {
+            transform: translateY(1px);
+        }
+        
+        .whatsapp-btn::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.1);
+            transform: rotate(45deg);
+            transition: all 0.5s ease;
+            pointer-events: none;
+        }
+        
+        .whatsapp-btn:hover::before {
+            left: 100%;
+            top: 100%;
+        }
+        
+        .contact-info {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(0, 200, 200, 0.2);
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 15px rgba(37, 211, 102, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Oxxomaxtrading </h1>
+        <p>¿Contactanos? Estoy aquí para ayudarte.</p>
+        
+        <a href="https://wa.me/593980051394" class="whatsapp-btn pulse">
+            WhatsApp: 098 005 1394
+        </a>
+        
+        <div class="contact-info">
+            <p>O escríbeme directamente a mi número de WhatsApp</p>
+            <p><strong>Ecuador: +593 98 005 1394</strong></p>
+        </div>
+    </div>
+</body>
+</html>

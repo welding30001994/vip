@@ -1,0 +1,1392 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OXOMAX-TRADING</title>
+    <style>
+        :root {
+            --neon-blue: #0ff0fc;
+            --neon-purple: #9600ff;
+            --neon-pink: #ff2a6d;
+            --dark-bg: #0a0a1a;
+            --card-bg: rgba(15, 15, 35, 0.9);
+            --glow-intensity: 8px;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: var(--dark-bg);
+            color: white;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(150, 0, 255, 0.15) 0%, transparent 25%),
+                radial-gradient(circle at 90% 80%, rgba(0, 255, 252, 0.15) 0%, transparent 25%),
+                linear-gradient(to bottom, rgba(10, 10, 26, 0.95), rgba(10, 10, 30, 0.98));
+        }
+
+        /* Mejora de partículas */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: var(--neon-blue);
+            border-radius: 50%;
+            opacity: 0.7;
+            animation: float 20s infinite linear;
+            box-shadow: 0 0 10px 2px var(--neon-blue);
+        }
+        
+        .particle:nth-child(3n) {
+            background: var(--neon-purple);
+            box-shadow: 0 0 10px 2px var(--neon-purple);
+            animation-duration: 25s;
+        }
+        
+        .particle:nth-child(2n) {
+            background: var(--neon-pink);
+            box-shadow: 0 0 10px 2px var(--neon-pink);
+            animation-duration: 15s;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-100px) translateX(100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            max-width: 100%;
+            padding: 15px;
+            box-sizing: border-box;
+        }
+        
+        /* Header mejorado para móviles */
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 15px 10px;
+            position: relative;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .header h1 {
+            font-size: 2rem;
+            margin: 0;
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 15px rgba(0, 255, 252, 0.5);
+            letter-spacing: 1px;
+            font-weight: 800;
+        }
+        
+        .header p {
+            color: #ccc;
+            margin-top: 8px;
+            font-size: 0.95rem;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+        }
+        
+        /* Menú móvil hamburguesa */
+        .mobile-menu-btn {
+            display: none;
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            z-index: 1000;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .mobile-menu-btn span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: var(--neon-blue);
+            margin: 3px 0;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+        
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            left: -100%;
+            width: 80%;
+            height: 100vh;
+            background: var(--card-bg);
+            z-index: 999;
+            padding: 70px 20px 20px;
+            transition: left 0.4s ease;
+            box-shadow: 5px 0 25px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .mobile-menu.active {
+            left: 0;
+        }
+        
+        .mobile-menu ul {
+            list-style: none;
+        }
+        
+        .mobile-menu ul li {
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .mobile-menu ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+            display: block;
+            transition: color 0.3s;
+        }
+        
+        .mobile-menu ul li a:hover {
+            color: var(--neon-blue);
+        }
+        
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 998;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Mejora de cajas de comentarios */
+        .comment-box, .comment {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 16px;
+            width: 100%;
+            margin: 15px 0;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(12px);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .comment-box::before, .comment::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            z-index: -1;
+            background: linear-gradient(45deg, var(--neon-blue), transparent, var(--neon-purple));
+            border-radius: 18px;
+            opacity: 0.3;
+            transition: opacity 0.3s;
+        }
+        
+        .comment-box:hover::before, .comment:hover::before {
+            opacity: 0.6;
+        }
+        
+        .input-container {
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+
+        .comment-box input {
+            flex: 1;
+            padding: 14px 18px;
+            border: none;
+            border-radius: 30px;
+            outline: none;
+            background: rgba(255, 255, 255, 0.08);
+            color: white;
+            font-size: 16px;
+            min-height: 50px;
+        }
+        
+        .comment-box input::placeholder {
+            color: #aaa;
+        }
+        
+        .comment-box button, .reply-button {
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-purple));
+            color: white;
+            padding: 14px 20px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-left: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(0, 255, 252, 0.4);
+            font-size: 16px;
+            min-width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .comment-box button:hover, .reply-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 25px rgba(0, 255, 252, 0.7);
+        }
+        
+        .comment-box button:active, .reply-button:active {
+            transform: translateY(1px);
+        }
+        
+        .post-image-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-purple));
+            color: white;
+            margin-left: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+            box-shadow: 0 0 15px rgba(0, 255, 252, 0.4);
+        }
+
+        .post-image-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(0, 255, 252, 0.6);
+        }
+        
+        .comment p {
+            font-weight: bold;
+            margin: 0 0 10px 0;
+            color: white;
+            font-size: 16px;
+        }
+        
+        .comment .content {
+            margin-bottom: 15px;
+        }
+        
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            font-size: 14px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .actions span {
+            cursor: pointer;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            transition: color 0.2s;
+            margin-bottom: 8px;
+            padding: 5px 10px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .actions span:hover {
+            color: var(--neon-blue);
+            background: rgba(0, 255, 252, 0.1);
+        }
+        
+        .actions span i {
+            margin-right: 8px;
+            font-size: 14px;
+        }
+        
+        .replies {
+            display: none;
+            margin-left: 15px;
+            padding-left: 15px;
+            border-left: 2px solid var(--neon-purple);
+            width: calc(100% - 15px);
+        }
+        
+        .replies .comment {
+            width: 100%;
+            background: rgba(25, 25, 45, 0.9);
+            padding: 15px;
+            border-radius: 12px;
+            margin: 10px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        #commentsSection {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            align-items: center;
+        }
+        
+        .comment img {
+            max-width: 100%;
+            margin-top: 12px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .signal-tag {
+            display: inline-block;
+            background: rgba(0, 255, 252, 0.2);
+            color: var(--neon-blue);
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            border: 1px solid var(--neon-blue);
+            box-shadow: 0 0 8px rgba(0, 255, 252, 0.3);
+        }
+        
+        .signal-buy {
+            background: rgba(0, 255, 0, 0.2);
+            color: #00ff00;
+            border-color: #00ff00;
+            box-shadow: 0 0 8px rgba(0, 255, 0, 0.3);
+        }
+        
+        .signal-sell {
+            background: rgba(255, 0, 0, 0.2);
+            color: #ff0000;
+            border-color: #ff0000;
+            box-shadow: 0 0 8px rgba(255, 0, 0, 0.3);
+        }
+        
+        .signal-info {
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: 12px;
+            gap: 8px;
+        }
+        
+        .signal-input {
+            margin-top: 15px;
+            display: none;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .signal-input select, .signal-input input {
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            font-size: 14px;
+            flex: 1;
+            min-width: 120px;
+        }
+        
+        .timestamp {
+            font-size: 12px;
+            color: #aaa;
+            margin-bottom: 8px;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 255, 252, 0.7); }
+            70% { box-shadow: 0 0 0 12px rgba(0, 255, 252, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 255, 252, 0); }
+        }
+        
+        .live-signal {
+            animation: pulse 2s infinite;
+            position: relative;
+        }
+        
+        .live-signal::after {
+            content: 'LIVE';
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: red;
+            color: white;
+            font-size: 10px;
+            padding: 3px 8px;
+            border-radius: 12px;
+            animation: pulse 1.5s infinite;
+            font-weight: bold;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+        }
+        
+        .toggle-signal {
+            background: none;
+            border: none;
+            color: var(--neon-blue);
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 12px;
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            border-radius: 20px;
+            background: rgba(0, 255, 252, 0.1);
+            transition: all 0.3s;
+        }
+        
+        .toggle-signal:hover {
+            background: rgba(0, 255, 252, 0.2);
+        }
+        
+        .toggle-signal i {
+            margin-right: 8px;
+        }
+        
+        /* Login styles mejorado */
+        .login-container {
+            display: none;
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 400px;
+            margin: 30px auto;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+        }
+        
+        .login-container h2 {
+            margin-top: 0;
+            color: var(--neon-blue);
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(0, 255, 252, 0.3);
+        }
+        
+        .login-container input {
+            width: 100%;
+            padding: 14px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 16px;
+        }
+        
+        .login-container button {
+            width: 100%;
+            padding: 14px;
+            margin: 15px 0;
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-purple));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            transition: all 0.3s;
+            box-shadow: 0 0 15px rgba(0, 255, 252, 0.4);
+        }
+        
+        .login-container button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 25px rgba(0, 255, 252, 0.7);
+        }
+        
+        .login-message {
+            margin-top: 15px;
+            color: #ff5555;
+            font-size: 14px;
+        }
+        
+        /* User info mejorado */
+        .user-info {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            display: flex;
+            align-items: center;
+            background: var(--card-bg);
+            padding: 8px 15px;
+            border-radius: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            z-index: 100;
+            max-width: calc(100% - 30px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .user-info img {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            margin-right: 10px;
+            border: 1px solid var(--neon-blue);
+            box-shadow: 0 0 10px rgba(0, 255, 252, 0.3);
+        }
+        
+        .user-info span {
+            font-size: 14px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 150px;
+        }
+        
+        .user-info button {
+            background: rgba(255, 0, 0, 0.3);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 6px 12px;
+            font-size: 12px;
+            margin-left: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .user-info button:hover {
+            background: rgba(255, 0, 0, 0.5);
+        }
+
+        .preview-container {
+            display: flex;
+            align-items: center;
+            margin-top: 12px;
+        }
+        
+        .preview-container img {
+            max-width: 60px;
+            max-height: 60px;
+            border-radius: 8px;
+            margin-left: 10px;
+            display: none;
+            border: 1px solid var(--neon-blue);
+            box-shadow: 0 0 10px rgba(0, 255, 252, 0.3);
+        }
+
+        .delete-btn {
+            background: rgba(255, 0, 0, 0.3) !important;
+            color: white !important;
+            border: none;
+            border-radius: 20px;
+            padding: 5px 10px;
+            font-size: 12px;
+            margin-left: 10px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            transition: all 0.3s;
+        }
+
+        .delete-btn:hover {
+            background: rgba(255, 0, 0, 0.5) !important;
+        }
+
+        .delete-btn i {
+            margin-right: 5px;
+        }
+
+        /* Botón flotante para móviles */
+        .floating-action-btn {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-purple));
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+            z-index: 99;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            font-size: 24px;
+        }
+        
+        .floating-action-btn:hover {
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 10px 25px rgba(0, 255, 252, 0.5);
+        }
+
+        /* Responsive adjustments mejorados */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header {
+                padding: 15px 5px;
+                margin-bottom: 15px;
+            }
+            
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .header p {
+                font-size: 0.9rem;
+            }
+            
+            .mobile-menu-btn {
+                display: flex;
+            }
+            
+            .comment-box, .comment {
+                padding: 15px;
+                border-radius: 14px;
+            }
+            
+            .comment-box input {
+                padding: 12px 15px;
+                font-size: 16px;
+                min-height: 45px;
+            }
+            
+            .comment-box button, .reply-button {
+                padding: 12px 16px;
+                font-size: 14px;
+                min-width: 45px;
+                height: 45px;
+            }
+            
+            .post-image-btn {
+                width: 45px;
+                height: 45px;
+            }
+            
+            .user-info {
+                top: 80px;
+                right: 10px;
+                padding: 6px 12px;
+            }
+            
+            .user-info span {
+                max-width: 120px;
+                font-size: 13px;
+            }
+            
+            .signal-input {
+                flex-direction: column;
+            }
+            
+            .signal-input select, .signal-input input {
+                width: 100%;
+                min-width: auto;
+            }
+            
+            .floating-action-btn {
+                bottom: 20px;
+                right: 20px;
+                width: 55px;
+                height: 55px;
+                font-size: 22px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.6rem;
+            }
+            
+            .header p {
+                font-size: 0.85rem;
+            }
+            
+            .comment-box, .comment {
+                padding: 12px;
+            }
+            
+            .input-container {
+                flex-direction: column;
+            }
+            
+            .comment-box input {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            
+            .comment-box .input-container > * {
+                margin: 5px 0;
+            }
+            
+            .post-image-btn {
+                margin-left: 0;
+                order: 2;
+            }
+            
+            .comment-box button {
+                margin-left: 0;
+                width: 100%;
+                order: 3;
+            }
+            
+            .actions {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .actions span {
+                margin-bottom: 10px;
+            }
+            
+            .user-info {
+                top: 75px;
+                padding: 5px 10px;
+            }
+            
+            .user-info span {
+                max-width: 100px;
+                font-size: 12px;
+            }
+            
+            .user-info img {
+                width: 30px;
+                height: 30px;
+            }
+            
+            .floating-action-btn {
+                bottom: 15px;
+                right: 15px;
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+            }
+            
+            .login-container {
+                padding: 20px 15px;
+            }
+            
+            .login-container h2 {
+                font-size: 1.6rem;
+            }
+            
+            .login-container input, .login-container button {
+                padding: 12px;
+            }
+        }
+
+        @media (max-width: 350px) {
+            .header h1 {
+                font-size: 1.4rem;
+            }
+            
+            .user-info span {
+                max-width: 80px;
+            }
+            
+            .signal-tag {
+                font-size: 11px;
+                padding: 4px 8px;
+            }
+        }
+
+        /* Efectos de scroll personalizados */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(var(--neon-blue), var(--neon-purple));
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(var(--neon-purple), var(--neon-blue));
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- Floating particles -->
+    <div class="particles" id="particles"></div>
+    
+    <!-- Menú móvil -->
+    <div class="mobile-menu-btn" id="mobileMenuBtn">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+    
+    <div class="mobile-menu" id="mobileMenu">
+        <ul>
+            <li><a href="#"><i class="fas fa-home"></i> Inicio</a></li>
+            <li><a href="#"><i class="fas fa-chart-line"></i> Señales</a></li>
+            <li><a href="#"><i class="fas fa-users"></i> Comunidad</a></li>
+            <li><a href="#"><i class="fas fa-cog"></i> Configuración</a></li>
+            <li><a href="#"><i class="fas fa-question-circle"></i> Ayuda</a></li>
+        </ul>
+    </div>
+    
+    <div class="menu-overlay" id="menuOverlay"></div>
+    
+    <!-- Botón flotante para nueva publicación -->
+    <button class="floating-action-btn" id="newPostBtn">
+        <i class="fas fa-plus"></i>
+    </button>
+    
+    <div class="container">
+        <div class="login-container" id="loginContainer">
+            <h2>Iniciar sesión</h2>
+            <input type="email" id="loginEmail" placeholder="Correo electrónico">
+            <input type="password" id="loginPassword" placeholder="Contraseña">
+            <button onclick="login()">Iniciar sesión</button>
+            <div class="login-message" id="loginMessage"></div>
+        </div>
+
+        <div id="appContent" style="display: none;">
+            <div class="user-info" id="userInfo">
+                <img id="userPhoto" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png">
+                <span id="userName">Usuario</span>
+                <button onclick="logout()">Salir</button>
+            </div>
+            
+            <div class="header">
+                <h1>OXOMAX-TRADING</h1>
+                <p>Señales de trading con la comunidad</p>
+            </div>
+            
+            <div class="comment-box" id="mainCommentBox">
+                <div class="input-container">
+                    <input type="text" id="commentInput" placeholder="Escribe tu comentario...">
+                    <div class="post-image-btn" onclick="document.getElementById('imageInput').click()">
+                        <i class="fas fa-image"></i>
+                    </div>
+                    <input type="file" id="imageInput" accept="image/*" style="display: none;">
+                    <button id="postButton" onclick="postComment()"><i class="fas fa-paper-plane"></i></button>
+                </div>
+                
+                <div class="preview-container">
+                    <img id="imagePreview" class="preview-image">
+                </div>
+                
+                <div class="signal-input" id="signalInput">
+                    <select id="signalType">
+                        <option value="buy">Compra</option>
+                        <option value="sell">Venta</option>
+                        <option value="analysis">Análisis</option>
+                    </select>
+                    <input type="text" id="assetInput" placeholder="Activo">
+                    <input type="text" id="priceInput" placeholder="Precio">
+                    <input type="text" id="targetInput" placeholder="Objetivo">
+                    <input type="text" id="stopInput" placeholder="Stop Loss">
+                </div>
+                
+                <button class="toggle-signal" onclick="toggleSignalInput()">
+                    <i class="fas fa-chart-line"></i> Añadir señal
+                </button>
+            </div>
+
+            <div id="commentsSection"></div>
+        </div>
+    </div>
+
+    <!-- Import Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-storage-compat.js"></script>
+
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyD3MI1klgBSHs1h6QT4VPNoScCfCwMV_Ck",
+            authDomain: "usuario-b0384.firebaseapp.com",
+            databaseURL: "https://usuario-b0384-default-rtdb.firebaseio.com",
+            projectId: "usuario-b0384",
+            storageBucket: "usuario-b0384.appspot.com",
+            messagingSenderId: "196266170863",
+            appId: "1:196266170863:web:4ea57f489df94aba94fe1a"
+        };
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const database = firebase.database();
+        const storage = firebase.storage();
+
+        // Variables globales
+        let selectedImage = null;
+        let showSignalInput = false;
+        let currentUser = null;
+
+        // Crear partículas flotantes
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            for (let i = 0; i < 40; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                particle.style.width = `${Math.random() * 3 + 1}px`;
+                particle.style.height = particle.style.width;
+                particle.style.animationDelay = `${Math.random() * 20}s`;
+                particle.style.animationDuration = `${Math.random() * 15 + 10}s`;
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Cargar cuando el DOM esté listo
+        document.addEventListener('DOMContentLoaded', function() {
+            createParticles();
+            
+            // Configurar menú móvil
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const menuOverlay = document.getElementById('menuOverlay');
+            
+            mobileMenuBtn.addEventListener('click', function() {
+                mobileMenu.classList.toggle('active');
+                menuOverlay.classList.toggle('active');
+            });
+            
+            menuOverlay.addEventListener('click', function() {
+                mobileMenu.classList.remove('active');
+                menuOverlay.classList.remove('active');
+            });
+            
+            // Configurar botón flotante
+            const newPostBtn = document.getElementById('newPostBtn');
+            const mainCommentBox = document.getElementById('mainCommentBox');
+            
+            newPostBtn.addEventListener('click', function() {
+                mainCommentBox.scrollIntoView({ behavior: 'smooth' });
+                document.getElementById('commentInput').focus();
+            });
+            
+            // Escuchar cambios en la autenticación
+            auth.onAuthStateChanged(user => {
+                if (user) {
+                    // Usuario logueado
+                    currentUser = user;
+                    showAppContent();
+                    loadComments();
+                    updateUserInfo();
+                } else {
+                    // No hay usuario logueado
+                    showLoginForm();
+                }
+            });
+            
+            // Configurar evento de subida de imagen
+            document.getElementById('imageInput').addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    selectedImage = file;
+                    showPreview(file);
+                }
+            });
+        });
+
+        // Mostrar formulario de login
+        function showLoginForm() {
+            document.getElementById('loginContainer').style.display = 'block';
+            document.getElementById('appContent').style.display = 'none';
+        }
+
+        // Mostrar contenido de la app
+        function showAppContent() {
+            document.getElementById('loginContainer').style.display = 'none';
+            document.getElementById('appContent').style.display = 'block';
+        }
+
+        // Actualizar información del usuario
+        function updateUserInfo() {
+            if (currentUser) {
+                document.getElementById('userName').textContent = currentUser.displayName || currentUser.email.split('@')[0];
+                if (currentUser.photoURL) {
+                    document.getElementById('userPhoto').src = currentUser.photoURL;
+                }
+            }
+        }
+
+        // Iniciar sesión
+        function login() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const message = document.getElementById('loginMessage');
+            
+            message.textContent = '';
+            
+            auth.signInWithEmailAndPassword(email, password)
+                .catch(error => {
+                    message.textContent = error.message;
+                });
+        }
+
+        // Cerrar sesión
+        function logout() {
+            auth.signOut();
+        }
+
+        // Mostrar vista previa de imagen
+        function showPreview(file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const preview = document.getElementById("imagePreview");
+                preview.src = e.target.result;
+                preview.style.display = "block";
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Alternar visibilidad de inputs de señal
+        function toggleSignalInput() {
+            showSignalInput = !showSignalInput;
+            updateSignalInputVisibility();
+        }
+
+        function updateSignalInputVisibility() {
+            const signalInput = document.getElementById("signalInput");
+            signalInput.style.display = showSignalInput ? "flex" : "none";
+            
+            const postButton = document.getElementById("postButton");
+            postButton.innerHTML = showSignalInput 
+                ? '<i class="fas fa-bolt"></i>' 
+                : '<i class="fas fa-paper-plane"></i>';
+        }
+
+        // Publicar comentario
+        function postComment() {
+            if (!currentUser) return;
+            
+            const input = document.getElementById("commentInput");
+            const commentText = input.value.trim();
+            
+            const signalType = document.getElementById("signalType").value;
+            const asset = document.getElementById("assetInput").value.trim();
+            const price = document.getElementById("priceInput").value.trim();
+            const target = document.getElementById("targetInput").value.trim();
+            const stop = document.getElementById("stopInput").value.trim();
+            
+            const hasSignal = showSignalInput && (asset || price || target || stop);
+            
+            if (commentText !== "" || selectedImage || hasSignal) {
+                const comment = {
+                    userId: currentUser.uid,
+                    userEmail: currentUser.email,
+                    userName: currentUser.displayName || currentUser.email.split('@')[0],
+                    userPhoto: currentUser.photoURL || 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
+                    text: commentText,
+                    hasImage: selectedImage ? true : false,
+                    timestamp: firebase.database.ServerValue.TIMESTAMP,
+                    likes: 0,
+                    replies: {},
+                    signal: hasSignal ? {
+                        type: signalType,
+                        asset: asset,
+                        price: price,
+                        target: target,
+                        stop: stop,
+                        isLive: true
+                    } : null
+                };
+                
+                // Subir imagen si existe
+                if (selectedImage) {
+                    const storageRef = storage.ref(`comments/${currentUser.uid}/${Date.now()}_${selectedImage.name}`);
+                    const uploadTask = storageRef.put(selectedImage);
+                    
+                    uploadTask.on('state_changed', 
+                        null, 
+                        (error) => {
+                            console.error("Error uploading image:", error);
+                            saveCommentToDatabase(comment);
+                        }, 
+                        () => {
+                            uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+                                comment.imageUrl = downloadURL;
+                                saveCommentToDatabase(comment);
+                            });
+                        }
+                    );
+                } else {
+                    saveCommentToDatabase(comment);
+                }
+                
+                // Limpiar inputs
+                input.value = "";
+                document.getElementById("imageInput").value = "";
+                document.getElementById("imagePreview").style.display = "none";
+                selectedImage = null;
+                
+                if (showSignalInput) {
+                    document.getElementById("assetInput").value = "";
+                    document.getElementById("priceInput").value = "";
+                    document.getElementById("targetInput").value = "";
+                    document.getElementById("stopInput").value = "";
+                    showSignalInput = false;
+                    updateSignalInputVisibility();
+                }
+            }
+        }
+
+        // Guardar comentario en Firebase
+        function saveCommentToDatabase(comment) {
+            const newCommentRef = database.ref('comments').push();
+            newCommentRef.set(comment)
+                .catch(error => {
+                    console.error("Error saving comment:", error);
+                });
+        }
+
+        // Cargar comentarios desde Firebase
+        function loadComments() {
+            database.ref('comments').orderByChild('timestamp').on('value', snapshot => {
+                const commentsSection = document.getElementById("commentsSection");
+                commentsSection.innerHTML = '';
+                
+                const comments = [];
+                snapshot.forEach(childSnapshot => {
+                    const comment = childSnapshot.val();
+                    comment.id = childSnapshot.key;
+                    comments.unshift(comment); // Orden inverso (más nuevos primero)
+                });
+                
+                comments.forEach(comment => {
+                    renderComment(comment);
+                });
+            });
+        }
+
+        // Renderizar comentario en el DOM
+        function renderComment(comment) {
+            const commentContainer = document.createElement("div");
+            commentContainer.classList.add("comment");
+            if (comment.signal?.isLive) {
+                commentContainer.classList.add("live-signal");
+            }
+            
+            const timestamp = new Date(comment.timestamp).toLocaleString();
+            
+            let signalHTML = '';
+            if (comment.signal) {
+                const signalTypeClass = comment.signal.type === 'buy' ? 'signal-buy' : 
+                                       comment.signal.type === 'sell' ? 'signal-sell' : '';
+                
+                signalHTML = `
+                    <div class="signal-info">
+                        ${comment.signal.asset ? `<span class="signal-tag ${signalTypeClass}"><i class="fas fa-${comment.signal.type === 'buy' ? 'arrow-up' : 'arrow-down'}"></i> ${comment.signal.asset}</span>` : ''}
+                        ${comment.signal.price ? `<span class="signal-tag"><i class="fas fa-tag"></i> ${comment.signal.price}</span>` : ''}
+                        ${comment.signal.target ? `<span class="signal-tag"><i class="fas fa-bullseye"></i> ${comment.signal.target}</span>` : ''}
+                        ${comment.signal.stop ? `<span class="signal-tag"><i class="fas fa-shield-alt"></i> ${comment.signal.stop}</span>` : ''}
+                    </div>
+                `;
+            }
+            
+            let imageHTML = '';
+            if (comment.imageUrl) {
+                imageHTML = `<img src="${comment.imageUrl}" alt="Imagen adjunta">`;
+            }
+            
+            // Botón de eliminar solo para el autor
+            let deleteButton = '';
+            if (currentUser && comment.userId === currentUser.uid) {
+                deleteButton = `<button class="delete-btn" onclick="deleteComment('${comment.id}')"><i class="fas fa-trash"></i> Eliminar</button>`;
+            }
+            
+            commentContainer.innerHTML = `
+                <div class="content">
+                    <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                        <img src="${comment.userPhoto}" style="width: 35px; height: 35px; border-radius: 50%; margin-right: 10px; border: 1px solid var(--neon-blue); box-shadow: 0 0 8px rgba(0, 255, 252, 0.3);">
+                        <span style="font-weight: bold; font-size: 15px;">${comment.userName}</span>
+                    </div>
+                    <p style="font-size: 15px;">${comment.text || (comment.signal ? 'Señal de trading' : 'Publicación')}</p>
+                    ${signalHTML}
+                    <div class="timestamp">${timestamp}</div>
+                    ${imageHTML}
+                </div>
+                <div class="actions">
+                    <span onclick="likeComment('${comment.id}', ${comment.likes || 0})"><i class="fas fa-thumbs-up"></i> Me gusta (<span class="like-count">${comment.likes || 0}</span>)</span>
+                    <span onclick="toggleReplies(this, '${comment.id}')"><i class="fas fa-comment"></i> Comentar</span>
+                    ${deleteButton}
+                </div>
+                <div class="replies" id="replies-${comment.id}">
+                    ${comment.replies ? renderReplies(comment.replies, comment.id) : ''}
+                </div>
+            `;
+            
+            document.getElementById("commentsSection").appendChild(commentContainer);
+        }
+
+        // Renderizar respuestas
+        function renderReplies(replies, commentId) {
+            let repliesHTML = '';
+            for (const replyId in replies) {
+                const reply = replies[replyId];
+                const timestamp = new Date(reply.timestamp).toLocaleString();
+                
+                let deleteButton = '';
+                if (currentUser && reply.userId === currentUser.uid) {
+                    deleteButton = `<button class="delete-btn" onclick="deleteReply('${commentId}', '${replyId}')"><i class="fas fa-trash"></i></button>`;
+                }
+                
+                repliesHTML += `
+                    <div class="comment reply" id="reply-${commentId}-${replyId}">
+                        <div class="content">
+                            <div style="display: flex; align-items: center; margin-bottom: 5px;">
+                                <img src="${reply.userPhoto}" style="width: 30px; height: 30px; border-radius: 50%; margin-right: 8px; border: 1px solid rgba(0, 255, 252, 0.3);">
+                                <span style="font-size: 14px; font-weight: bold;">${reply.userName}</span>
+                            </div>
+                            <p style="margin: 5px 0; font-size: 14px;">${reply.text}</p>
+                            <div class="timestamp" style="font-size: 12px;">${timestamp}</div>
+                            ${deleteButton}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Añadir caja de respuesta
+            repliesHTML += `
+                <div class="reply-box" style="margin-top: 10px; display: flex; align-items: center;">
+                    <input type="text" class="reply-input" placeholder="Escribe una respuesta..." style="flex: 1; padding: 10px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.1); color: white; font-size: 14px;">
+                    <button class="reply-button" onclick="postReply(this, '${commentId}')" style="margin-left: 8px;"><i class="fas fa-reply"></i></button>
+                </div>
+            `;
+            
+            return repliesHTML;
+        }
+
+        // Dar like a un comentario
+        function likeComment(commentId, currentLikes) {
+            if (!currentUser) return;
+            
+            const newLikes = (currentLikes || 0) + 1;
+            database.ref(`comments/${commentId}/likes`).set(newLikes);
+        }
+
+        // Alternar visibilidad de respuestas
+        function toggleReplies(element, commentId) {
+            const commentElement = element.closest('.comment');
+            const repliesDiv = commentElement.querySelector('.replies');
+            
+            if (repliesDiv.style.display === "none" || repliesDiv.style.display === "") {
+                repliesDiv.style.display = "block";
+            } else {
+                repliesDiv.style.display = "none";
+            }
+        }
+
+        // Publicar respuesta
+        function postReply(button, commentId) {
+            if (!currentUser) return;
+            
+            const replyInput = button.previousElementSibling;
+            const replyText = replyInput.value.trim();
+            
+            if (replyText !== "") {
+                const reply = {
+                    userId: currentUser.uid,
+                    userEmail: currentUser.email,
+                    userName: currentUser.displayName || currentUser.email.split('@')[0],
+                    userPhoto: currentUser.photoURL || 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
+                    text: replyText,
+                    timestamp: firebase.database.ServerValue.TIMESTAMP
+                };
+                
+                // Guardar respuesta en Firebase
+                const newReplyRef = database.ref(`comments/${commentId}/replies`).push();
+                newReplyRef.set(reply)
+                    .then(() => {
+                        replyInput.value = "";
+                    })
+                    .catch(error => {
+                        console.error("Error posting reply:", error);
+                    });
+            }
+        }
+
+        // Eliminar comentario
+        function deleteComment(commentId) {
+            if (!currentUser) return;
+            
+            if (confirm("¿Estás seguro de que quieres eliminar este comentario?")) {
+                // Eliminar imagen si existe
+                database.ref(`comments/${commentId}`).once('value').then(snapshot => {
+                    const comment = snapshot.val();
+                    if (comment.imageUrl) {
+                        const imageRef = storage.refFromURL(comment.imageUrl);
+                        imageRef.delete().catch(error => {
+                            console.error("Error deleting image:", error);
+                        });
+                    }
+                    
+                    // Eliminar comentario de la base de datos
+                    database.ref(`comments/${commentId}`).remove();
+                });
+            }
+        }
+
+        // Eliminar respuesta
+        function deleteReply(commentId, replyId) {
+            if (!currentUser) return;
+            
+            if (confirm("¿Estás seguro de que quieres eliminar esta respuesta?")) {
+                database.ref(`comments/${commentId}/replies/${replyId}`).remove();
+            }
+        }
+    </script>
+</body>
+</html>

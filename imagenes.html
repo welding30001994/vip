@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Avicontrol Pro | Gestión Avícola</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-database-compat.js"></script>
+  <style>
+    :root {
+      --primary: #6C5CE7;
+      --primary-light: #A29BFE;
+      --success: #00B894;
+      --danger: #D63031;
+      --warning: #FDCB6E;
+      --dark: #2D3436;
+      --light: #F5F6FA;
+      --gray: #636E72;
+      --future-blue: #00CEC9;
+      --future-purple: #6C5CE7;
+      --glass: rgba(255, 255, 255, 0.15);
+      --glass-border: rgba(255, 255, 255, 0.2);
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      color: white;
+      min-height: 100vh;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    /* Header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      margin-bottom: 30px;
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+    }
+    
+    .logo {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      font-size: 24px;
+      background: linear-gradient(to right, var(--future-blue), var(--future-purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 1px;
+    }
+    
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    /* Auth Section */
+    .auth-container {
+      max-width: 500px;
+      margin: 50px auto;
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.3);
+      transform-style: preserve-3d;
+      perspective: 1000px;
+    }
+    
+    .auth-tabs {
+      display: flex;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .auth-tab {
+      flex: 1;
+      text-align: center;
+      padding: 20px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .auth-tab.active {
+      background: rgba(108, 92, 231, 0.2);
+      color: white;
+    }
+    
+    .auth-tab:not(.active):hover {
+      background: rgba(255, 255, 255, 0.05);
+    }
+    
+    .auth-tab::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 3px;
+      background: linear-gradient(to right, var(--future-blue), var(--future-purple));
+      transition: width 0.3s ease;
+    }
+    
+    .auth-tab.active::after {
+      width: 80%;
+    }
+    
+    .auth-form {
+      padding: 30px;
+      display: none;
+      animation: fadeIn 0.5s ease-out;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .auth-form.active {
+      display: block;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+      position: relative;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.8);
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 12px 15px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 10px;
+      color: white;
+      font-size: 16px;
+      transition: all 0.3s ease;
+    }
+    
+    .form-control:focus {
+      outline: none;
+      border-color: var(--future-blue);
+      box-shadow: 0 0 0 2px rgba(0, 206, 201, 0.3);
+      background: rgba(255, 255, 255, 0.15);
+    }
+    
+    .btn {
+      display: inline-block;
+      padding: 12px 25px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    
+    .btn-block {
+      display: block;
+      width: 100%;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(45deg, var(--future-blue), var(--future-purple));
+      color: white;
+      box-shadow: 0 4px 15px rgba(108, 92, 231, 0.4);
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(108, 92, 231, 0.6);
+    }
+    
+    .btn-danger {
+      background: var(--danger);
+      color: white;
+    }
+    
+    .btn-danger:hover {
+      background: #c0392b;
+    }
+    
+    /* App Section */
+    .app-section {
+      display: none;
+    }
+    
+    .app-section.active {
+      display: block;
+      animation: fadeIn 0.5s ease-out;
+    }
+    
+    /* Dashboard */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+    
+    .card {
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      padding: 25px;
+      border: 1px solid var(--glass-border);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+    }
+    
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.2);
+    }
+    
+    .card h3 {
+      color: rgba(255, 255, 255, 0.8);
+      margin-bottom: 15px;
+      font-size: 16px;
+      font-weight: 500;
+    }
+    
+    .card-value {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 5px;
+      font-family: 'Orbitron', sans-serif;
+    }
+    
+    .income-value {
+      color: var(--success);
+    }
+    
+    .expense-value {
+      color: var(--danger);
+    }
+    
+    .balance-value {
+      color: var(--future-blue);
+    }
+    
+    .feed-value {
+      color: var(--warning);
+    }
+    
+    /* Transaction Form */
+    .transaction-form {
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 30px;
+      margin-bottom: 30px;
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+    }
+    
+    .transaction-form h3 {
+      margin-bottom: 20px;
+      font-size: 20px;
+      color: white;
+      position: relative;
+      padding-bottom: 10px;
+    }
+    
+    .transaction-form h3::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 50px;
+      height: 3px;
+      background: linear-gradient(to right, var(--future-blue), var(--future-purple));
+      border-radius: 3px;
+    }
+    
+    .form-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+    
+    /* Transactions Layout */
+    .transactions-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    
+    .transactions-column {
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 20px;
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+    }
+    
+    .transactions-column h3 {
+      margin-bottom: 20px;
+      font-size: 18px;
+      color: white;
+      display: flex;
+      align-items: center;
+    }
+    
+    .transactions-column h3::before {
+      content: '';
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+    
+    .income-column h3::before {
+      background: var(--success);
+    }
+    
+    .expense-column h3::before {
+      background: var(--danger);
+    }
+    
+    .transactions-list {
+      max-height: 500px;
+      overflow-y: auto;
+      padding-right: 10px;
+    }
+    
+    /* Custom scrollbar */
+    .transactions-list::-webkit-scrollbar {
+      width: 6px;
+    }
+    
+    .transactions-list::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+    }
+    
+    .transactions-list::-webkit-scrollbar-thumb {
+      background: linear-gradient(var(--future-blue), var(--future-purple));
+      border-radius: 10px;
+    }
+    
+    /* Transaction Item */
+    .transaction-item {
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.05);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .transaction-item:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateX(5px);
+    }
+    
+    .transaction-item::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+    }
+    
+    .income-item::before {
+      background: var(--success);
+    }
+    
+    .expense-item::before {
+      background: var(--danger);
+    }
+    
+    .transaction-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+    
+    .transaction-category {
+      font-weight: 500;
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.8);
+    }
+    
+    .transaction-amount {
+      font-weight: 700;
+      font-family: 'Orbitron', sans-serif;
+    }
+    
+    .income-amount {
+      color: var(--success);
+    }
+    
+    .expense-amount {
+      color: var(--danger);
+    }
+    
+    .transaction-description {
+      margin: 8px 0;
+      color: white;
+    }
+    
+    .transaction-comments {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.6);
+      font-style: italic;
+    }
+    
+    .transaction-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.5);
+    }
+    
+    .transaction-actions {
+      display: flex;
+      gap: 10px;
+    }
+    
+    .action-btn {
+      background: none;
+      border: none;
+      color: rgba(255, 255, 255, 0.6);
+      cursor: pointer;
+      font-size: 14px;
+      transition: color 0.3s ease;
+    }
+    
+    .delete-btn:hover {
+      color: var(--danger);
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .transactions-layout {
+        grid-template-columns: 1fr;
+      }
+      
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+      
+      header {
+        flex-direction: column;
+        gap: 15px;
+      }
+      
+      .user-info {
+        width: 100%;
+        justify-content: space-between;
+      }
+    }
+    
+    /* Animations */
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    .floating {
+      animation: float 6s ease-in-out infinite;
+    }
+    
+    /* Utility Classes */
+    .text-center {
+      text-align: center;
+    }
+    
+    .mt-3 {
+      margin-top: 15px;
+    }
+    
+    .mb-3 {
+      margin-bottom: 15px;
+    }
+    
+    .hidden {
+      display: none;
+    }
+    
+    /* Futuristic Elements */
+    .glow-effect {
+      position: relative;
+    }
+    
+    .glow-effect::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(circle at center, rgba(0, 206, 201, 0.4) 0%, transparent 70%);
+      z-index: -1;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+    
+    .glow-effect:hover::after {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Auth Section -->
+    <div id="auth-section" class="auth-container floating">
+      <div class="auth-tabs">
+        <div class="auth-tab active" onclick="switchAuthTab('login')">INICIAR SESIÓN</div>
+        <div class="auth-tab" onclick="switchAuthTab('register')">REGISTRARSE</div>
+      </div>
+      
+      <form id="login-form" class="auth-form active">
+        <div class="form-group">
+          <label for="login-email">CORREO ELECTRÓNICO</label>
+          <input type="email" id="login-email" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <label for="login-password">CONTRASEÑA</label>
+          <input type="password" id="login-password" class="form-control" required>
+        </div>
+        <button type="button" class="btn btn-primary btn-block" onclick="loginUser()">ACCEDER</button>
+      </form>
+      
+      <form id="register-form" class="auth-form">
+        <div class="form-group">
+          <label for="register-name">NOMBRE COMPLETO</label>
+          <input type="text" id="register-name" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <label for="register-email">CORREO ELECTRÓNICO</label>
+          <input type="email" id="register-email" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <label for="register-password">CONTRASEÑA</label>
+          <input type="password" id="register-password" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <label for="register-confirm">CONFIRMAR CONTRASEÑA</label>
+          <input type="password" id="register-confirm" class="form-control" required>
+        </div>
+        <button type="button" class="btn btn-primary btn-block" onclick="registerUser()">CREAR CUENTA</button>
+      </form>
+    </div>
+    
+    <!-- App Section -->
+    <div id="app-section" class="hidden">
+      <header class="glow-effect">
+        <div class="logo">AVICONTROL PRO</div>
+        <div class="user-info">
+          <span id="user-name"></span>
+          <button class="btn btn-danger" onclick="logout()">CERRAR SESIÓN</button>
+        </div>
+      </header>
+      
+      <!-- Dashboard -->
+      <section id="dashboard-section" class="app-section active">
+        <div class="dashboard-grid">
+          <div class="card">
+            <h3>INGRESOS TOTALES</h3>
+            <div class="card-value income-value" id="total-income">$0.00</div>
+            <p>Este mes</p>
+          </div>
+          <div class="card">
+            <h3>GASTOS TOTALES</h3>
+            <div class="card-value expense-value" id="total-expense">$0.00</div>
+            <p>Este mes</p>
+          </div>
+          <div class="card">
+            <h3>BALANCE</h3>
+            <div class="card-value balance-value" id="total-balance">$0.00</div>
+            <p>Este mes</p>
+          </div>
+          <div class="card">
+            <h3>BALANCEADO</h3>
+            <div class="card-value feed-value" id="total-feed">0 kg</div>
+            <p>Comprado este mes</p>
+          </div>
+        </div>
+        
+        <!-- Transaction Form -->
+        <div class="transaction-form glow-effect">
+          <h3>REGISTRAR NUEVA TRANSACCIÓN</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="transaction-type">TIPO</label>
+              <select id="transaction-type" class="form-control" required>
+                <option value="">Seleccionar...</option>
+                <option value="income">Ingreso</option>
+                <option value="expense">Gasto</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="transaction-category">CATEGORÍA</label>
+              <select id="transaction-category" class="form-control" required>
+                <option value="">Seleccionar...</option>
+                <optgroup label="Ingresos">
+                  <option value="venta_pollos">Venta de Pollos</option>
+                  <option value="venta_huevos">Venta de Huevos</option>
+                  <option value="subsidios">Subsidios</option>
+                </optgroup>
+                <optgroup label="Gastos">
+                  <option value="balanceado">Balanceado</option>
+                  <option value="medicinas">Medicinas</option>
+                  <option value="vacunas">Vacunas</option>
+                  <option value="mano_obra">Mano de Obra</option>
+                  <option value="equipos">Equipos</option>
+                </optgroup>
+              </select>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="transaction-amount">MONTO (USD)</label>
+              <input type="number" id="transaction-amount" class="form-control" min="0" step="0.01" required>
+            </div>
+            <div class="form-group">
+              <label for="transaction-quantity">CANTIDAD (kg para balanceado)</label>
+              <input type="number" id="transaction-quantity" class="form-control" min="0" step="0.1">
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="transaction-description">DESCRIPCIÓN</label>
+            <input type="text" id="transaction-description" class="form-control" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="transaction-comments">COMENTARIOS</label>
+            <textarea id="transaction-comments" class="form-control" rows="3"></textarea>
+          </div>
+          
+          <button type="button" class="btn btn-primary" onclick="addTransaction()">
+            <i class="fas fa-save"></i> GUARDAR TRANSACCIÓN
+          </button>
+        </div>
+        
+        <!-- Transactions Layout -->
+        <div class="transactions-layout">
+          <!-- Income Column -->
+          <div class="transactions-column income-column">
+            <h3>INGRESOS</h3>
+            <div class="transactions-list" id="income-container">
+              <!-- Los ingresos se cargarán aquí -->
+            </div>
+          </div>
+          
+          <!-- Expense Column -->
+          <div class="transactions-column expense-column">
+            <h3>GASTOS</h3>
+            <div class="transactions-list" id="expense-container">
+              <!-- Los gastos se cargarán aquí -->
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyD3MI1klgBSHs1h6QT4VPNoScCfCwMV_Ck",
+      authDomain: "usuario-b0384.firebaseapp.com",
+      databaseURL: "https://usuario-b0384-default-rtdb.firebaseio.com",
+      projectId: "usuario-b0384",
+      storageBucket: "usuario-b0384.appspot.com",
+      messagingSenderId: "196266170863",
+      appId: "1:196266170863:web:4ea57f489df94aba94fe1a"
+    };
+
+    // Initialize Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const database = firebase.database();
+
+    // DOM Elements
+    const authSection = document.getElementById('auth-section');
+    const appSection = document.getElementById('app-section');
+    const userNameDisplay = document.getElementById('user-name');
+    
+    // Auth State Listener
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        // User is signed in
+        authSection.classList.add('hidden');
+        appSection.classList.remove('hidden');
+        
+        // Load user data
+        loadUserData(user.uid);
+        // Load transactions
+        loadTransactions(user.uid);
+      } else {
+        // User is signed out
+        authSection.classList.remove('hidden');
+        appSection.classList.add('hidden');
+      }
+    });
+
+    // Switch between login and register tabs
+    function switchAuthTab(tab) {
+      const tabs = document.querySelectorAll('.auth-tab');
+      const forms = document.querySelectorAll('.auth-form');
+      
+      tabs.forEach(t => t.classList.remove('active'));
+      forms.forEach(f => f.classList.remove('active'));
+      
+      if (tab === 'login') {
+        document.querySelector('.auth-tab:nth-child(1)').classList.add('active');
+        document.getElementById('login-form').classList.add('active');
+      } else {
+        document.querySelector('.auth-tab:nth-child(2)').classList.add('active');
+        document.getElementById('register-form').classList.add('active');
+      }
+    }
+
+    // Register new user
+    function registerUser() {
+      const email = document.getElementById('register-email').value;
+      const password = document.getElementById('register-password').value;
+      const confirmPassword = document.getElementById('register-confirm').value;
+      const name = document.getElementById('register-name').value;
+      
+      if (password !== confirmPassword) {
+        alert('Las contraseñas no coinciden');
+        return;
+      }
+      
+      auth.createUserWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+          // Save additional user info
+          const userRef = database.ref('users/' + userCredential.user.uid + '/info');
+          userRef.set({
+            name: name,
+            email: email,
+            createdAt: new Date().toISOString()
+          }).then(() => {
+            alert('¡Registro exitoso! Ahora puedes iniciar sesión');
+            switchAuthTab('login');
+            document.getElementById('register-form').reset();
+          });
+        })
+        .catch((error) => {
+          alert(error.message);
+        });
+    }
+
+    // Login user
+    function loginUser() {
+      const email = document.getElementById('login-email').value;
+      const password = document.getElementById('login-password').value;
+      
+      auth.signInWithEmailAndPassword(email, password)
+        .catch((error) => {
+          alert(error.message);
+        });
+    }
+
+    // Logout user
+    function logout() {
+      auth.signOut();
+    }
+
+    // Load user data
+    function loadUserData(userId) {
+      const userRef = database.ref('users/' + userId + '/info');
+      
+      userRef.on('value', (snapshot) => {
+        const userData = snapshot.val();
+        if (userData && userData.name) {
+          userNameDisplay.textContent = userData.name;
+        }
+      });
+    }
+
+    // Add new transaction
+    function addTransaction() {
+      const type = document.getElementById('transaction-type').value;
+      const category = document.getElementById('transaction-category').value;
+      const amount = parseFloat(document.getElementById('transaction-amount').value);
+      const quantity = parseFloat(document.getElementById('transaction-quantity').value) || 0;
+      const description = document.getElementById('transaction-description').value;
+      const comments = document.getElementById('transaction-comments').value;
+      
+      if (!type || !category || !amount || !description) {
+        alert('Por favor complete todos los campos requeridos');
+        return;
+      }
+      
+      const user = auth.currentUser;
+      if (user) {
+        const transactionRef = database.ref('users/' + user.uid + '/transactions');
+        const newTransaction = {
+          type: type,
+          category: category,
+          amount: amount,
+          quantity: category === 'balanceado' ? quantity : null,
+          description: description,
+          comments: comments,
+          date: new Date().toISOString()
+        };
+        
+        transactionRef.push(newTransaction)
+          .then(() => {
+            // Clear form
+            document.getElementById('transaction-type').value = '';
+            document.getElementById('transaction-category').value = '';
+            document.getElementById('transaction-amount').value = '';
+            document.getElementById('transaction-quantity').value = '';
+            document.getElementById('transaction-description').value = '';
+            document.getElementById('transaction-comments').value = '';
+          })
+          .catch((error) => {
+            alert('Error al guardar: ' + error.message);
+          });
+      }
+    }
+
+    // Load transactions
+    function loadTransactions(userId) {
+      const transactionsRef = database.ref('users/' + userId + '/transactions');
+      const incomeContainer = document.getElementById('income-container');
+      const expenseContainer = document.getElementById('expense-container');
+      
+      transactionsRef.on('value', (snapshot) => {
+        incomeContainer.innerHTML = '';
+        expenseContainer.innerHTML = '';
+        let totalIncome = 0;
+        let totalExpense = 0;
+        let totalFeed = 0;
+        
+        if (snapshot.exists()) {
+          // Convert to array and sort by date (newest first)
+          const transactions = [];
+          snapshot.forEach((childSnapshot) => {
+            transactions.push({
+              id: childSnapshot.key,
+              ...childSnapshot.val()
+            });
+          });
+          
+          transactions.sort((a, b) => new Date(b.date) - new Date(a.date));
+          
+          // Display transactions and calculate totals
+          transactions.forEach((transaction) => {
+            const transactionElement = document.createElement('div');
+            transactionElement.className = `transaction-item ${transaction.type}-item`;
+            
+            if (transaction.type === 'income') {
+              totalIncome += transaction.amount;
+              
+              transactionElement.innerHTML = `
+                <div class="transaction-header">
+                  <span class="transaction-category">${formatCategory(transaction.category)}</span>
+                  <span class="transaction-amount income-amount">+$${transaction.amount.toFixed(2)}</span>
+                </div>
+                <div class="transaction-description">${transaction.description}</div>
+                ${transaction.comments ? `<div class="transaction-comments">${transaction.comments}</div>` : ''}
+                <div class="transaction-footer">
+                  <span class="transaction-date">${formatDate(transaction.date)}</span>
+                  <div class="transaction-actions">
+                    <button class="action-btn delete-btn" onclick="deleteTransaction('${userId}', '${transaction.id}')">
+                      <i class="fas fa-trash"></i> Eliminar
+                    </button>
+                  </div>
+                </div>
+              `;
+              
+              incomeContainer.appendChild(transactionElement);
+            } else {
+              totalExpense += transaction.amount;
+              if (transaction.category === 'balanceado' && transaction.quantity) {
+                totalFeed += transaction.quantity;
+              }
+              
+              transactionElement.innerHTML = `
+                <div class="transaction-header">
+                  <span class="transaction-category">${formatCategory(transaction.category)}</span>
+                  <span class="transaction-amount expense-amount">-$${transaction.amount.toFixed(2)}</span>
+                </div>
+                <div class="transaction-description">${transaction.description}</div>
+                ${transaction.quantity ? `<div class="transaction-comments">Cantidad: ${transaction.quantity} kg</div>` : ''}
+                ${transaction.comments ? `<div class="transaction-comments">${transaction.comments}</div>` : ''}
+                <div class="transaction-footer">
+                  <span class="transaction-date">${formatDate(transaction.date)}</span>
+                  <div class="transaction-actions">
+                    <button class="action-btn delete-btn" onclick="deleteTransaction('${userId}', '${transaction.id}')">
+                      <i class="fas fa-trash"></i> Eliminar
+                    </button>
+                  </div>
+                </div>
+              `;
+              
+              expenseContainer.appendChild(transactionElement);
+            }
+          });
+        } else {
+          incomeContainer.innerHTML = '<div class="transaction-item">No hay ingresos registrados</div>';
+          expenseContainer.innerHTML = '<div class="transaction-item">No hay gastos registrados</div>';
+        }
+        
+        // Update totals
+        document.getElementById('total-income').textContent = '$' + totalIncome.toFixed(2);
+        document.getElementById('total-expense').textContent = '$' + totalExpense.toFixed(2);
+        document.getElementById('total-balance').textContent = '$' + (totalIncome - totalExpense).toFixed(2);
+        document.getElementById('total-feed').textContent = totalFeed.toFixed(1) + ' kg';
+      });
+    }
+
+    // Delete transaction
+    function deleteTransaction(userId, transactionId) {
+      if (confirm('¿Estás seguro de que deseas eliminar esta transacción?')) {
+        const transactionRef = database.ref('users/' + userId + '/transactions/' + transactionId);
+        transactionRef.remove()
+          .catch((error) => {
+            alert('Error al eliminar: ' + error.message);
+          });
+      }
+    }
+
+    // Helper function to format category
+    function formatCategory(category) {
+      const categories = {
+        'venta_pollos': 'Venta de Pollos',
+        'venta_huevos': 'Venta de Huevos',
+        'subsidios': 'Subsidios',
+        'balanceado': 'Balanceado',
+        'medicinas': 'Medicinas',
+        'vacunas': 'Vacunas',
+        'mano_obra': 'Mano de Obra',
+        'equipos': 'Equipos'
+      };
+      return categories[category] || category;
+    }
+
+    // Helper function to format date
+    function formatDate(dateString) {
+      const options = { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+      return new Date(dateString).toLocaleDateString('es-ES', options);
+    }
+  </script>
+  
+  <!-- Font Awesome for icons -->
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</body>
+</html>

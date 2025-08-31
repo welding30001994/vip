@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXUS | Generador Futurista</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        
+        body {
+            background: #0a0a16;
+            color: #e0e0ff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(28, 12, 114, 0.3) 0%, transparent 30%),
+                radial-gradient(circle at 90% 80%, rgba(76, 15, 125, 0.3) 0%, transparent 30%);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(90, 150, 255, 0.2);
+        }
+        
+        .logo {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, #6e45e2, #88d3ce);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+        
+        .panel {
+            background: rgba(20, 20, 40, 0.6);
+            border-radius: 16px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(90, 150, 255, 0.2);
+            box-shadow: 0 0 30px rgba(60, 100, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .panel::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            z-index: -1;
+            background: linear-gradient(45deg, #ff00cc, #3333ff, #00ccff, #ff00cc);
+            background-size: 400% 400%;
+            animation: glowing 20s ease infinite;
+            border-radius: 18px;
+            opacity: 0.3;
+        }
+        
+        @keyframes glowing {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(45deg, #6e45e2, #88d3ce);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: #a0a0ff;
+        }
+        
+        p {
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            color: #c0c0ff;
+        }
+        
+        .concept {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            padding: 1.5rem;
+            background: rgba(10, 15, 35, 0.5);
+            border-radius: 12px;
+            border-left: 3px solid #6e45e2;
+            margin: 2rem 0;
+        }
+        
+        .btn-container {
+            text-align: center;
+            margin: 3rem 0;
+        }
+        
+        .futurist-btn {
+            background: linear-gradient(45deg, #6e45e2, #88d3ce);
+            border: none;
+            color: white;
+            padding: 1.2rem 3rem;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(110, 69, 226, 0.4);
+            position: relative;
+            overflow: hidden;
+            outline: none;
+        }
+        
+        .futurist-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(110, 69, 226, 0.6);
+        }
+        
+        .futurist-btn:active {
+            transform: translateY(1px);
+        }
+        
+        .futurist-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+        }
+        
+        .futurist-btn:hover::before {
+            transform: translateX(100%);
+        }
+        
+        .grid-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.1;
+            background: 
+                linear-gradient(to right, rgba(90, 150, 255, 0.2) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(90, 150, 255, 0.2) 1px, transparent 1px);
+            background-size: 30px 30px;
+            perspective: 1000px;
+            transform-style: preserve-3d;
+            transform: rotateX(60deg) translateZ(-100px);
+        }
+        
+        .floating-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+        
+        .floating-element {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.3;
+            filter: blur(20px);
+        }
+        
+        .element-1 {
+            width: 300px;
+            height: 300px;
+            background: #6e45e2;
+            top: 10%;
+            left: 5%;
+            animation: float 15s ease-in-out infinite;
+        }
+        
+        .element-2 {
+            width: 200px;
+            height: 200px;
+            background: #88d3ce;
+            top: 60%;
+            right: 10%;
+            animation: float 12s ease-in-out infinite reverse;
+        }
+        
+        @keyframes float {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(20px, 30px) rotate(180deg); }
+            100% { transform: translate(0, 0) rotate(360deg); }
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="grid-background"></div>
+    <div class="floating-elements">
+        <div class="floating-element element-1"></div>
+        <div class="floating-element element-2"></div>
+    </div>
+    
+    <div class="container">
+        <header>
+            <div class="logo">OXXOMAXTRADING</div>
+        </header>
+        
+        <h1>OXXOMAXTRADING </h1>
+        <p>Una plataforma avanzada para crear texto e imágenes con tecnología de vanguardia.</p>
+        
+        <div class="concept">
+            <strong>CONCEPTO:</strong> OXXOMAXTRADING fusiona creatividad humana generar contenido único. 
+            Simplemente describe tu idea y nuestro sistema neuronal creará texto persuasivo e imágenes hiperrealistas 
+            en segundos, rompiendo las barreras entre imaginación y realidad.
+        </div>
+        
+        <div class="main-content">
+            <div class="panel">
+                <h2>Generador de Texto</h2>
+                <p>Nuestro modelo de lenguaje de última generación crea contenido original, persuasivo y adaptado a tus necesidades específicas.</p>
+            </div>
+            
+            <div class="panel">
+                <h2>Generador de Imágenes</h2>
+                <p>Transforma descripciones textuales en visuales impresionantes con nuestra tecnología de redes generativas adversariales.</p>
+            </div>
+        </div>
+        
+        <div class="btn-container">
+            <button class="futurist-btn" onclick="window.location.href='https://textoo.vercel.app/'">Comienza crear tu sitio web </button>
+        </div>
+    </div>
+
+    <script>
+        // Efecto de partículas para el fondo
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.querySelector('.floating-elements');
+            const colors = ['#6e45e2', '#88d3ce', '#ff00cc', '#3333ff', '#00ccff'];
+            
+            // Crear más elementos flotantes
+            for (let i = 0; i < 5; i++) {
+                const element = document.createElement('div');
+                element.classList.add('floating-element');
+                
+                const size = Math.random() * 150 + 50;
+                element.style.width = `${size}px`;
+                element.style.height = `${size}px`;
+                element.style.background = colors[Math.floor(Math.random() * colors.length)];
+                element.style.top = `${Math.random() * 100}%`;
+                element.style.left = `${Math.random() * 100}%`;
+                element.style.animation = `float ${Math.random() * 20 + 10}s ease-in-out infinite`;
+                element.style.animationDelay = `${Math.random() * 5}s`;
+                
+                container.appendChild(element);
+            }
+            
+            // Efecto de escritura futurista para el título
+            const title = document.querySelector('h1');
+            const originalText = title.textContent;
+            title.textContent = '';
+            
+            let i = 0;
+            const typeWriter = setInterval(function() {
+                if (i < originalText.length) {
+                    title.textContent += originalText.charAt(i);
+                    i++;
+                } else {
+                    clearInterval(typeWriter);
+                }
+            }, 50);
+        });
+    </script>
+</body>
+</html>
+

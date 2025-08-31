@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Pips XAUUSD | Finanzas PRO</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+    <style>
+        :root {
+            --primary: #00f7ff;
+            --secondary: #ff00e4;
+            --dark: #0a0a20;
+            --light: #e0e0ff;
+            --accent: #7b2dff;
+            --neon-glow: 0 0 10px var(--primary), 0 0 20px var(--secondary);
+            --success: #00ff88;
+            --warning: #ffaa00;
+            --danger: #ff3860;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--dark);
+            color: var(--light);
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(123, 45, 255, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(0, 247, 255, 0.1) 0%, transparent 20%);
+        }
+        
+        h1, h2, h3, h4 {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(0, 247, 255, 0.3);
+            margin-bottom: 40px;
+            position: relative;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: var(--neon-glow);
+            position: relative;
+        }
+        
+        .logo::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            box-shadow: var(--neon-glow);
+        }
+        
+        .auth-buttons button {
+            background: transparent;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-family: 'Orbitron', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-left: 10px;
+            box-shadow: 0 0 5px var(--primary);
+        }
+        
+        .auth-buttons button:hover {
+            background: var(--primary);
+            color: var(--dark);
+            box-shadow: 0 0 15px var(--primary);
+        }
+        
+        .hero {
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: var(--neon-glow);
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+            line-height: 1.6;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .calculator {
+            background: rgba(10, 10, 32, 0.7);
+            border-radius: 15px;
+            padding: 30px;
+            border: 1px solid rgba(0, 247, 255, 0.2);
+            backdrop-filter: blur(5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            color: var(--primary);
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 1px;
+        }
+        
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(0, 247, 255, 0.3);
+            border-radius: 8px;
+            color: white;
+            font-family: 'Roboto', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 10px var(--primary);
+        }
+        
+        .calculate-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(90deg, var(--accent), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Orbitron', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-top: 10px;
+            box-shadow: 0 5px 15px rgba(123, 45, 255, 0.4);
+        }
+        
+        .calculate-btn:hover {
+            box-shadow: 0 0 20px var(--secondary);
+            transform: translateY(-2px);
+        }
+        
+        .results {
+            margin-top: 30px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed rgba(0, 247, 255, 0.2);
+        }
+        
+        .result-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .result-label {
+            color: var(--light);
+            font-weight: 300;
+        }
+        
+        .result-value {
+            font-weight: bold;
+            font-family: 'Orbitron', sans-serif;
+            color: var(--primary);
+        }
+        
+        .result-highlight {
+            color: var(--success);
+            font-size: 1.2rem;
+            text-shadow: 0 0 5px var(--success);
+        }
+        
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+        
+        .modal-content {
+            background: var(--dark);
+            padding: 30px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            border: 1px solid var(--primary);
+            position: relative;
+            animation: modalAppear 0.5s;
+            box-shadow: 0 0 20px var(--primary);
+        }
+        
+        @keyframes modalAppear {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            color: var(--light);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .close-modal:hover {
+            color: var(--secondary);
+            transform: rotate(90deg);
+        }
+        
+        .modal h2 {
+            margin-bottom: 20px;
+            text-align: center;
+            color: var(--primary);
+            text-shadow: 0 0 5px var(--primary);
+        }
+        
+        .modal-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            color: var(--dark);
+            border: none;
+            border-radius: 5px;
+            font-family: 'Orbitron', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+        
+        .modal-btn:hover {
+            box-shadow: 0 0 15px var(--primary);
+            transform: translateY(-2px);
+        }
+        
+        .error-message {
+            color: var(--danger);
+            margin-top: 10px;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        
+        /* Floating particles background */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: var(--primary);
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: float 15s infinite linear;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+            50% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(100px);
+                opacity: 0;
+            }
+        }
+        
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            header {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .auth-buttons {
+                display: flex;
+                gap: 10px;
+            }
+            
+            .auth-buttons button {
+                margin-left: 0;
+            }
+            
+            .calculator {
+                padding: 20px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .modal-content {
+                padding: 20px;
+            }
+            
+            .result-item {
+                flex-direction: column;
+            }
+            
+            .result-value {
+                margin-top: 5px;
+            }
+        }
+        
+        /* Loading spinner */
+        .spinner {
+            display: none;
+            width: 40px;
+            height: 40px;
+            margin: 20px auto;
+            border: 4px solid rgba(0, 247, 255, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid var(--primary);
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Restricted access message */
+        .restricted-access {
+            text-align: center;
+            padding: 50px 20px;
+            background: rgba(255, 0, 0, 0.1);
+            border-radius: 10px;
+            border: 1px solid var(--danger);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .restricted-access h3 {
+            color: var(--danger);
+            margin-bottom: 20px;
+            text-shadow: 0 0 5px var(--danger);
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating particles -->
+    <div class="particles" id="particles"></div>
+    
+    <div class="container">
+        <header>
+            <div class="logo">Oxomax<span class="glow">Trading</span></div>
+            <div class="auth-buttons">
+                <button id="loginBtn">INICIAR SESIÓN</button>
+                <button id="registerBtn">REGISTRARSE</button>
+                <button id="logoutBtn" style="display: none;">CERRAR SESIÓN</button>
+            </div>
+        </header>
+        
+        <div class="hero">
+            <h1>GESTION DE RIESGO</h1>
+            <p>Calcula el tamaño de posición óptimo para tus operaciones en oro, manteniendo un control estricto del riesgo.</p>
+        </div>
+        
+        <div id="calculatorContainer">
+            <!-- Contenido se cargará dinámicamente según autenticación -->
+        </div>
+    </div>
+    
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>INICIAR SESIÓN</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail">Correo Electrónico</label>
+                    <input type="email" id="loginEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Contraseña</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <button type="submit" class="modal-btn">ACCEDER</button>
+                <div class="error-message" id="loginError"></div>
+            </form>
+            <div class="spinner" id="loginSpinner"></div>
+        </div>
+    </div>
+    
+    <!-- Register Modal -->
+    <div class="modal" id="registerModal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>REGISTRARSE</h2>
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="registerEmail">Correo Electrónico</label>
+                    <input type="email" id="registerEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">Contraseña (mínimo 6 caracteres)</label>
+                    <input type="password" id="registerPassword" minlength="6" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirmar Contraseña</label>
+                    <input type="password" id="confirmPassword" required>
+                </div>
+                <button type="submit" class="modal-btn">CREAR CUENTA</button>
+                <div class="error-message" id="registerError"></div>
+            </form>
+            <div class="spinner" id="registerSpinner"></div>
+        </div>
+    </div>
+    
+    <script>
+        // Firebase configuration and initialization
+        const firebaseConfig = {
+            apiKey: "AIzaSyD3MI1klgBSHs1h6QT4VPNoScCfCwMV_Ck",
+            authDomain: "usuario-b0384.firebaseapp.com",
+            databaseURL: "https://usuario-b0384-default-rtdb.firebaseio.com",
+            projectId: "usuario-b0384",
+            storageBucket: "usuario-b0384.firebasestorage.app",
+            messagingSenderId: "196266170863",
+            appId: "1:196266170863:web:4ea57f489df94aba94fe1a"
+        };
+        
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        
+        // DOM Elements
+        const loginBtn = document.getElementById('loginBtn');
+        const registerBtn = document.getElementById('registerBtn');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const loginModal = document.getElementById('loginModal');
+        const registerModal = document.getElementById('registerModal');
+        const closeModalButtons = document.querySelectorAll('.close-modal');
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const loginError = document.getElementById('loginError');
+        const registerError = document.getElementById('registerError');
+        const loginSpinner = document.getElementById('loginSpinner');
+        const registerSpinner = document.getElementById('registerSpinner');
+        const calculatorContainer = document.getElementById('calculatorContainer');
+        const particlesContainer = document.getElementById('particles');
+        
+        // Create floating particles
+        function createParticles() {
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                particle.style.width = `${Math.random() * 3 + 1}px`;
+                particle.style.height = particle.style.width;
+                particle.style.animationDelay = `${Math.random() * 15}s`;
+                particle.style.animationDuration = `${Math.random() * 10 + 10}s`;
+                particlesContainer.appendChild(particle);
+            }
+        }
+        
+        // Modal functionality
+        function openModal(modal) {
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeModal(modal) {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            loginError.textContent = '';
+            registerError.textContent = '';
+        }
+        
+        loginBtn.addEventListener('click', () => openModal(loginModal));
+        registerBtn.addEventListener('click', () => openModal(registerModal));
+        
+        closeModalButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const modal = this.closest('.modal');
+                closeModal(modal);
+            });
+        });
+        
+        window.addEventListener('click', (e) => {
+            if (e.target.classList.contains('modal')) {
+                closeModal(e.target);
+            }
+        });
+        
+        // Authentication
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            loginError.textContent = '';
+            loginSpinner.style.display = 'block';
+            
+            try {
+                await auth.signInWithEmailAndPassword(email, password);
+                closeModal(loginModal);
+            } catch (error) {
+                loginError.textContent = getAuthErrorMessage(error.code);
+            } finally {
+                loginSpinner.style.display = 'none';
+            }
+        });
+        
+        registerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            registerError.textContent = '';
+            
+            if (password !== confirmPassword) {
+                registerError.textContent = 'Las contraseñas no coinciden';
+                return;
+            }
+            
+            registerSpinner.style.display = 'block';
+            
+            try {
+                await auth.createUserWithEmailAndPassword(email, password);
+                closeModal(registerModal);
+            } catch (error) {
+                registerError.textContent = getAuthErrorMessage(error.code);
+            } finally {
+                registerSpinner.style.display = 'none';
+            }
+        });
+        
+        logoutBtn.addEventListener('click', () => {
+            auth.signOut();
+        });
+        
+        function getAuthErrorMessage(code) {
+            switch(code) {
+                case 'auth/invalid-email':
+                    return 'Correo electrónico inválido';
+                case 'auth/user-disabled':
+                    return 'Cuenta deshabilitada';
+                case 'auth/user-not-found':
+                    return 'Usuario no encontrado';
+                case 'auth/wrong-password':
+                    return 'Contraseña incorrecta';
+                case 'auth/email-already-in-use':
+                    return 'El correo ya está en uso';
+                case 'auth/weak-password':
+                    return 'La contraseña es muy débil (mínimo 6 caracteres)';
+                case 'auth/operation-not-allowed':
+                    return 'Operación no permitida';
+                default:
+                    return 'Error al autenticar. Intenta nuevamente.';
+            }
+        }
+        
+        // Calculate risk management
+        function calculateRisk() {
+            const capital = parseFloat(document.getElementById('capital').value);
+            const riskPercent = parseFloat(document.getElementById('risk').value);
+            const stopLossPips = parseFloat(document.getElementById('stopLoss').value);
+            
+            // Calculate risk amount
+            const riskAmount = (capital * riskPercent) / 100;
+            
+            // Calculate lot size (XAUUSD: 1 lot = $10 per pip)
+            const pipValue = 10; // $10 per pip for 1 standard lot
+            const lotSize = riskAmount / (stopLossPips * pipValue);
+            
+            // Calculate divided lot size for 3 operations
+            const dividedLotSize = lotSize / 3;
+            
+            // Display results
+            document.getElementById('riskAmount').textContent = `$${riskAmount.toFixed(2)}`;
+            document.getElementById('totalLotSize').textContent = lotSize.toFixed(2);
+            document.getElementById('dividedLotSize').textContent = dividedLotSize.toFixed(2);
+            
+            document.getElementById('results').style.display = 'block';
+        }
+        
+        // Load calculator for authenticated users
+        function loadCalculator() {
+            calculatorContainer.innerHTML = `
+                <div class="calculator">
+                    <form id="riskCalculator">
+                        <div class="form-group">
+                            <label for="capital">Capital de la cuenta (USD)</label>
+                            <input type="number" id="capital" step="0.01" min="0" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="risk">Porcentaje de riesgo por operación (%)</label>
+                            <input type="number" id="risk" step="0.01" min="0.01" max="100" value="1" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="stopLoss">Stop Loss en pips</label>
+                            <input type="number" id="stopLoss" step="1" min="1" value="30" required>
+                        </div>
+                        
+                        <button type="button" class="calculate-btn" onclick="calculateRisk()">CALCULAR RIESGO</button>
+                    </form>
+                    
+                    <div class="results" id="results" style="display: none;">
+                        <h3 style="color: var(--primary); margin-bottom: 15px; text-align: center;">RESULTADOS</h3>
+                        
+                        <div class="result-item">
+                            <span class="result-label">Monto a arriesgar:</span>
+                            <span class="result-value" id="riskAmount">$0.00</span>
+                        </div>
+                        
+                        <div class="result-item">
+                            <span class="result-label">Tamaño de posición total (lotes):</span>
+                            <span class="result-value" id="totalLotSize">0.00</span>
+                        </div>
+                        
+                        <div class="result-item">
+                            <span class="result-label">Tamaño por operación (3 operaciones):</span>
+                            <span class="result-highlight" id="dividedLotSize">0.00</span>
+                        </div>
+                        
+                        <div style="margin-top: 20px; padding: 10px; background: rgba(0, 247, 255, 0.1); border-radius: 5px;">
+                            <p style="font-size: 0.9rem; color: var(--light); text-align: center;">
+                                <strong>Nota:</strong> Para XAUUSD, 1 lote estándar = $10 por pip. 
+                                Dividir la posición en 3 operaciones ayuda a gestionar mejor el riesgo.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Show restricted access message
+        function showRestrictedAccess() {
+            calculatorContainer.innerHTML = `
+                <div class="restricted-access">
+                    <h3>ACCESO RESTRINGIDO</h3>
+                    <p>Debes iniciar sesión o registrarte para acceder a la calculadora de riesgo.</p>
+                </div>
+            `;
+        }
+        
+        // Auth state observer
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                // User is signed in
+                loginBtn.style.display = 'none';
+                registerBtn.style.display = 'none';
+                logoutBtn.style.display = 'block';
+                loadCalculator();
+            } else {
+                // User is signed out
+                loginBtn.style.display = 'block';
+                registerBtn.style.display = 'block';
+                logoutBtn.style.display = 'none';
+                showRestrictedAccess();
+            }
+        });
+        
+        // Make calculateRisk function available globally
+        window.calculateRisk = calculateRisk;
+        
+        // Initialize
+        createParticles();
+    </script>
+</body>
+</html>

@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexusMail - Email Futurista</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <style>
+        :root {
+            --primary: #00f7ff;
+            --secondary: #ff00e4;
+            --dark: #0a0a14;
+            --darker: #050508;
+            --light: #e0e0e0;
+            --error: #ff3860;
+            --success: #09c372;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--dark);
+            color: var(--light);
+            overflow-x: hidden;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-rows: auto 1fr;
+            min-height: 100vh;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cyber-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 3rem;
+            background-color: rgba(10, 10, 20, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--primary);
+            z-index: 10;
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--light);
+            text-shadow: 0 0 10px var(--primary);
+        }
+
+        .glow {
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 5px var(--primary), 0 0 10px var(--primary);
+            }
+            to {
+                text-shadow: 0 0 10px var(--primary), 0 0 20px var(--primary), 0 0 30px var(--secondary);
+            }
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: var(--light);
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-link:hover {
+            color: var(--primary);
+            text-shadow: 0 0 5px var(--primary);
+        }
+
+        .cyber-main {
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        .terminal-container {
+            width: 100%;
+            max-width: 800px;
+            background-color: var(--darker);
+            border: 1px solid var(--primary);
+            border-radius: 5px;
+            box-shadow: 0 0 20px rgba(0, 247, 255, 0.2);
+            overflow: hidden;
+        }
+
+        .terminal-header {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            background-color: rgba(0, 247, 255, 0.1);
+            border-bottom: 1px solid var(--primary);
+        }
+
+        .terminal-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .terminal-btn {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .terminal-btn.red {
+            background-color: #ff5f56;
+        }
+
+        .terminal-btn.yellow {
+            background-color: #ffbd2e;
+        }
+
+        .terminal-btn.green {
+            background-color: #27c93f;
+        }
+
+        .terminal-title {
+            margin-left: 1rem;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.8rem;
+            color: var(--primary);
+        }
+
+        .terminal-body {
+            padding: 1.5rem;
+            font-family: 'Courier New', monospace;
+            height: 200px;
+            overflow-y: auto;
+        }
+
+        .terminal-text {
+            margin: 0;
+            line-height: 1.6;
+            color: var(--primary);
+        }
+
+        .terminal-text::before {
+            content: ">";
+            margin-right: 0.5rem;
+            color: var(--secondary);
+        }
+
+        .cyber-card {
+            width: 100%;
+            max-width: 800px;
+            background-color: rgba(10, 10, 20, 0.7);
+            border: 1px solid var(--secondary);
+            border-radius: 5px;
+            padding: 2rem;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 0 20px rgba(255, 0, 228, 0.2);
+        }
+
+        .cyber-h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--primary);
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .cyber-input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .cyber-input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--light);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+        }
+
+        .cyber-input, .cyber-textarea {
+            width: 100%;
+            padding: 0.8rem;
+            background-color: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--primary);
+            border-radius: 4px;
+            color: var(--light);
+            font-family: 'Courier New', monospace;
+            transition: all 0.3s ease;
+        }
+
+        .cyber-input:focus, .cyber-textarea:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 0 10px rgba(255, 0, 228, 0.5);
+        }
+
+        .cyber-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .cyber-button {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: var(--darker);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .cyber-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 247, 255, 0.4);
+        }
+
+        .cyber-stats {
+            display: flex;
+            gap: 2rem;
+            width: 100%;
+            max-width: 800px;
+            justify-content: space-around;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--light);
+        }
+
+        .cyber-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            backdrop-filter: blur(5px);
+        }
+
+        .cyber-modal-content {
+            background-color: var(--darker);
+            border: 1px solid var(--primary);
+            border-radius: 5px;
+            padding: 2rem;
+            width: 100%;
+            max-width: 400px;
+            position: relative;
+            box-shadow: 0 0 30px rgba(0, 247, 255, 0.3);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            font-size: 1.5rem;
+            color: var(--light);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            color: var(--secondary);
+        }
+
+        .cyber-text {
+            color: var(--light);
+            margin: 1rem 0 0;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .cyber-text:hover {
+            color: var(--primary);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Efectos futuristas */
+        .cyber-grid-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 247, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 247, 255, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Bandeja de salida */
+        .outbox-container {
+            width: 100%;
+            max-width: 800px;
+            margin-top: 2rem;
+        }
+
+        .outbox-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .outbox-list {
+            border: 1px solid var(--primary);
+            border-radius: 5px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .outbox-item {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(0, 247, 255, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .outbox-item:last-child {
+            border-bottom: none;
+        }
+
+        .outbox-info {
+            flex: 1;
+        }
+
+        .outbox-to {
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .outbox-subject {
+            margin: 0.3rem 0;
+        }
+
+        .outbox-date {
+            font-size: 0.8rem;
+            color: rgba(224, 224, 224, 0.7);
+        }
+
+        .outbox-delete {
+            color: var(--error);
+            cursor: pointer;
+            margin-left: 1rem;
+        }
+
+        /* Animaciones */
+        @keyframes flicker {
+            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+                opacity: 1;
+            }
+            20%, 22%, 24%, 55% {
+                opacity: 0.5;
+            }
+        }
+
+        .flicker {
+            animation: flicker 3s linear infinite;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .cyber-nav {
+                padding: 1rem;
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .cyber-main {
+                padding: 1rem;
+            }
+            
+            .cyber-stats {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .outbox-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .outbox-delete {
+                margin-left: 0;
+                margin-top: 0.5rem;
+                align-self: flex-end;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="grid-container">
+        <!-- Panel de navegación futurista -->
+        <nav class="cyber-nav">
+            <div class="logo">
+                <span class="glow">Nexus</span>Mail
+            </div>
+            <div class="nav-links">
+                <a href="#" id="login-btn" class="nav-link"><i class="fas fa-user-astronaut"></i> Acceder</a>
+                <a href="#" id="register-btn" class="nav-link"><i class="fas fa-rocket"></i> Registrarse</a>
+            </div>
+        </nav>
+
+        <!-- Contenido principal -->
+        <main class="cyber-main">
+            <div class="terminal-container">
+                <div class="terminal-header">
+                    <div class="terminal-buttons">
+                        <span class="terminal-btn red"></span>
+                        <span class="terminal-btn yellow"></span>
+                        <span class="terminal-btn green"></span>
+                    </div>
+                    <div class="terminal-title">NexusMail Terminal v3.1.4</div>
+                </div>
+                <div class="terminal-body" id="terminal-output">
+                    <p class="terminal-text">> Bienvenido a NexusMail</p>
+                    <p class="terminal-text">> Sistema de correo electrónico futurista</p>
+                    <p class="terminal-text">> Inicie sesión para acceder al panel de control</p>
+                </div>
+            </div>
+
+            <div class="cyber-card hidden" id="email-panel">
+                <h2 class="cyber-h2"><i class="fas fa-paper-plane"></i> Nuevo Mensaje</h2>
+                <form id="email-form">
+                    <div class="cyber-input-group">
+                        <label for="to">Destinatario (Gmail):</label>
+                        <input type="email" id="to" required class="cyber-input" placeholder="ejemplo@gmail.com">
+                    </div>
+                    <div class="cyber-input-group">
+                        <label for="subject">Asunto:</label>
+                        <input type="text" id="subject" required class="cyber-input">
+                    </div>
+                    <div class="cyber-input-group">
+                        <label for="message">Mensaje:</label>
+                        <textarea id="message" rows="5" required class="cyber-textarea"></textarea>
+                    </div>
+                    <button type="submit" class="cyber-button"><i class="fas fa-paper-plane"></i> Enviar</button>
+                </form>
+            </div>
+
+            <div class="cyber-stats hidden" id="user-stats">
+                <div class="stat-item">
+                    <div class="stat-value" id="sent-count">0</div>
+                    <div class="stat-label">Mensajes Enviados</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="user-since">2023</div>
+                    <div class="stat-label">Usuario desde</div>
+                </div>
+            </div>
+
+            <!-- Bandeja de salida -->
+            <div class="outbox-container hidden" id="outbox-panel">
+                <div class="outbox-header">
+                    <h2 class="cyber-h2"><i class="fas fa-inbox"></i> Bandeja de Salida</h2>
+                    <button id="refresh-outbox" class="cyber-button"><i class="fas fa-sync-alt"></i> Actualizar</button>
+                </div>
+                <div class="outbox-list" id="outbox-list">
+                    <!-- Los correos enviados aparecerán aquí -->
+                </div>
+            </div>
+        </main>
+
+        <!-- Modales -->
+        <div class="cyber-modal hidden" id="auth-modal">
+            <div class="cyber-modal-content">
+                <span class="close-btn">&times;</span>
+                <h2 class="cyber-h2" id="modal-title">Acceder</h2>
+                <form id="auth-form">
+                    <div class="cyber-input-group">
+                        <label for="auth-email">Email:</label>
+                        <input type="email" id="auth-email" required class="cyber-input">
+                    </div>
+                    <div class="cyber-input-group">
+                        <label for="auth-password">Contraseña:</label>
+                        <input type="password" id="auth-password" required class="cyber-input">
+                    </div>
+                    <div class="cyber-input-group hidden" id="name-group">
+                        <label for="auth-name">Nombre:</label>
+                        <input type="text" id="auth-name" class="cyber-input">
+                    </div>
+                    <button type="submit" class="cyber-button" id="auth-submit">Acceder</button>
+                    <p id="auth-toggle" class="cyber-text">¿No tienes cuenta? Regístrate</p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Efectos visuales futuristas -->
+    <div class="cyber-grid-overlay"></div>
+
+    <!-- Firebase y scripts -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+    <script>
+        // Configuración de Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyD3MI1klgBSHs1h6QT4VPNoScCfCwMV_Ck",
+            authDomain: "usuario-b0384.firebaseapp.com",
+            databaseURL: "https://usuario-b0384-default-rtdb.firebaseio.com",
+            projectId: "usuario-b0384",
+            storageBucket: "usuario-b0384.appspot.com",
+            messagingSenderId: "196266170863",
+            appId: "1:196266170863:web:4ea57f489df94aba94fe1a"
+        };
+
+        // Inicialización de Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // Inicialización de EmailJS (reemplaza con tus credenciales)
+        emailjs.init('TU_USER_ID_EMAILJS');
+
+        // Variables del DOM
+        const loginBtn = document.getElementById('login-btn');
+        const registerBtn = document.getElementById('register-btn');
+        const authModal = document.getElementById('auth-modal');
+        const closeModalBtn = document.querySelector('.close-btn');
+        const authForm = document.getElementById('auth-form');
+        const authToggle = document.getElementById('auth-toggle');
+        const modalTitle = document.getElementById('modal-title');
+        const authSubmit = document.getElementById('auth-submit');
+        const nameGroup = document.getElementById('name-group');
+        const emailPanel = document.getElementById('email-panel');
+        const userStats = document.getElementById('user-stats');
+        const emailForm = document.getElementById('email-form');
+        const terminalOutput = document.getElementById('terminal-output');
+        const outboxPanel = document.getElementById('outbox-panel');
+        const outboxList = document.getElementById('outbox-list');
+        const refreshOutboxBtn = document.getElementById('refresh-outbox');
+
+        // Estado de autenticación
+        let isLoginMode = true;
+
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', () => {
+            // Mostrar mensaje inicial en la terminal
+            typeWriter("> Sistema NexusMail inicializado...", 0);
+            setTimeout(() => typeWriter("> Conexión segura establecida", 1), 800);
+            setTimeout(() => typeWriter("> Esperando autenticación de usuario", 2), 1600);
+        });
+
+        // Event Listeners
+        loginBtn.addEventListener('click', () => {
+            isLoginMode = true;
+            toggleAuthModal(true);
+        });
+
+        registerBtn.addEventListener('click', () => {
+            isLoginMode = false;
+            toggleAuthModal(true);
+        });
+
+        closeModalBtn.addEventListener('click', () => toggleAuthModal(false));
+        authToggle.addEventListener('click', toggleAuthMode);
+
+        authForm.addEventListener('submit', handleAuth);
+        emailForm.addEventListener('submit', sendEmail);
+        refreshOutboxBtn.addEventListener('click', loadOutbox);
+
+        // Observador de autenticación
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                // Usuario autenticado
+                loginBtn.textContent = `Cerrar Sesión (${user.email})`;
+                registerBtn.classList.add('hidden');
+                emailPanel.classList.remove('hidden');
+                userStats.classList.remove('hidden');
+                outboxPanel.classList.remove('hidden');
+                
+                // Actualizar estadísticas y bandeja de salida
+                updateUserStats(user.uid);
+                loadOutbox();
+                
+                // Cambiar el comportamiento del botón de login a logout
+                loginBtn.onclick = () => auth.signOut();
+                
+                // Mostrar mensaje en terminal
+                addTerminalMessage(`> Usuario autenticado: ${user.email}`);
+                addTerminalMessage("> Acceso concedido al panel de correo");
+            } else {
+                // Usuario no autenticado
+                loginBtn.textContent = 'Acceder';
+                loginBtn.onclick = () => {
+                    isLoginMode = true;
+                    toggleAuthModal(true);
+                };
+                registerBtn.classList.remove('hidden');
+                emailPanel.classList.add('hidden');
+                userStats.classList.add('hidden');
+                outboxPanel.classList.add('hidden');
+                
+                // Mostrar mensaje en terminal
+                addTerminalMessage("> Sesión cerrada");
+                addTerminalMessage("> Acceso restringido - Autenticación requerida");
+            }
+        });
+
+        // Funciones
+        function toggleAuthModal(show) {
+            if (show) {
+                authModal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+                
+                if (isLoginMode) {
+                    modalTitle.textContent = 'Acceder';
+                    authSubmit.textContent = 'Acceder';
+                    authToggle.textContent = '¿No tienes cuenta? Regístrate';
+                    nameGroup.classList.add('hidden');
+                } else {
+                    modalTitle.textContent = 'Registrarse';
+                    authSubmit.textContent = 'Registrarse';
+                    authToggle.textContent = '¿Ya tienes cuenta? Acceder';
+                    nameGroup.classList.remove('hidden');
+                }
+            } else {
+                authModal.classList.add('hidden');
+                document.body.style.overflow = 'auto';
+                authForm.reset();
+            }
+        }
+
+        function toggleAuthMode() {
+            isLoginMode = !isLoginMode;
+            
+            if (isLoginMode) {
+                modalTitle.textContent = 'Acceder';
+                authSubmit.textContent = 'Acceder';
+                authToggle.textContent = '¿No tienes cuenta? Regístrate';
+                nameGroup.classList.add('hidden');
+            } else {
+                modalTitle.textContent = 'Registrarse';
+                authSubmit.textContent = 'Registrarse';
+                authToggle.textContent = '¿Ya tienes cuenta? Acceder';
+                nameGroup.classList.remove('hidden');
+            }
+        }
+
+        async function handleAuth(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('auth-email').value;
+            const password = document.getElementById('auth-password').value;
+            const name = isLoginMode ? null : document.getElementById('auth-name').value;
+            
+            try {
+                if (isLoginMode) {
+                    // Iniciar sesión
+                    await auth.signInWithEmailAndPassword(email, password);
+                    addTerminalMessage(`> Inicio de sesión exitoso: ${email}`);
+                } else {
+                    // Registrar nuevo usuario
+                    const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                    await db.collection('users').doc(userCredential.user.uid).set({
+                        name: name,
+                        email: email,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        sentEmails: 0
+                    });
+                    addTerminalMessage(`> Nuevo usuario registrado: ${email}`);
+                }
+                
+                toggleAuthModal(false);
+            } catch (error) {
+                console.error("Error de autenticación:", error);
+                addTerminalMessage(`> Error: ${error.message}`, true);
+            }
+        }
+
+        async function sendEmail(e) {
+            e.preventDefault();
+            
+            const to = document.getElementById('to').value;
+            const subject = document.getElementById('subject').value;
+            const message = document.getElementById('message').value;
+            const user = auth.currentUser;
+            
+            if (!user) {
+                addTerminalMessage("> Error: No autenticado", true);
+                return;
+            }
+            
+            try {
+                addTerminalMessage(`> Enviando correo a: ${to}`);
+                addTerminalMessage(`> Asunto: ${subject}`);
+                
+                // Guardar el correo en Firestore antes de enviarlo
+                const emailData = {
+                    to: to,
+                    subject: subject,
+                    message: message,
+                    from: user.email,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    status: 'enviando'
+                };
+                
+                const emailRef = await db.collection('emails').add(emailData);
+                
+                // Enviar el correo usando EmailJS
+                const serviceID = 'default_service'; // Reemplaza con tu Service ID de EmailJS
+                const templateID = 'template_nexusmail'; // Reemplaza con tu Template ID de EmailJS
+                
+                const emailParams = {
+                    to_email: to,
+                    from_email: user.email,
+                    subject: subject,
+                    message: message
+                };
+                
+                // Envío real del correo
+                await emailjs.send(serviceID, templateID, emailParams);
+                
+                // Actualizar estado del correo en Firestore
+                await emailRef.update({
+                    status: 'enviado',
+                    sentAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                
+                // Actualizar contador en Firestore
+                await db.collection('users').doc(user.uid).update({
+                    sentEmails: firebase.firestore.FieldValue.increment(1)
+                });
+                
+                // Actualizar estadísticas y bandeja de salida
+                updateUserStats(user.uid);
+                loadOutbox();
+                
+                // Limpiar formulario
+                emailForm.reset();
+                
+                addTerminalMessage("> Correo enviado con éxito a Gmail");
+            } catch (error) {
+                console.error("Error al enviar correo:", error);
+                
+                // Marcar como error si falla
+                if (emailRef) {
+                    await emailRef.update({
+                        status: 'error',
+                        error: error.message
+                    });
+                }
+                
+                addTerminalMessage(`> Error al enviar: ${error.message}`, true);
+            }
+        }
+
+        async function loadOutbox() {
+            const user = auth.currentUser;
+            if (!user) return;
+            
+            try {
+                outboxList.innerHTML = '<p class="terminal-text">> Cargando bandeja de salida...</p>';
+                
+                const snapshot = await db.collection('emails')
+                    .where('from', '==', user.email)
+                    .orderBy('createdAt', 'desc')
+                    .limit(20)
+                    .get();
+                
+                if (snapshot.empty) {
+                    outboxList.innerHTML = '<p class="terminal-text">> No hay correos enviados</p>';
+                    return;
+                }
+                
+                outboxList.innerHTML = '';
+                
+                snapshot.forEach(doc => {
+                    const email = doc.data();
+                    const emailItem = document.createElement('div');
+                    emailItem.className = 'outbox-item';
+                    
+                    const date = email.createdAt?.toDate() || new Date();
+                    const formattedDate = date.toLocaleString();
+                    
+                    emailItem.innerHTML = `
+                        <div class="outbox-info">
+                            <div class="outbox-to">Para: ${email.to}</div>
+                            <div class="outbox-subject">Asunto: ${email.subject}</div>
+                            <div class="outbox-date">${formattedDate} - Estado: ${email.status}</div>
+                            ${email.error ? `<div class="outbox-error">Error: ${email.error}</div>` : ''}
+                        </div>
+                        <div class="outbox-actions">
+                            <i class="fas fa-trash outbox-delete" data-id="${doc.id}"></i>
+                        </div>
+                    `;
+                    
+                    outboxList.appendChild(emailItem);
+                });
+                
+                // Agregar event listeners para borrar
+                document.querySelectorAll('.outbox-delete').forEach(btn => {
+                    btn.addEventListener('click', async (e) => {
+                        const emailId = e.target.getAttribute('data-id');
+                        await deleteEmail(emailId);
+                    });
+                });
+                
+            } catch (error) {
+                console.error("Error al cargar bandeja de salida:", error);
+                outboxList.innerHTML = '<p class="terminal-text" style="color: var(--error)">> Error al cargar bandeja de salida</p>';
+            }
+        }
+
+        async function deleteEmail(emailId) {
+            try {
+                await db.collection('emails').doc(emailId).delete();
+                addTerminalMessage("> Correo eliminado de la bandeja");
+                loadOutbox();
+            } catch (error) {
+                console.error("Error al eliminar correo:", error);
+                addTerminalMessage(`> Error al eliminar: ${error.message}`, true);
+            }
+        }
+
+        async function updateUserStats(uid) {
+            const userDoc = await db.collection('users').doc(uid).get();
+            if (userDoc.exists) {
+                const userData = userDoc.data();
+                document.getElementById('sent-count').textContent = userData.sentEmails || 0;
+                
+                if (userData.createdAt) {
+                    const year = userData.createdAt.toDate().getFullYear();
+                    document.getElementById('user-since').textContent = year;
+                }
+            }
+        }
+
+        function addTerminalMessage(message, isError = false) {
+            const p = document.createElement('p');
+            p.className = 'terminal-text';
+            if (isError) p.style.color = 'var(--error)';
+            terminalOutput.appendChild(p);
+            
+            // Limitar el número de mensajes en la terminal
+            if (terminalOutput.children.length > 20) {
+                terminalOutput.removeChild(terminalOutput.children[0]);
+            }
+            
+            // Scroll al final
+            terminalOutput.scrollTop = terminalOutput.scrollHeight;
+            
+            // Efecto de escritura
+            let i = 0;
+            const speed = 10 + Math.random() * 20;
+            
+            function typing() {
+                if (i < message.length) {
+                    p.textContent += message.charAt(i);
+                    i++;
+                    setTimeout(typing, speed);
+                }
+            }
+            
+            typing();
+        }
+
+        function typeWriter(text, index) {
+            if (index < terminalOutput.children.length) {
+                const element = terminalOutput.children[index];
+                element.textContent = "";
+                
+                let i = 0;
+                const speed = 20 + Math.random() * 30;
+                
+                function typing() {
+                    if (i < text.length) {
+                        element.textContent += text.charAt(i);
+                        i++;
+                        setTimeout(typing, speed);
+                    }
+                }
+                
+                typing();
+            }
+        }
+    </script>
+</body>
+</html>

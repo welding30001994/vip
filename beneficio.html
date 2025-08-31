@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beneficios y Reglas</title>
+    <style>
+        :root {
+            --primary-color: #00c8c8;
+            --secondary-color: #25D366;
+            --dark-bg: #0f0f1a;
+            --card-bg: rgba(20, 20, 40, 0.8);
+            --text-color: #e0e0e0;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            background-image: radial-gradient(circle at 75% 25%, rgba(25, 25, 60, 0.8) 0%, transparent 50%),
+                              radial-gradient(circle at 25% 75%, rgba(40, 100, 120, 0.6) 0%, transparent 50%);
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+        
+        h1, h2, h3 {
+            color: var(--primary-color);
+            text-shadow: 0 0 10px rgba(0, 200, 200, 0.3);
+        }
+        
+        h1 {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 40px;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 15px;
+        }
+        
+        h2 {
+            font-size: 1.8em;
+            margin-top: 40px;
+            border-left: 4px solid var(--primary-color);
+            padding-left: 15px;
+        }
+        
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 0 30px rgba(0, 200, 200, 0.2);
+            border: 1px solid rgba(0, 200, 200, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .benefit-item {
+            background: rgba(0, 200, 200, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 3px solid var(--primary-color);
+            transition: transform 0.3s ease;
+        }
+        
+        .benefit-item:hover {
+            transform: translateY(-5px);
+            background: rgba(0, 200, 200, 0.15);
+        }
+        
+        .benefit-item h3 {
+            margin-top: 0;
+            color: var(--primary-color);
+        }
+        
+        .rules-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        
+        .rules-list li {
+            background: rgba(255, 255, 255, 0.05);
+            margin-bottom: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            position: relative;
+            padding-left: 50px;
+        }
+        
+        .rules-list li::before {
+            content: "❗";
+            position: absolute;
+            left: 15px;
+            top: 15px;
+            font-size: 1.2em;
+            color: var(--primary-color);
+        }
+        
+        .highlight {
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+        
+        .warning {
+            background: rgba(255, 100, 100, 0.1) !important;
+            border-left: 3px solid #ff6464 !important;
+        }
+        
+        .warning h3 {
+            color: #ff6464;
+        }
+        
+        .whatsapp-btn {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-top: 30px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
+        }
+        
+        .whatsapp-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(37, 211, 102, 0.4);
+        }
+        
+        .text-center {
+            text-align: center;
+        }
+        
+        @media (max-width: 768px) {
+            .benefits-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>OXXO-MAX-TRADING BENEFICIOS Y REGLAS DEL PROGRAMA</h1>
+        
+        <div class="card">
+            <h2>Beneficios Exclusivos</h2>
+            <p>Al unirte a nuestro programa, accedes a estos increíbles beneficios:</p>
+            
+            <div class="benefits-grid">
+                <div class="benefit-item">
+                    <h3>Acceso Completo</h3>
+                    <p>Material de estudio exclusivo y actualizado constantemente para tu crecimiento profesional.</p>
+                </div>
+                
+                <div class="benefit-item">
+                    <h3>Soporte Directo</h3>
+                    <p>Asesoría personalizada y resolución de dudas en tiempo real con expertos en el área.</p>
+                </div>
+                
+                <div class="benefit-item">
+                    <h3>Comunidad Activa</h3>
+                    <p>Networking con profesionales afines y oportunidades de colaboración en proyectos.</p>
+                </div>
+                
+                <div class="benefit-item">
+                    <h3>Recursos Premium</h3>
+                    <p>Plantillas, herramientas y software especializado para potenciar tu trabajo.</p>
+                </div>
+                
+                <div class="benefit-item">
+                    <h3>Capacitación Continua</h3>
+                    <p>Sesiones de entrenamiento en vivo y masterclasses con invitados especiales.</p>
+                </div>
+                
+                <div class="benefit-item">
+                    <h3>Certificación</h3>
+                    <p>Diploma de participación al completar satisfactoriamente el plan de estudios.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>Reglas de Permanencia</h2>
+            <p>Para mantener la calidad del programa y compromiso de todos los participantes:</p>
+            
+            <ul class="rules-list">
+                <li>
+                    <strong>Pagos mensuales obligatorios:</strong> El acceso al grupo de trabajo está condicionado al pago puntual de las mensualidades.
+                </li>
+                
+                <li class="warning">
+                    <strong>Retiro por falta de pago:</strong> Si no se cancela la mensualidad correspondiente, el participante será retirado automáticamente del grupo de trabajo.
+                </li>
+                
+                <li>
+                    <strong>Reinscripción:</strong> Para retornar al programa después de haber sido retirado por falta de pago, se deberá cancelar una tarifa de reinscripción de <span class="highlight">$250 dólares</span>.
+                </li>
+                
+                <li>
+                    <strong>Compromiso con el plan:</strong> Todos los participantes deben asumir y cumplir con el plan de estudio establecido para mantener su membresía activa.
+                </li>
+                
+                <li>
+                    <strong>No reembolsos:</strong> Los pagos realizados no son reembolsables bajo ninguna circunstancia.
+                </li>
+                
+                <li>
+                    <strong>Responsabilidad:</strong> Cada participante es responsable de mantener sus datos de contacto actualizados para recibir los recordatorios de pago.
+                </li>
+            </ul>
+            
+            <div class="text-center">
+                <p>¿Tienes dudas sobre nuestros términos? Contáctanos:</p>
+                <a href="https://wa.me/593980051394" class="whatsapp-btn">
+                    WhatsApp: 098 005 1394
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
