@@ -3,114 +3,358 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beneficios y Reglas</title>
+    <title>VIPFOREX - Beneficios y Reglas Exclusivas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@400;500;600;700&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #00c8c8;
-            --secondary-color: #25D366;
-            --dark-bg: #0f0f1a;
-            --card-bg: rgba(20, 20, 40, 0.8);
-            --text-color: #e0e0e0;
+            --neon-gold: #ffd700;
+            --neon-platinum: #e5e4e2;
+            --neon-diamond: #b9f2ff;
+            --neon-vip: #ff00ff;
+            --neon-cyan: #00ffff;
+            --dark-cosmic: #0a0a1a;
+            --darker-space: #050510;
+            --deep-space: #03030f;
+            --star-light: rgba(255, 255, 255, 0.9);
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --gold-glow: 0 0 10px var(--neon-gold), 0 0 20px rgba(255, 215, 0, 0.5);
+            --vip-glow: 0 0 15px var(--neon-vip), 0 0 30px rgba(255, 0, 255, 0.4);
+            --cyan-glow: 0 0 15px var(--neon-cyan), 0 0 30px rgba(0, 255, 255, 0.4);
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
         
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: var(--dark-bg);
-            color: var(--text-color);
-            margin: 0;
-            padding: 0;
-            line-height: 1.6;
-            background-image: radial-gradient(circle at 75% 25%, rgba(25, 25, 60, 0.8) 0%, transparent 50%),
-                              radial-gradient(circle at 25% 75%, rgba(40, 100, 120, 0.6) 0%, transparent 50%);
+            font-family: 'Exo 2', sans-serif;
+            background-color: var(--deep-space);
+            color: var(--star-light);
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(255, 215, 0, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 85% 85%, rgba(255, 0, 255, 0.05) 0%, transparent 40%),
+                linear-gradient(to bottom, var(--deep-space), var(--dark-cosmic));
+            line-height: 1.7;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+        
+        h1, h2, h3, h4, .logo, .font-orbitron {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            letter-spacing: 1px;
         }
         
         .container {
-            max-width: 900px;
+            width: 100%;
+            max-width: 1000px;
             margin: 0 auto;
-            padding: 30px;
+            padding: 40px 20px;
         }
         
-        h1, h2, h3 {
-            color: var(--primary-color);
-            text-shadow: 0 0 10px rgba(0, 200, 200, 0.3);
+        /* Efectos futuristas VIP */
+        .vip-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.03;
+            background: 
+                linear-gradient(0deg, transparent 48%, var(--neon-gold) 49%, var(--neon-gold) 51%, transparent 52%),
+                linear-gradient(90deg, transparent 48%, var(--neon-vip) 49%, var(--neon-vip) 51%, transparent 52%);
+            background-size: 15px 15px;
+            animation: grid-move 20s infinite linear;
+        }
+        
+        @keyframes grid-move {
+            0% { background-position: 0 0; }
+            100% { background-position: 15px 15px; }
+        }
+        
+        .floating-diamonds {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .diamond {
+            position: absolute;
+            opacity: 0.1;
+            background: var(--neon-diamond);
+            width: 10px;
+            height: 10px;
+            transform: rotate(45deg);
+            filter: blur(2px);
+            animation: float-diamond 20s infinite linear;
+        }
+        
+        @keyframes float-diamond {
+            0%, 100% { transform: translate(0, 0) rotate(45deg); opacity: 0.1; }
+            25% { transform: translate(100px, 50px) rotate(90deg); opacity: 0.15; }
+            50% { transform: translate(50px, 100px) rotate(135deg); opacity: 0.2; }
+            75% { transform: translate(-50px, 50px) rotate(180deg); opacity: 0.15; }
+        }
+        
+        .vip-particles {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .vip-particle {
+            position: absolute;
+            background: var(--neon-gold);
+            border-radius: 50%;
+            opacity: 0.4;
+            animation: float-vip linear infinite;
+        }
+        
+        @keyframes float-vip {
+            0% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.4;
+            }
+            90% {
+                opacity: 0.4;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(100px);
+                opacity: 0;
+            }
+        }
+        
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+        }
+        
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--neon-gold) 0%, var(--neon-vip) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-decoration: none;
+            text-shadow: var(--vip-glow);
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+        }
+        
+        .logo i {
+            margin-right: 15px;
+            font-size: 2.5rem;
+            color: var(--neon-gold);
+            filter: drop-shadow(0 0 5px var(--neon-gold));
         }
         
         h1 {
+            font-size: 2.8rem;
             text-align: center;
-            font-size: 2.5em;
             margin-bottom: 40px;
-            border-bottom: 2px solid var(--primary-color);
+            background: linear-gradient(135deg, var(--neon-gold), var(--neon-vip), var(--neon-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: var(--vip-glow);
+            letter-spacing: 3px;
+            font-weight: 900;
+            position: relative;
+            display: inline-block;
             padding-bottom: 15px;
         }
         
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, var(--neon-gold), var(--neon-vip), transparent);
+            border-radius: 2px;
+        }
+        
         h2 {
-            font-size: 1.8em;
-            margin-top: 40px;
-            border-left: 4px solid var(--primary-color);
-            padding-left: 15px;
+            font-size: 2rem;
+            margin: 50px 0 30px;
+            background: linear-gradient(to right, var(--neon-gold), var(--neon-vip));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+            padding-left: 20px;
+            border-left: 4px solid var(--neon-gold);
         }
         
+        /* Cards */
         .card {
-            background-color: var(--card-bg);
-            border-radius: 15px;
-            padding: 25px;
-            margin-bottom: 30px;
-            box-shadow: 0 0 30px rgba(0, 200, 200, 0.2);
-            border: 1px solid rgba(0, 200, 200, 0.1);
-            backdrop-filter: blur(10px);
+            background: linear-gradient(135deg, rgba(15, 15, 35, 0.7), rgba(25, 15, 45, 0.7));
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--neon-gold);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
         }
         
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, 
+                rgba(255, 215, 0, 0.1) 0%, 
+                rgba(255, 0, 255, 0.1) 50%, 
+                rgba(0, 255, 255, 0.1) 100%);
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 50px rgba(255, 215, 0, 0.25);
+        }
+        
+        .card:hover::before {
+            opacity: 1;
+        }
+        
+        /* Benefits Grid */
         .benefits-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
             margin-top: 30px;
         }
         
         .benefit-item {
-            background: rgba(0, 200, 200, 0.1);
-            padding: 20px;
-            border-radius: 10px;
-            border-left: 3px solid var(--primary-color);
-            transition: transform 0.3s ease;
+            background: rgba(255, 215, 0, 0.1);
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 3px solid var(--neon-gold);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .benefit-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, 
+                transparent, 
+                rgba(255, 215, 0, 0.05), 
+                transparent);
+            transition: 0.5s;
+            z-index: -1;
         }
         
         .benefit-item:hover {
-            transform: translateY(-5px);
-            background: rgba(0, 200, 200, 0.15);
+            transform: translateY(-8px);
+            background: rgba(255, 215, 0, 0.15);
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.2);
+        }
+        
+        .benefit-item:hover::before {
+            animation: shine 1.5s ease infinite;
         }
         
         .benefit-item h3 {
-            margin-top: 0;
-            color: var(--primary-color);
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            color: var(--neon-gold);
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         
+        .benefit-item h3 i {
+            font-size: 1.6rem;
+            text-shadow: 0 0 10px var(--neon-gold);
+        }
+        
+        .benefit-item p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+        
+        /* Rules List */
         .rules-list {
             list-style-type: none;
             padding: 0;
+            margin-top: 30px;
         }
         
         .rules-list li {
             background: rgba(255, 255, 255, 0.05);
-            margin-bottom: 15px;
-            padding: 15px;
-            border-radius: 8px;
+            margin-bottom: 20px;
+            padding: 20px;
+            border-radius: 12px;
             position: relative;
-            padding-left: 50px;
+            padding-left: 70px;
+            transition: var(--transition);
+            border: 1px solid rgba(255, 215, 0, 0.1);
+        }
+        
+        .rules-list li:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateX(5px);
         }
         
         .rules-list li::before {
-            content: "❗";
+            content: "✦";
             position: absolute;
-            left: 15px;
-            top: 15px;
-            font-size: 1.2em;
-            color: var(--primary-color);
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.8rem;
+            color: var(--neon-gold);
+            text-shadow: 0 0 10px var(--neon-gold);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 50%;
         }
         
-        .highlight {
-            color: var(--primary-color);
-            font-weight: bold;
+        .rules-list li strong {
+            color: var(--neon-gold);
+            font-weight: 700;
         }
         
         .warning {
@@ -118,96 +362,209 @@
             border-left: 3px solid #ff6464 !important;
         }
         
-        .warning h3 {
-            color: #ff6464;
+        .warning::before {
+            content: "⚠" !important;
+            color: #ff6464 !important;
+            background: rgba(255, 100, 100, 0.1) !important;
         }
         
+        .warning strong {
+            color: #ff6464 !important;
+        }
+        
+        .highlight {
+            color: var(--neon-gold);
+            font-weight: 700;
+            text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+        }
+        
+        /* WhatsApp Button */
         .whatsapp-btn {
-            display: inline-block;
-            background-color: var(--secondary-color);
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: linear-gradient(135deg, #25D366, #128C7E);
             color: white;
-            padding: 15px 30px;
+            padding: 18px 35px;
             border-radius: 50px;
             text-decoration: none;
-            font-weight: bold;
-            font-size: 1.2em;
-            margin-top: 30px;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
+            font-weight: 700;
+            font-size: 1.3rem;
+            margin-top: 40px;
+            transition: var(--transition);
+            box-shadow: 0 8px 25px rgba(37, 211, 102, 0.4);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .whatsapp-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: 0.5s;
+            z-index: -1;
         }
         
         .whatsapp-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(37, 211, 102, 0.4);
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(37, 211, 102, 0.6);
+        }
+        
+        .whatsapp-btn:hover::before {
+            left: 100%;
         }
         
         .text-center {
             text-align: center;
         }
         
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 50px 0 30px;
+            margin-top: 60px;
+            border-top: 1px solid rgba(255, 215, 0, 0.3);
+            font-size: 1.1rem;
+            color: rgba(224, 224, 255, 0.8);
+            background: linear-gradient(to bottom, transparent, rgba(10, 10, 30, 0.5));
+        }
+        
+        /* Responsive */
         @media (max-width: 768px) {
+            .container {
+                padding: 30px 15px;
+            }
+            
+            .logo {
+                font-size: 2rem;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            h2 {
+                font-size: 1.7rem;
+            }
+            
+            .card {
+                padding: 25px;
+            }
+            
             .benefits-grid {
                 grid-template-columns: 1fr;
             }
             
-            .container {
+            .rules-list li {
+                padding: 15px 15px 15px 60px;
+            }
+            
+            .rules-list li::before {
+                left: 15px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .logo {
+                font-size: 1.8rem;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
+            
+            .card {
                 padding: 20px;
+            }
+            
+            .benefit-item {
+                padding: 20px;
+            }
+            
+            .whatsapp-btn {
+                padding: 15px 25px;
+                font-size: 1.1rem;
             }
         }
     </style>
 </head>
 <body>
+    <!-- Efectos futuristas VIP -->
+    <div class="vip-grid"></div>
+    <div class="floating-diamonds">
+        <div class="diamond" style="top: 10%; left: 20%; animation-delay: 0s;"></div>
+        <div class="diamond" style="top: 30%; left: 80%; animation-delay: 5s;"></div>
+        <div class="diamond" style="top: 70%; left: 40%; animation-delay: 10s;"></div>
+        <div class="diamond" style="top: 50%; left: 60%; animation-delay: 15s;"></div>
+    </div>
+    <div class="vip-particles" id="vipParticles"></div>
+    
     <div class="container">
-        <h1>OXXO-MAX-TRADING BENEFICIOS Y REGLAS DEL PROGRAMA</h1>
+        <div class="header">
+            <div class="logo">
+                <i class="fas fa-crown"></i>
+                <span>VIPFOREX</span>
+            </div>
+            <h1>BENEFICIOS Y REGLAS DEL PROGRAMA ÉLITE</h1>
+        </div>
         
         <div class="card">
-            <h2>Beneficios Exclusivos</h2>
-            <p>Al unirte a nuestro programa, accedes a estos increíbles beneficios:</p>
+            <h2>Beneficios Exclusivos VIP</h2>
+            <p>Al unirte a nuestro programa de élite, accedes a estos beneficios premium:</p>
             
             <div class="benefits-grid">
                 <div class="benefit-item">
-                    <h3>Acceso Completo</h3>
-                    <p>Material de estudio exclusivo y actualizado constantemente para tu crecimiento profesional.</p>
+                    <h3><i class="fas fa-unlock"></i> Acceso Completo VIP</h3>
+                    <p>Material de estudio exclusivo y actualizado constantemente para tu crecimiento profesional en trading.</p>
                 </div>
                 
                 <div class="benefit-item">
-                    <h3>Soporte Directo</h3>
-                    <p>Asesoría personalizada y resolución de dudas en tiempo real con expertos en el área.</p>
+                    <h3><i class="fas fa-headset"></i> Soporte Directo Premium</h3>
+                    <p>Asesoría personalizada y resolución de dudas en tiempo real con expertos traders.</p>
                 </div>
                 
                 <div class="benefit-item">
-                    <h3>Comunidad Activa</h3>
-                    <p>Networking con profesionales afines y oportunidades de colaboración en proyectos.</p>
+                    <h3><i class="fas fa-users"></i> Comunidad Élite</h3>
+                    <p>Networking con traders profesionales y oportunidades de colaboración exclusivas.</p>
                 </div>
                 
                 <div class="benefit-item">
-                    <h3>Recursos Premium</h3>
-                    <p>Plantillas, herramientas y software especializado para potenciar tu trabajo.</p>
+                    <h3><i class="fas fa-tools"></i> Herramientas Premium</h3>
+                    <p>Acceso a indicadores, plantillas y software especializado para trading de alto nivel.</p>
                 </div>
                 
                 <div class="benefit-item">
-                    <h3>Capacitación Continua</h3>
-                    <p>Sesiones de entrenamiento en vivo y masterclasses con invitados especiales.</p>
+                    <h3><i class="fas fa-graduation-cap"></i> Capacitación Continua</h3>
+                    <p>Sesiones de entrenamiento en vivo y masterclasses con traders profesionales.</p>
                 </div>
                 
                 <div class="benefit-item">
-                    <h3>Certificación</h3>
-                    <p>Diploma de participación al completar satisfactoriamente el plan de estudios.</p>
+                    <h3><i class="fas fa-award"></i> Certificación VIP</h3>
+                    <p>Diploma de participación al completar satisfactoriamente el plan de estudios avanzado.</p>
                 </div>
             </div>
         </div>
         
         <div class="card">
-            <h2>Reglas de Permanencia</h2>
-            <p>Para mantener la calidad del programa y compromiso de todos los participantes:</p>
+            <h2>Reglas de Permanencia Élite</h2>
+            <p>Para mantener la excelencia de nuestro programa VIP y el compromiso de todos los miembros:</p>
             
             <ul class="rules-list">
                 <li>
-                    <strong>Pagos mensuales obligatorios:</strong> El acceso al grupo de trabajo está condicionado al pago puntual de las mensualidades.
+                    <strong>Pagos mensuales obligatorios:</strong> El acceso al grupo de trading VIP está condicionado al pago puntual de las mensualidades.
                 </li>
                 
                 <li class="warning">
-                    <strong>Retiro por falta de pago:</strong> Si no se cancela la mensualidad correspondiente, el participante será retirado automáticamente del grupo de trabajo.
+                    <strong>Retiro por falta de pago:</strong> Si no se cancela la mensualidad correspondiente, el participante será retirado automáticamente del grupo VIP.
                 </li>
                 
                 <li>
@@ -215,7 +572,7 @@
                 </li>
                 
                 <li>
-                    <strong>Compromiso con el plan:</strong> Todos los participantes deben asumir y cumplir con el plan de estudio establecido para mantener su membresía activa.
+                    <strong>Compromiso con el plan:</strong> Todos los miembros VIP deben asumir y cumplir con el plan de estudio establecido para mantener su membresía activa.
                 </li>
                 
                 <li>
@@ -223,17 +580,79 @@
                 </li>
                 
                 <li>
-                    <strong>Responsabilidad:</strong> Cada participante es responsable de mantener sus datos de contacto actualizados para recibir los recordatorios de pago.
+                    <strong>Responsabilidad:</strong> Cada miembro es responsable de mantener sus datos de contacto actualizados para recibir los recordatorios de pago.
                 </li>
             </ul>
             
             <div class="text-center">
-                <p>¿Tienes dudas sobre nuestros términos? Contáctanos:</p>
+                <p>¿Tienes dudas sobre nuestros términos VIP? Contáctanos directamente:</p>
                 <a href="https://wa.me/593980051394" class="whatsapp-btn">
-                    WhatsApp: 098 005 1394
+                    <i class="fab fa-whatsapp"></i> WhatsApp: 098 005 1394
                 </a>
             </div>
         </div>
     </div>
+    
+    <footer>
+        © 2024 VIPFOREX | Sistema de Trading Elite | Todos los derechos reservados
+    </footer>
+
+    <script>
+        // Crear efecto de partículas VIP
+        function createVipParticles() {
+            const particleCount = 50;
+            const container = document.getElementById('vipParticles');
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('vip-particle');
+                
+                // Tamaño aleatorio entre 1px y 4px
+                const size = Math.random() * 3 + 1;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Posición inicial aleatoria
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.bottom = `-${size}px`;
+                
+                // Duración de la animación aleatoria
+                const duration = Math.random() * 25 + 15;
+                particle.style.animationDuration = `${duration}s`;
+                
+                // Retraso aleatorio
+                particle.style.animationDelay = `${Math.random() * 15}s`;
+                
+                // Color aleatorio (dorado, violeta o cian)
+                const colors = ['#ffd700', '#ff00ff', '#00ffff'];
+                const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.background = randomColor;
+                
+                container.appendChild(particle);
+            }
+        }
+        
+        // Efecto de escritura para el título
+        const titleText = "BENEFICIOS Y REGLAS DEL PROGRAMA ÉLITE";
+        let titleIndex = 0;
+        const titleElement = document.querySelector('h1');
+        
+        function typeTitleText() {
+            if (titleIndex < titleText.length) {
+                titleElement.textContent += titleText.charAt(titleIndex);
+                titleIndex++;
+                setTimeout(typeTitleText, 50);
+            }
+        }
+        
+        // Iniciar efectos cuando la página cargue
+        window.addEventListener('load', () => {
+            createVipParticles();
+            
+            // Iniciar efecto de escritura
+            titleElement.textContent = "";
+            setTimeout(typeTitleText, 1000);
+        });
+    </script>
 </body>
 </html>
