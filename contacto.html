@@ -3,90 +3,244 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contacto Futurista</title>
+    <title>VIPFOREX - Contacto Premium</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@400;500;600;700&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #0f0f1a;
-            color: #e0e0e0;
+        :root {
+            --neon-gold: #ffd700;
+            --neon-platinum: #e5e4e2;
+            --neon-diamond: #b9f2ff;
+            --neon-vip: #ff00ff;
+            --neon-cyan: #00ffff;
+            --dark-cosmic: #0a0a1a;
+            --darker-space: #050510;
+            --deep-space: #03030f;
+            --star-light: rgba(255, 255, 255, 0.9);
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --gold-glow: 0 0 10px var(--neon-gold), 0 0 20px rgba(255, 215, 0, 0.5);
+            --vip-glow: 0 0 15px var(--neon-vip), 0 0 30px rgba(255, 0, 255, 0.4);
+            --cyan-glow: 0 0 15px var(--neon-cyan), 0 0 30px rgba(0, 255, 255, 0.4);
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+        }
+        
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Exo 2', sans-serif;
+            background-color: var(--deep-space);
+            color: var(--star-light);
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            background-image: radial-gradient(circle at 75% 25%, rgba(25, 25, 60, 0.8) 0%, transparent 50%),
-                              radial-gradient(circle at 25% 75%, rgba(40, 100, 120, 0.6) 0%, transparent 50%);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                url('https://raw.githubusercontent.com/welding30001994/vip/refs/heads/main/leon_con_llamas_y_el_nombre_de.jpeg'),
+                radial-gradient(circle at 15% 15%, rgba(255, 215, 0, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 85% 85%, rgba(255, 0, 255, 0.1) 0%, transparent 40%);
+            background-size: cover, 100% 100%, 100% 100%;
+            background-position: center;
+            background-blend-mode: overlay;
+            opacity: 0.2;
+            z-index: -2;
+        }
+        
+        /* Efectos futuristas VIP */
+        .vip-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.05;
+            background: 
+                linear-gradient(0deg, transparent 48%, var(--neon-gold) 49%, var(--neon-gold) 51%, transparent 52%),
+                linear-gradient(90deg, transparent 48%, var(--neon-vip) 49%, var(--neon-vip) 51%, transparent 52%);
+            background-size: 20px 20px;
+            animation: grid-move 20s infinite linear;
+        }
+        
+        @keyframes grid-move {
+            0% { background-position: 0 0; }
+            100% { background-position: 20px 20px; }
+        }
+        
+        .floating-diamonds {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .diamond {
+            position: absolute;
+            opacity: 0.1;
+            background: var(--neon-diamond);
+            width: 10px;
+            height: 10px;
+            transform: rotate(45deg);
+            filter: blur(2px);
+            animation: float-diamond 20s infinite linear;
+        }
+        
+        @keyframes float-diamond {
+            0%, 100% { transform: translate(0, 0) rotate(45deg); opacity: 0.1; }
+            25% { transform: translate(100px, 50px) rotate(90deg); opacity: 0.15; }
+            50% { transform: translate(50px, 100px) rotate(135deg); opacity: 0.2; }
+            75% { transform: translate(-50px, 50px) rotate(180deg); opacity: 0.15; }
+        }
+        
+        .vip-particles {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .vip-particle {
+            position: absolute;
+            background: var(--neon-gold);
+            border-radius: 50%;
+            opacity: 0.4;
+            animation: float-vip linear infinite;
+        }
+        
+        @keyframes float-vip {
+            0% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.4;
+            }
+            90% {
+                opacity: 0.4;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(100px);
+                opacity: 0;
+            }
         }
         
         .container {
             text-align: center;
-            max-width: 500px;
-            padding: 30px;
-            background-color: rgba(20, 20, 40, 0.8);
-            border-radius: 15px;
-            box-shadow: 0 0 30px rgba(0, 200, 200, 0.2);
-            border: 1px solid rgba(0, 200, 200, 0.1);
-            backdrop-filter: blur(10px);
+            max-width: 600px;
+            padding: 50px 40px;
+            background: linear-gradient(135deg, rgba(15, 15, 35, 0.8), rgba(25, 15, 45, 0.8));
+            backdrop-filter: blur(15px);
+            border-radius: 25px;
+            box-shadow: 0 0 50px rgba(255, 215, 0, 0.3);
+            border: 2px solid var(--neon-gold);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, var(--neon-gold), var(--neon-vip), var(--neon-cyan), var(--neon-gold));
+            background-size: 400%;
+            z-index: -1;
+            animation: border-glowing 4s linear infinite;
+            border-radius: 25px;
+            opacity: 0.7;
+        }
+        
+        @keyframes border-glowing {
+            0% { background-position: 0 0; }
+            50% { background-position: 300% 0; }
+            100% { background-position: 0 0; }
+        }
+        
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.8rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--neon-gold) 0%, var(--neon-vip) 50%, var(--neon-cyan) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: var(--vip-glow);
+            letter-spacing: 2px;
+            margin-bottom: 30px;
+        }
+        
+        .logo i {
+            margin-right: 15px;
+            font-size: 2.8rem;
+            color: var(--neon-gold);
+            filter: drop-shadow(0 0 5px var(--neon-gold));
         }
         
         h1 {
-            color: #00c8c8;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, var(--neon-gold), var(--neon-vip));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+            letter-spacing: 1.5px;
+        }
+        
+        p {
+            font-size: 1.2rem;
             margin-bottom: 30px;
-            font-size: 2.2em;
-            text-shadow: 0 0 10px rgba(0, 200, 200, 0.3);
+            line-height: 1.6;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
         }
         
         .whatsapp-btn {
-            display: inline-block;
-            background-color: #25D366;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: linear-gradient(135deg, #25D366, #128C7E);
             color: white;
-            padding: 15px 30px;
+            padding: 20px 40px;
             border-radius: 50px;
             text-decoration: none;
-            font-weight: bold;
-            font-size: 1.2em;
+            font-weight: 700;
+            font-size: 1.4rem;
             margin-top: 20px;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
+            transition: var(--transition);
+            box-shadow: 0 8px 25px rgba(37, 211, 102, 0.4);
             position: relative;
             overflow: hidden;
-        }
-        
-        .whatsapp-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(37, 211, 102, 0.4);
-        }
-        
-        .whatsapp-btn:active {
-            transform: translateY(1px);
-        }
-        
-        .whatsapp-btn::before {
-            content: "";
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: rgba(255, 255, 255, 0.1);
-            transform: rotate(45deg);
-            transition: all 0.5s ease;
-            pointer-events: none;
-        }
-        
-        .whatsapp-btn:hover::before {
-            left: 100%;
-            top: 100%;
-        }
-        
-        .contact-info {
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px solid rgba(0, 200, 200, 0.2);
-        }
-        
-        .pulse {
+            z-index: 1;
             animation: pulse 2s infinite;
         }
         
@@ -95,27 +249,240 @@
                 box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7);
             }
             70% {
-                box-shadow: 0 0 0 15px rgba(37, 211, 102, 0);
+                box-shadow: 0 0 0 20px rgba(37, 211, 102, 0);
             }
             100% {
                 box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
             }
         }
+        
+        .whatsapp-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: 0.5s;
+            z-index: -1;
+        }
+        
+        .whatsapp-btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 12px 30px rgba(37, 211, 102, 0.6);
+        }
+        
+        .whatsapp-btn:hover::before {
+            left: 100%;
+        }
+        
+        .contact-info {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 215, 0, 0.3);
+        }
+        
+        .contact-info p {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+        
+        .contact-info strong {
+            color: var(--neon-gold);
+            font-weight: 700;
+            text-shadow: 0 0 5px rgba(255, 215, 0, 0.3);
+        }
+        
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .social-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--neon-gold);
+            font-size: 1.5rem;
+            transition: var(--transition);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+        
+        .social-icon:hover {
+            background: var(--neon-gold);
+            color: var(--dark-cosmic);
+            transform: translateY(-5px);
+            box-shadow: var(--gold-glow);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 40px 30px;
+                margin: 20px;
+                max-width: 90%;
+            }
+            
+            .logo {
+                font-size: 2.2rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            p {
+                font-size: 1.1rem;
+            }
+            
+            .whatsapp-btn {
+                padding: 18px 35px;
+                font-size: 1.2rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 30px 20px;
+            }
+            
+            .logo {
+                font-size: 1.8rem;
+            }
+            
+            .logo i {
+                font-size: 2rem;
+            }
+            
+            h1 {
+                font-size: 1.7rem;
+            }
+            
+            p {
+                font-size: 1rem;
+            }
+            
+            .whatsapp-btn {
+                padding: 15px 30px;
+                font-size: 1.1rem;
+            }
+            
+            .social-icon {
+                width: 45px;
+                height: 45px;
+                font-size: 1.3rem;
+            }
+        }
     </style>
 </head>
 <body>
+    <!-- Efectos futuristas VIP -->
+    <div class="vip-grid"></div>
+    <div class="floating-diamonds">
+        <div class="diamond" style="top: 10%; left: 20%; animation-delay: 0s;"></div>
+        <div class="diamond" style="top: 30%; left: 80%; animation-delay: 5s;"></div>
+        <div class="diamond" style="top: 70%; left: 40%; animation-delay: 10s;"></div>
+        <div class="diamond" style="top: 50%; left: 60%; animation-delay: 15s;"></div>
+    </div>
+    <div class="vip-particles" id="vipParticles"></div>
+    
     <div class="container">
-        <h1>Oxxomaxtrading </h1>
-        <p>¿Contactanos? Estoy aquí para ayudarte.</p>
+        <div class="logo">
+            <i class="fas fa-crown"></i>
+            <span>VIPFOREX</span>
+        </div>
         
-        <a href="https://wa.me/593980051394" class="whatsapp-btn pulse">
-            WhatsApp: 098 005 1394
+        <h1>CONTACTO PREMIUM</h1>
+        <p>¿Necesitas asistencia personalizada? Nuestro equipo de expertos está listo para ayudarte a alcanzar el siguiente nivel en tu trading.</p>
+        
+        <a href="https://wa.me/593980051394" class="whatsapp-btn">
+            <i class="fab fa-whatsapp"></i> WhatsApp: 098 005 1394
         </a>
         
         <div class="contact-info">
-            <p>O escríbeme directamente a mi número de WhatsApp</p>
+            <p>O escríbenos directamente a nuestro número de WhatsApp</p>
             <p><strong>Ecuador: +593 98 005 1394</strong></p>
+            
+            <div class="social-icons">
+                <a href="https://www.facebook.com/profile.php?id=61579696913394" class="social-icon">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="https://t.me/+x8P5ya17Dek4YjBh" class="social-icon">
+                    <i class="fab fa-telegram-plane"></i>
+                </a>
+                <a href="https://www.instagram.com/weldingmiguel/" class="social-icon">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="https://www.youtube.com/@OXOMAX-TRADING/shorts" class="social-icon">
+                    <i class="fab fa-youtube"></i>
+                </a>
+            </div>
         </div>
     </div>
+
+    <script>
+        // Crear efecto de partículas VIP
+        function createVipParticles() {
+            const particleCount = 60;
+            const container = document.getElementById('vipParticles');
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('vip-particle');
+                
+                // Tamaño aleatorio entre 1px y 4px
+                const size = Math.random() * 3 + 1;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Posición inicial aleatoria
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.bottom = `-${size}px`;
+                
+                // Duración de la animación aleatoria
+                const duration = Math.random() * 25 + 15;
+                particle.style.animationDuration = `${duration}s`;
+                
+                // Retraso aleatorio
+                particle.style.animationDelay = `${Math.random() * 15}s`;
+                
+                // Color aleatorio (dorado, violeta o cian)
+                const colors = ['#ffd700', '#ff00ff', '#00ffff'];
+                const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.background = randomColor;
+                
+                container.appendChild(particle);
+            }
+        }
+        
+        // Efecto de escritura para el título
+        const titleText = "CONTACTO PREMIUM";
+        let titleIndex = 0;
+        const titleElement = document.querySelector('h1');
+        
+        function typeTitleText() {
+            if (titleIndex < titleText.length) {
+                titleElement.textContent += titleText.charAt(titleIndex);
+                titleIndex++;
+                setTimeout(typeTitleText, 100);
+            }
+        }
+        
+        // Iniciar efectos cuando la página cargue
+        window.addEventListener('load', () => {
+            createVipParticles();
+            
+            // Iniciar efecto de escritura
+            titleElement.textContent = "";
+            setTimeout(typeTitleText, 1000);
+        });
+    </script>
 </body>
 </html>
