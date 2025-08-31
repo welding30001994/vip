@@ -3,29 +3,152 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEXUS | Generador Futurista</title>
+    <title>VIPFOREX | Generador de Contenido Élite</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@400;500;600;700&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --neon-gold: #ffd700;
+            --neon-platinum: #e5e4e2;
+            --neon-diamond: #b9f2ff;
+            --neon-vip: #ff00ff;
+            --neon-cyan: #00ffff;
+            --dark-cosmic: #0a0a1a;
+            --darker-space: #050510;
+            --deep-space: #03030f;
+            --star-light: rgba(255, 255, 255, 0.9);
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --gold-glow: 0 0 10px var(--neon-gold), 0 0 20px rgba(255, 215, 0, 0.5);
+            --vip-glow: 0 0 15px var(--neon-vip), 0 0 30px rgba(255, 0, 255, 0.4);
+            --cyan-glow: 0 0 15px var(--neon-cyan), 0 0 30px rgba(0, 255, 255, 0.4);
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+        }
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Arial, sans-serif;
         }
         
         body {
-            background: #0a0a16;
-            color: #e0e0ff;
+            font-family: 'Exo 2', sans-serif;
+            background-color: var(--deep-space);
+            color: var(--star-light);
             min-height: 100vh;
             overflow-x: hidden;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             background-image: 
-                radial-gradient(circle at 10% 20%, rgba(28, 12, 114, 0.3) 0%, transparent 30%),
-                radial-gradient(circle at 90% 80%, rgba(76, 15, 125, 0.3) 0%, transparent 30%);
+                url('https://raw.githubusercontent.com/welding30001994/vip/refs/heads/main/leon_con_fuego_con_el_nombre_vipforex%20(1).jpeg'),
+                radial-gradient(circle at 15% 15%, rgba(255, 215, 0, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 85% 85%, rgba(255, 0, 255, 0.1) 0%, transparent 40%);
+            background-size: cover, 100% 100%, 100% 100%;
+            background-position: center;
+            background-blend-mode: overlay;
+            opacity: 0.2;
+            z-index: -2;
+        }
+        
+        /* Efectos futuristas VIP */
+        .vip-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.05;
+            background: 
+                linear-gradient(0deg, transparent 48%, var(--neon-gold) 49%, var(--neon-gold) 51%, transparent 52%),
+                linear-gradient(90deg, transparent 48%, var(--neon-vip) 49%, var(--neon-vip) 51%, transparent 52%);
+            background-size: 20px 20px;
+            animation: grid-move 20s infinite linear;
+        }
+        
+        @keyframes grid-move {
+            0% { background-position: 0 0; }
+            100% { background-position: 20px 20px; }
+        }
+        
+        .floating-diamonds {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .diamond {
+            position: absolute;
+            opacity: 0.1;
+            background: var(--neon-diamond);
+            width: 10px;
+            height: 10px;
+            transform: rotate(45deg);
+            filter: blur(2px);
+            animation: float-diamond 20s infinite linear;
+        }
+        
+        @keyframes float-diamond {
+            0%, 100% { transform: translate(0, 0) rotate(45deg); opacity: 0.1; }
+            25% { transform: translate(100px, 50px) rotate(90deg); opacity: 0.15; }
+            50% { transform: translate(50px, 100px) rotate(135deg); opacity: 0.2; }
+            75% { transform: translate(-50px, 50px) rotate(180deg); opacity: 0.15; }
+        }
+        
+        .vip-particles {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .vip-particle {
+            position: absolute;
+            background: var(--neon-gold);
+            border-radius: 50%;
+            opacity: 0.4;
+            animation: float-vip linear infinite;
+        }
+        
+        @keyframes float-vip {
+            0% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.4;
+            }
+            90% {
+                opacity: 0.4;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(100px);
+                opacity: 0;
+            }
         }
         
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 2rem;
+            z-index: 1;
         }
         
         header {
@@ -33,37 +156,68 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 3rem;
-            padding: 1rem 0;
-            border-bottom: 1px solid rgba(90, 150, 255, 0.2);
+            padding: 1.5rem 0;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.3);
         }
         
         .logo {
-            font-size: 2rem;
-            font-weight: 800;
-            background: linear-gradient(45deg, #6e45e2, #88d3ce);
+            display: inline-flex;
+            align-items: center;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--neon-gold) 0%, var(--neon-vip) 50%, var(--neon-cyan) 100%);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            text-transform: uppercase;
+            text-shadow: var(--vip-glow);
             letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        
+        .logo i {
+            margin-right: 15px;
+            font-size: 2.5rem;
+            color: var(--neon-gold);
+            filter: drop-shadow(0 0 8px var(--neon-gold));
+        }
+        
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--neon-gold), var(--neon-vip), var(--neon-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: var(--vip-glow);
+            letter-spacing: 2px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 800;
+        }
+        
+        p {
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+            color: var(--star-light);
+            font-size: 1.2rem;
         }
         
         .main-content {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 3rem;
-            margin-top: 2rem;
+            margin: 3rem 0;
         }
         
         .panel {
-            background: rgba(20, 20, 40, 0.6);
-            border-radius: 16px;
-            padding: 2rem;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(90, 150, 255, 0.2);
-            box-shadow: 0 0 30px rgba(60, 100, 255, 0.1);
+            background: linear-gradient(135deg, rgba(15, 15, 35, 0.8), rgba(25, 15, 45, 0.8));
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 2.5rem;
+            border: 2px solid var(--neon-gold);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
             position: relative;
             overflow: hidden;
+            transition: var(--transition);
         }
         
         .panel::before {
@@ -73,244 +227,307 @@
             left: -2px;
             right: -2px;
             bottom: -2px;
+            background: linear-gradient(45deg, var(--neon-gold), var(--neon-vip), var(--neon-cyan), var(--neon-gold));
+            background-size: 400%;
             z-index: -1;
-            background: linear-gradient(45deg, #ff00cc, #3333ff, #00ccff, #ff00cc);
-            background-size: 400% 400%;
-            animation: glowing 20s ease infinite;
-            border-radius: 18px;
-            opacity: 0.3;
+            animation: border-glowing 4s linear infinite;
+            border-radius: 22px;
+            opacity: 0.7;
         }
         
-        @keyframes glowing {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        @keyframes border-glowing {
+            0% { background-position: 0 0; }
+            50% { background-position: 300% 0; }
+            100% { background-position: 0 0; }
         }
         
-        h1 {
-            font-size: 2.8rem;
-            margin-bottom: 1.5rem;
-            background: linear-gradient(45deg, #6e45e2, #88d3ce);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+        .panel:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 50px rgba(255, 215, 0, 0.3);
         }
         
         h2 {
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             margin-bottom: 1.5rem;
-            color: #a0a0ff;
+            color: var(--neon-gold);
+            font-family: 'Orbitron', sans-serif;
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
         
-        p {
-            line-height: 1.6;
-            margin-bottom: 1.5rem;
-            color: #c0c0ff;
+        h2 i {
+            font-size: 2rem;
+            text-shadow: 0 0 10px var(--neon-gold);
         }
         
         .concept {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             line-height: 1.8;
-            padding: 1.5rem;
-            background: rgba(10, 15, 35, 0.5);
-            border-radius: 12px;
-            border-left: 3px solid #6e45e2;
-            margin: 2rem 0;
-        }
-        
-        .btn-container {
-            text-align: center;
-            margin: 3rem 0;
-        }
-        
-        .futurist-btn {
-            background: linear-gradient(45deg, #6e45e2, #88d3ce);
-            border: none;
-            color: white;
-            padding: 1.2rem 3rem;
-            font-size: 1.2rem;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-weight: 600;
-            box-shadow: 0 5px 15px rgba(110, 69, 226, 0.4);
+            padding: 2rem;
+            background: rgba(10, 15, 35, 0.6);
+            border-radius: 16px;
+            border-left: 4px solid var(--neon-gold);
+            margin: 2.5rem 0;
             position: relative;
             overflow: hidden;
-            outline: none;
         }
         
-        .futurist-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(110, 69, 226, 0.6);
-        }
-        
-        .futurist-btn:active {
-            transform: translateY(1px);
-        }
-        
-        .futurist-btn::before {
+        .concept::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transform: translateX(-100%);
-            transition: transform 0.6s;
+            background: linear-gradient(45deg, transparent, rgba(255, 215, 0, 0.1), transparent);
+            animation: shine 3s infinite;
+        }
+        
+        @keyframes shine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        .btn-container {
+            text-align: center;
+            margin: 4rem 0;
+        }
+        
+        .futurist-btn {
+            background: linear-gradient(135deg, var(--neon-gold), var(--neon-vip));
+            border: none;
+            color: var(--dark-cosmic);
+            padding: 1.5rem 4rem;
+            font-size: 1.4rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: var(--transition);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 700;
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        .futurist-btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 12px 35px rgba(255, 215, 0, 0.7);
+        }
+        
+        .futurist-btn:active {
+            transform: translateY(2px) scale(1);
+        }
+        
+        .futurist-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: 0.6s;
+            z-index: -1;
         }
         
         .futurist-btn:hover::before {
-            transform: translateX(100%);
+            animation: shine 1.5s forwards;
         }
         
-        .grid-background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            opacity: 0.1;
-            background: 
-                linear-gradient(to right, rgba(90, 150, 255, 0.2) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(90, 150, 255, 0.2) 1px, transparent 1px);
-            background-size: 30px 30px;
-            perspective: 1000px;
-            transform-style: preserve-3d;
-            transform: rotateX(60deg) translateZ(-100px);
-        }
-        
-        .floating-elements {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            z-index: -1;
-        }
-        
-        .floating-element {
-            position: absolute;
-            border-radius: 50%;
-            opacity: 0.3;
-            filter: blur(20px);
-        }
-        
-        .element-1 {
-            width: 300px;
-            height: 300px;
-            background: #6e45e2;
-            top: 10%;
-            left: 5%;
-            animation: float 15s ease-in-out infinite;
-        }
-        
-        .element-2 {
-            width: 200px;
-            height: 200px;
-            background: #88d3ce;
-            top: 60%;
-            right: 10%;
-            animation: float 12s ease-in-out infinite reverse;
-        }
-        
-        @keyframes float {
-            0% { transform: translate(0, 0) rotate(0deg); }
-            50% { transform: translate(20px, 30px) rotate(180deg); }
-            100% { transform: translate(0, 0) rotate(360deg); }
-        }
-        
-        @media (max-width: 768px) {
+        /* Responsive */
+        @media (max-width: 968px) {
             .main-content {
                 grid-template-columns: 1fr;
+                gap: 2rem;
             }
             
             h1 {
+                font-size: 2.8rem;
+            }
+            
+            .logo {
                 font-size: 2rem;
+            }
+            
+            .logo i {
+                font-size: 2rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .logo {
+                font-size: 1.8rem;
+            }
+            
+            .panel {
+                padding: 2rem;
+            }
+            
+            .futurist-btn {
+                padding: 1.3rem 3rem;
+                font-size: 1.2rem;
+            }
+            
+            .concept {
+                font-size: 1.1rem;
+                padding: 1.5rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .logo {
+                font-size: 1.5rem;
+            }
+            
+            .logo i {
+                font-size: 1.5rem;
+                margin-right: 10px;
+            }
+            
+            header {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+            
+            .panel {
+                padding: 1.5rem;
+            }
+            
+            .futurist-btn {
+                padding: 1.1rem 2.5rem;
+                font-size: 1.1rem;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
+            
+            p {
+                font-size: 1.1rem;
             }
         }
     </style>
 </head>
 <body>
-    <div class="grid-background"></div>
-    <div class="floating-elements">
-        <div class="floating-element element-1"></div>
-        <div class="floating-element element-2"></div>
+    <!-- Efectos futuristas VIP -->
+    <div class="vip-grid"></div>
+    <div class="floating-diamonds">
+        <div class="diamond" style="top: 10%; left: 20%; animation-delay: 0s;"></div>
+        <div class="diamond" style="top: 30%; left: 80%; animation-delay: 5s;"></div>
+        <div class="diamond" style="top: 70%; left: 40%; animation-delay: 10s;"></div>
+        <div class="diamond" style="top: 50%; left: 60%; animation-delay: 15s;"></div>
     </div>
+    <div class="vip-particles" id="vipParticles"></div>
     
     <div class="container">
         <header>
-            <div class="logo">OXXOMAXTRADING</div>
+            <div class="logo">
+                <i class="fas fa-crown"></i>
+                <span>VIPFOREX</span>
+            </div>
         </header>
         
-        <h1>OXXOMAXTRADING </h1>
-        <p>Una plataforma avanzada para crear texto e imágenes con tecnología de vanguardia.</p>
+        <h1 id="main-title">GENERADOR DE CONTENIDO ÉLITE</h1>
+        <p>Una plataforma avanzada para crear texto e imágenes con tecnología de vanguardia exclusiva para traders VIP.</p>
         
         <div class="concept">
-            <strong>CONCEPTO:</strong> OXXOMAXTRADING fusiona creatividad humana generar contenido único. 
-            Simplemente describe tu idea y nuestro sistema neuronal creará texto persuasivo e imágenes hiperrealistas 
-            en segundos, rompiendo las barreras entre imaginación y realidad.
+            <strong>CONCEPTO PREMIUM:</strong> VIPFOREX fusiona inteligencia artificial de última generación con expertise en trading para generar contenido único y de alto valor. 
+            Describe tu idea y nuestro sistema neuronal creará texto persuasivo e imágenes hiperrealistas en segundos, 
+            rompiendo las barreras entre imaginación y realidad para el trader moderno.
         </div>
         
         <div class="main-content">
             <div class="panel">
-                <h2>Generador de Texto</h2>
-                <p>Nuestro modelo de lenguaje de última generación crea contenido original, persuasivo y adaptado a tus necesidades específicas.</p>
+                <h2><i class="fas fa-font"></i> Generador de Texto Élite</h2>
+                <p>Nuestro modelo de lenguaje de última generación crea contenido original, persuasivo y adaptado específicamente para el mundo del trading y las finanzas.</p>
             </div>
             
             <div class="panel">
-                <h2>Generador de Imágenes</h2>
-                <p>Transforma descripciones textuales en visuales impresionantes con nuestra tecnología de redes generativas adversariales.</p>
+                <h2><i class="fas fa-image"></i> Generador de Imágenes Premium</h2>
+                <p>Transforma descripciones textuales en visuales impresionantes con nuestra tecnología de redes generativas adversariales de nivel profesional.</p>
             </div>
         </div>
         
         <div class="btn-container">
-            <button class="futurist-btn" onclick="window.location.href='https://textoo.vercel.app/'">Comienza crear tu sitio web </button>
+            <button class="futurist-btn" onclick="window.location.href='https://textoo.vercel.app/'">
+                <i class="fas fa-rocket"></i> Acceder a la Plataforma VIP
+            </button>
         </div>
     </div>
 
     <script>
-        // Efecto de partículas para el fondo
-        document.addEventListener('DOMContentLoaded', function() {
-            const container = document.querySelector('.floating-elements');
-            const colors = ['#6e45e2', '#88d3ce', '#ff00cc', '#3333ff', '#00ccff'];
+        // Crear efecto de partículas VIP
+        function createVipParticles() {
+            const particleCount = 80;
+            const container = document.getElementById('vipParticles');
             
-            // Crear más elementos flotantes
-            for (let i = 0; i < 5; i++) {
-                const element = document.createElement('div');
-                element.classList.add('floating-element');
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('vip-particle');
                 
-                const size = Math.random() * 150 + 50;
-                element.style.width = `${size}px`;
-                element.style.height = `${size}px`;
-                element.style.background = colors[Math.floor(Math.random() * colors.length)];
-                element.style.top = `${Math.random() * 100}%`;
-                element.style.left = `${Math.random() * 100}%`;
-                element.style.animation = `float ${Math.random() * 20 + 10}s ease-in-out infinite`;
-                element.style.animationDelay = `${Math.random() * 5}s`;
+                // Tamaño aleatorio entre 1px y 4px
+                const size = Math.random() * 3 + 1;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
                 
-                container.appendChild(element);
+                // Posición inicial aleatoria
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.bottom = `-${size}px`;
+                
+                // Duración de la animación aleatoria
+                const duration = Math.random() * 25 + 15;
+                particle.style.animationDuration = `${duration}s`;
+                
+                // Retraso aleatorio
+                particle.style.animationDelay = `${Math.random() * 15}s`;
+                
+                // Color aleatorio (dorado, violeta o cian)
+                const colors = ['#ffd700', '#ff00ff', '#00ffff'];
+                const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.background = randomColor;
+                
+                container.appendChild(particle);
             }
+        }
+        
+        // Efecto de escritura para el título
+        const titleText = "GENERADOR DE CONTENIDO ÉLITE";
+        let titleIndex = 0;
+        const titleElement = document.getElementById('main-title');
+        
+        function typeTitleText() {
+            if (titleIndex < titleText.length) {
+                titleElement.textContent += titleText.charAt(titleIndex);
+                titleIndex++;
+                setTimeout(typeTitleText, 70);
+            }
+        }
+        
+        // Iniciar efectos cuando la página cargue
+        window.addEventListener('load', () => {
+            createVipParticles();
             
-            // Efecto de escritura futurista para el título
-            const title = document.querySelector('h1');
-            const originalText = title.textContent;
-            title.textContent = '';
-            
-            let i = 0;
-            const typeWriter = setInterval(function() {
-                if (i < originalText.length) {
-                    title.textContent += originalText.charAt(i);
-                    i++;
-                } else {
-                    clearInterval(typeWriter);
-                }
-            }, 50);
+            // Iniciar efecto de escritura
+            titleElement.textContent = "";
+            setTimeout(typeTitleText, 1000);
         });
     </script>
 </body>
 </html>
-
