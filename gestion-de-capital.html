@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion de Capital</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Exo 2', sans-serif;
+            background: linear-gradient(135deg, #0a0a1a 0%, #16162b 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .document-container {
+            background-color: white;
+            width: 100%;
+            max-width: 900px;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+            margin: 40px auto;
+        }
+        
+        .document-header {
+            background: linear-gradient(90deg, #4361ee 0%, #3a0ca3 50%, #7209b7 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .document-header:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cGF0aCBkPSJNNTAuNjY3LDEwLjMzM2MzMC42NjcsMCwzMy4zMzMsNDAsMzMuMzMzLDQwYzAsMC0yLjY2Niw0MC0zMy4zMzMsNDBTMTcuMzM0LDUwLjMzMywxNy4zMzQsNTAuMzMzUzIwLDEwLjMzMyw1MC42NjcsMTAuMzMzeiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMSkiIHN0cm9rZS13aWR0aD0iMSIvPjxwYXRoIGQ9Ik0zMy4zMzQsMzMuMzMzYzAsNS41MjMsMzAsMTEuMDQ3LDMzLjMzMywxMS4wNDdjMy4zMzMsMCwzMy4zMzMtNS41MjQsMzMuMzMzLTExLjA0NyIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMSkiIHN0cm9rZS13aWR0aD0iMSIvPjxwYXRoIGQ9Ik0zMy4zMzQsNjYuNjY2YzAtNS41MjMsMjguMTI1LTExLjA0NywzMy4zMzMtMTEuMDQ3YzUuMjA4LDAsMzMuMzMzLDUuNTI0LDMzLjMzMywxMS4wNDciIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjEpIiBzdHJva2Utd2lkdGg9IjEiLz48L3N2Zz4=') center/contain no-repeat;
+            opacity: 0.1;
+        }
+        
+        .document-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            font-family: 'Orbitron', sans-serif;
+            text-shadow: 0 0 15px rgba(67, 97, 238, 0.5);
+        }
+        
+        .document-header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .vip-badge {
+            background: linear-gradient(145deg, #fca311, #ff5e00);
+            color: black;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 1rem;
+            display: inline-block;
+            margin-top: 15px;
+            box-shadow: 0 0 15px rgba(252, 163, 17, 0.7);
+        }
+        
+        .document-content {
+            padding: 50px;
+        }
+        
+        .document-content * {
+            max-width: 100%;
+        }
+        
+        .document-content h1, 
+        .document-content h2, 
+        .document-content h3, 
+        .document-content h4, 
+        .document-content h5, 
+        .document-content h6 {
+            color: #4361ee;
+            margin-top: 1.5em;
+            margin-bottom: 0.5em;
+            text-align: center;
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        .document-content p {
+            margin-bottom: 1.2em;
+            line-height: 1.8;
+            text-align: justify;
+        }
+        
+        .document-content img {
+            display: block;
+            margin: 2em auto;
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .document-content iframe {
+            display: block;
+            margin: 2em auto;
+            max-width: 100%;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .document-content video {
+            display: block;
+            margin: 2em auto;
+            max-width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .document-footer {
+            background: #f8f9fa;
+            padding: 25px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #6c757d;
+            border-top: 1px solid #e9ecef;
+        }
+        
+        .document-footer p {
+            margin: 0;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .document-container {
+                border-radius: 15px;
+                margin: 20px auto;
+            }
+            
+            .document-header {
+                padding: 25px;
+            }
+            
+            .document-header h1 {
+                font-size: 2rem;
+            }
+            
+            .document-content {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="document-container">
+        <div class="document-header">
+            <h1>Gestion de Capital</h1>
+            <p>Vip Forex </p>
+            <div class="vip-badge"> El trading no premia a los que se rinden rápido, sino a los que persisten, estudian y mejoran día tras día. Cada error es una lección, y cada acierto es una señal de que estás más cerca de tus metas. </div>
+        </div>
+        
+        <div class="document-content">
+            <div class="editable" style="text-align: center; padding: 30px; background: linear-gradient(145deg, rgba(67, 97, 238, 0.1), rgba(58, 12, 163, 0.1)); border-radius: 15px; color: rgb(40, 37, 37); font-family: Orbitron; font-size: 24px; width: 761px; height: 110px;">Gestión de Capital</div><div class="editable" style="margin: 15px 0px; padding: 15px; background: rgba(67, 97, 238, 0.1); border-radius: 8px; color: rgb(84, 48, 48);">Perfecto 🚀, la gestión de capital en el trading es la base para no quemar tu cuenta. Puedes tener la mejor estrategia del mundo, pero si no gestionas bien tu dinero, tarde o temprano perderás.  Aquí te lo explico paso a paso:</div><div class="editable" style="margin: 15px 0px; padding: 15px; background: rgba(67, 97, 238, 0.1); border-radius: 8px; color: rgb(111, 17, 162);">🔑 Principios de la Gestión de Capital 1. Riesgo por operación  Nunca arriesgues más del 1% al 2% de tu cuenta en una sola operación.  Ejemplo:  Cuenta: $1,000  Riesgo: 1% → $10 máximo por operación.  👉 Esto asegura que aunque pierdas varias veces seguidas, sigues vivo en el mercado.</div><div class="editable" style="margin: 15px 0px; padding: 15px; background: rgba(67, 97, 238, 0.1); border-radius: 8px; color: rgb(0, 0, 0);">2. Tamaño de la posición (Lotaje)  El lotaje se calcula según el riesgo, stop loss y balance.  Fórmula básica:  𝑇 𝑎 𝑚 𝑎 𝑛 ~ 𝑜 &nbsp; 𝑑 𝑒 𝑙 &nbsp; 𝑙 𝑜 𝑡 𝑒 = 𝑅 𝑖 𝑒 𝑠 𝑔 𝑜 &nbsp; ( $ ) 𝑆 𝑡 𝑜 𝑝 &nbsp; 𝐿 𝑜 𝑠 𝑠 &nbsp; ( 𝑝 𝑖 𝑝 𝑠 ) × 𝑉 𝑎 𝑙 𝑜 𝑟 &nbsp; 𝑝 𝑜 𝑟 &nbsp; 𝑝 𝑖 𝑝 Tama n ~ o&nbsp;del&nbsp;lote= Stop&nbsp;Loss&nbsp;(pips)×Valor&nbsp;por&nbsp;pip Riesgo&nbsp;($) 	​   Ejemplo:  Cuenta: $1,000  Riesgo: $10  Stop Loss: 20 pips  Valor por pip: $0.10  𝐿 𝑜 𝑡 𝑒 = 10 20 × 0.10 = 0.5 &nbsp; 𝑙 𝑜 𝑡 𝑒 𝑠 &nbsp; 𝑚 𝑖 𝑐 𝑟 𝑜 ( 0.05 ) Lote= 20×0.10 10 	​  =0.5&nbsp;lotes&nbsp;micro(0.05)</div><div class="editable" style="margin: 15px 0px; padding: 15px; background: rgba(67, 97, 238, 0.1); border-radius: 8px; color: rgb(50, 29, 154);">3. Relación Riesgo/Beneficio (RR)  Nunca entres a un trade si tu riesgo es mayor que la ganancia esperada.  Lo ideal: mínimo 1:2 (arriesgo $10 para ganar $20).  Esto permite que aunque ganes solo el 40% de las veces, sigas siendo rentable.</div><div class="editable" style="margin: 15px 0px; padding: 15px; background: rgba(67, 97, 238, 0.1); border-radius: 8px; color: rgb(17, 13, 13);">4. Diversificación  No pongas todo tu capital en un solo activo.  Ejemplo: si operas Forex, combina con índices, criptos o materias primas (solo si conoces cada mercado).</div><div class="editable" style="margin: 15px 0px; padding: 15px; background: rgba(67, 97, 238, 0.1); border-radius: 8px; color: rgb(37, 19, 19);">5. Control del Drawdown  Drawdown = la pérdida acumulada desde el último máximo de tu cuenta.  Se recomienda no superar el 20-25% de drawdown.  Si llegas a ese punto → pausa y revisa tu estrategia.</div><div class="editable" style="margin: 15px 0px; padding: 15px; background: rgba(67, 97, 238, 0.1); border-radius: 8px; color: rgb(51, 31, 31);">6. Uso de apalancamiento  El apalancamiento amplifica ganancias y pérdidas.  Recomendación: no uses más del 10:1 en cuentas pequeñas.  Traders profesionales suelen usar 1:2 o 1:3, porque la clave es la consistencia, no el riesgo desmedido.</div><div class="editable" style="margin: 15px 0px; padding: 15px; background: rgba(67, 97, 238, 0.1); border-radius: 8px; color: rgb(59, 20, 107);">Ejemplo práctico  Cuenta: $500  Riesgo por operación: 2% → $10  Stop loss: 25 pips  Valor por pip: $0.10  𝐿 𝑜 𝑡 𝑒 = 10 25 × 0.10 = 0.4 &nbsp; 𝑚 𝑖 𝑐 𝑟 𝑜 &nbsp; 𝑙 𝑜 𝑡 𝑒 𝑠 &nbsp; ( 0.04 ) Lote= 25×0.10 10 	​  =0.4&nbsp;micro&nbsp;lotes&nbsp;(0.04)  👉 Si el trade es 1:2, ganarías $20 si sale bien, perderías $10 si sale mal.</div><div class="editable" style="margin: 15px 0px; padding: 15px; background: rgba(67, 97, 238, 0.1); border-radius: 8px; color: rgb(45, 37, 37);">✅ Resumen:  Arriesga poco en cada operación.  Busca siempre más ganancia de la que arriesgas.  Protege tu cuenta como si fuera tu vida: el capital es tu herramienta para seguir en el juego.</div><img src="data:image/jpeg;base64,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" class="editable" style="max-width: 100%; margin: 15px 0px; border-radius: 8px; left: 191px; top: 0px;">
+        </div>
+        
+        <div class="document-footer">
+            <p>© 2025 - Vip Forex - Todos los derechos reservados</p>
+        </div>
+    </div>
+</body>
+</html>
